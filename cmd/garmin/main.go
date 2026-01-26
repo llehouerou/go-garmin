@@ -10,7 +10,8 @@ const usage = `Usage: garmin <command> [arguments]
 Commands:
     login       Authenticate with Garmin Connect
     logout      Remove saved session
-    wellness    Wellness data (sleep, stress, body battery)
+    sleep       Sleep data
+    wellness    Wellness data (stress, body battery)
 
 Run 'garmin <command> -h' for command-specific help.
 `
@@ -26,6 +27,8 @@ func main() {
 		loginCmd(os.Args[2:])
 	case "logout":
 		logoutCmd(os.Args[2:])
+	case "sleep":
+		sleepCmd(os.Args[2:])
 	case "wellness":
 		wellnessCmd(os.Args[2:])
 	case "-h", "--help", "help":

@@ -22,6 +22,7 @@ type Options struct {
 
 // Client is the main entry point for interacting with Garmin services.
 type Client struct {
+	Sleep           *SleepService
 	Wellness        *WellnessService
 	Activities      *ActivityService
 	Metrics         *MetricsService
@@ -62,6 +63,7 @@ func New(opts Options) *Client {
 	}
 
 	// Initialize services
+	c.Sleep = &SleepService{client: c}
 	c.Wellness = &WellnessService{client: c}
 	c.Activities = &ActivityService{client: c}
 	c.Metrics = &MetricsService{client: c}

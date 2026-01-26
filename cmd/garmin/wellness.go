@@ -12,7 +12,6 @@ import (
 const wellnessUsage = `Usage: garmin wellness <command> [date]
 
 Commands:
-    sleep         Get sleep data
     stress        Get stress data
     body-battery  Get body battery data
 
@@ -44,14 +43,6 @@ func wellnessCmd(args []string) {
 	ctx := context.Background()
 
 	switch args[0] {
-	case "sleep":
-		data, err := client.Wellness.GetDailySleep(ctx, date)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
 	case "stress":
 		data, err := client.Wellness.GetDailyStress(ctx, date)
 		if err != nil {
@@ -68,7 +59,7 @@ func wellnessCmd(args []string) {
 		}
 		_ = json.NewEncoder(os.Stdout).Encode(data.Events)
 
-	case "-h", "--help", "help":
+	case "-h", "--help", "help": //nolint:goconst // CLI help flags
 		fmt.Print(wellnessUsage)
 
 	default:
