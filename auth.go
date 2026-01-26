@@ -1,8 +1,11 @@
 package garmin
 
 import (
+	"context"
 	"encoding/json"
 	"io"
+	"net/http"
+	"sync"
 	"time"
 )
 
@@ -34,4 +37,44 @@ func (a *authState) isExpired() bool {
 
 func (a *authState) isAuthenticated() bool {
 	return a.OAuth1Token != "" && a.OAuth2AccessToken != ""
+}
+
+const oauthConsumerURL = "https://thegarth.s3.amazonaws.com/oauth_consumer.json"
+
+type oauthConsumer struct {
+	Key    string `json:"consumer_key"`
+	Secret string `json:"consumer_secret"`
+}
+
+var (
+	cachedConsumer *oauthConsumer
+	consumerMu     sync.Mutex
+)
+
+func fetchOAuthConsumer(ctx context.Context, client *http.Client) (*oauthConsumer, error) {
+	consumerMu.Lock()
+	defer consumerMu.Unlock()
+
+	if cachedConsumer != nil {
+		return cachedConsumer, nil
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, oauthConsumerURL, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	var consumer oauthConsumer
+	if err := json.NewDecoder(resp.Body).Decode(&consumer); err != nil {
+		return nil, err
+	}
+
+	cachedConsumer = &consumer
+	return cachedConsumer, nil
 }

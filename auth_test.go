@@ -2,6 +2,8 @@ package garmin
 
 import (
 	"bytes"
+	"context"
+	"net/http"
 	"testing"
 	"time"
 )
@@ -62,5 +64,19 @@ func TestAuthStateIsAuthenticated(t *testing.T) {
 	auth.OAuth2AccessToken = "access"
 	if !auth.isAuthenticated() {
 		t.Error("expected auth state with both tokens to be authenticated")
+	}
+}
+
+func TestFetchOAuthConsumer(t *testing.T) {
+	ctx := context.Background()
+	consumer, err := fetchOAuthConsumer(ctx, http.DefaultClient)
+	if err != nil {
+		t.Fatalf("failed to fetch oauth consumer: %v", err)
+	}
+	if consumer.Key == "" {
+		t.Error("expected non-empty consumer key")
+	}
+	if consumer.Secret == "" {
+		t.Error("expected non-empty consumer secret")
 	}
 }
