@@ -11,7 +11,7 @@
 coverage.out
 
 # Built binaries
-garmin
+/garmin
 
 docs/
 .mcp.json

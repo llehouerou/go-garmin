@@ -61,12 +61,12 @@ func wellnessCmd(args []string) {
 		_ = json.NewEncoder(os.Stdout).Encode(data)
 
 	case "body-battery":
-		data, err := client.Wellness.GetBodyBattery(ctx, date)
+		data, err := client.Wellness.GetBodyBatteryEvents(ctx, date)
 		if err != nil {
 			printError(err)
 			os.Exit(1)
 		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
+		_ = json.NewEncoder(os.Stdout).Encode(data.Events)
 
 	case "-h", "--help", "help":
 		fmt.Print(wellnessUsage)
