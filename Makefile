@@ -1,4 +1,4 @@
-.PHONY: fmt lint test coverage check build install-hooks
+.PHONY: fmt lint test coverage check build cli install-hooks
 
 # Format all Go files (tools provided by nix devShell)
 fmt:
@@ -31,6 +31,10 @@ check: fmt lint test
 # Build (verify compilation)
 build:
 	go build ./...
+
+# Build CLI binary
+cli:
+	go build -o garmin ./cmd/garmin
 
 # Install git hooks
 install-hooks:
