@@ -1,0 +1,22 @@
+# IDE
+.idea/
+.vscode/
+.claude/
+*.swp
+
+# OS
+.DS_Store
+
+# Test coverage
+coverage.out
+
+docs/
+.mcp.json
+
+# Go workspace (local development)
+go.work
+go.work.sum
+
+# Nix/direnv
+.direnv/
+result
