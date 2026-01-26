@@ -2,6 +2,8 @@
 package garmin
 
 import (
+	"context"
+	"fmt"
 	"io"
 	"net/http"
 )
@@ -88,4 +90,63 @@ func (c *Client) SaveSession(w io.Writer) error {
 // LoadSession restores the authentication state from the provided reader.
 func (c *Client) LoadSession(r io.Reader) error {
 	return c.auth.load(r)
+}
+
+// doAPI performs an authenticated API request to Garmin Connect.
+//
+//nolint:unused // Will be used by service implementations
+func (c *Client) doAPI(ctx context.Context, method, path string, body io.Reader) (*http.Response, error) {
+	if !c.auth.isAuthenticated() {
+		return nil, ErrNotAuthenticated
+	}
+
+	if c.auth.isExpired() {
+		if err := c.refreshOAuth2(ctx); err != nil {
+			return nil, err
+		}
+	}
+
+	url := fmt.Sprintf("https://connectapi.%s%s", c.auth.Domain, path)
+	req, err := http.NewRequestWithContext(ctx, method, url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.auth.OAuth2AccessToken)
+	req.Header.Set("User-Agent", "GCM-iOS-5.19.1.2")
+
+	return c.transport.do(req)
+}
+
+// refreshOAuth2 re-exchanges OAuth1 for a fresh OAuth2 token.
+//
+//nolint:unused // Will be used by service implementations
+func (c *Client) refreshOAuth2(ctx context.Context) error {
+	sso, err := newSSOClient(c.auth.Domain, c.transport.client.Timeout)
+	if err != nil {
+		return err
+	}
+
+	consumer, err := fetchOAuthConsumer(ctx, c.transport.client)
+	if err != nil {
+		return err
+	}
+
+	oauth1 := &OAuth1Token{
+		Token:    c.auth.OAuth1Token,
+		Secret:   c.auth.OAuth1Secret,
+		MFAToken: c.auth.MFAToken,
+	}
+
+	oauth2, err := sso.exchangeOAuth1ForOAuth2(ctx, oauth1, consumer)
+	if err != nil {
+		return err
+	}
+
+	c.auth.OAuth2AccessToken = oauth2.AccessToken
+	c.auth.OAuth2RefreshToken = oauth2.RefreshToken
+	c.auth.OAuth2Expiry = oauth2.Expiry
+	c.auth.OAuth2Scope = oauth2.Scope
+
+	return nil
 }
