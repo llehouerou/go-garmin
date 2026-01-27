@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
@@ -637,6 +638,70 @@ func registerTools(s *server.MCPServer, client *garmin.Client) {
 				return errorResult(err), nil
 			}
 			return mcp.NewToolResultText("Workout deleted successfully"), nil
+		},
+	)
+
+	// Workout - Create
+	s.AddTool(
+		mcp.NewTool("create_workout",
+			mcp.WithDescription("Create a new workout. The workout parameter should be a JSON object with workoutName, sportType, and workoutSegments."),
+			mcp.WithString("workout",
+				mcp.Required(),
+				mcp.Description("JSON object representing the workout to create"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			workoutJSON, err := request.RequireString("workout")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			var workout garmin.Workout
+			if err := json.Unmarshal([]byte(workoutJSON), &workout); err != nil {
+				return errorResult(fmt.Errorf("invalid workout JSON: %w", err)), nil
+			}
+			created, err := client.Workouts.Create(ctx, &workout)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(created), nil
+		},
+	)
+
+	// Workout - Update
+	s.AddTool(
+		mcp.NewTool("update_workout",
+			mcp.WithDescription("Update an existing workout. The workout parameter should be a JSON object with the updated workout data."),
+			mcp.WithString("workout_id",
+				mcp.Required(),
+				mcp.Description("The workout ID to update"),
+			),
+			mcp.WithString("workout",
+				mcp.Required(),
+				mcp.Description("JSON object representing the updated workout"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			idStr, err := request.RequireString("workout_id")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			id, err := strconv.ParseInt(idStr, 10, 64)
+			if err != nil {
+				return errorResult(fmt.Errorf("invalid workout_id: %w", err)), nil
+			}
+			workoutJSON, err := request.RequireString("workout")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			var workout garmin.Workout
+			if err := json.Unmarshal([]byte(workoutJSON), &workout); err != nil {
+				return errorResult(fmt.Errorf("invalid workout JSON: %w", err)), nil
+			}
+			updated, err := client.Workouts.Update(ctx, id, &workout)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(updated), nil
 		},
 	)
 
