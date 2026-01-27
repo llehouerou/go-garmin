@@ -14,32 +14,38 @@ import (
 
 // Patterns for anonymizing response bodies.
 var (
-	userProfilePKPattern = regexp.MustCompile(`"userProfilePK"\s*:\s*\d+`)
-	userProfilePkPattern = regexp.MustCompile(`"userProfilePk"\s*:\s*\d+`)
-	userProfileIDPattern = regexp.MustCompile(`"userProfileId"\s*:\s*\d+`)
-	userIDPattern        = regexp.MustCompile(`"userId"\s*:\s*\d+`)
-	ownerIDPattern       = regexp.MustCompile(`"ownerId"\s*:\s*\d+`)
-	displayNamePattern   = regexp.MustCompile(`"displayName"\s*:\s*"[^"]*"`)
-	displaynamePattern   = regexp.MustCompile(`"displayname"\s*:\s*"[^"]*"`)
-	ownerDisplayPattern  = regexp.MustCompile(`"ownerDisplayName"\s*:\s*"[^"]*"`)
-	fullNamePattern      = regexp.MustCompile(`"fullName"\s*:\s*"[^"]*"`)
-	fullnamePattern      = regexp.MustCompile(`"fullname"\s*:\s*"[^"]*"`)
-	ownerFullNamePattern = regexp.MustCompile(`"ownerFullName"\s*:\s*"[^"]*"`)
-	firstNamePattern     = regexp.MustCompile(`"firstName"\s*:\s*"[^"]*"`)
-	lastNamePattern      = regexp.MustCompile(`"lastName"\s*:\s*"[^"]*"`)
-	emailPattern         = regexp.MustCompile(`"email"\s*:\s*"[^"]*"`)
-	userNamePattern      = regexp.MustCompile(`"userName"\s*:\s*"[^"]*"`)
+	userProfilePKPattern   = regexp.MustCompile(`"userProfilePK"\s*:\s*\d+`)
+	userProfilePkPattern   = regexp.MustCompile(`"userProfilePk"\s*:\s*\d+`)
+	userProfileIDPattern   = regexp.MustCompile(`"userProfileId"\s*:\s*\d+`)
+	userIDPattern          = regexp.MustCompile(`"userId"\s*:\s*\d+`)
+	ownerIDPattern         = regexp.MustCompile(`"ownerId"\s*:\s*\d+`)
+	profileIDPattern       = regexp.MustCompile(`"profileId"\s*:\s*\d+`)
+	bareIDPattern          = regexp.MustCompile(`"id"\s*:\s*\d+`)
+	displayNamePattern     = regexp.MustCompile(`"displayName"\s*:\s*"[^"]*"`)
+	displaynamePattern     = regexp.MustCompile(`"displayname"\s*:\s*"[^"]*"`)
+	ownerDisplayPattern    = regexp.MustCompile(`"ownerDisplayName"\s*:\s*"[^"]*"`)
+	fullNamePattern        = regexp.MustCompile(`"fullName"\s*:\s*"[^"]*"`)
+	fullnamePattern        = regexp.MustCompile(`"fullname"\s*:\s*"[^"]*"`)
+	ownerFullNamePattern   = regexp.MustCompile(`"ownerFullName"\s*:\s*"[^"]*"`)
+	userProfileFullPattern = regexp.MustCompile(`"userProfileFullName"\s*:\s*"[^"]*"`)
+	firstNamePattern       = regexp.MustCompile(`"firstName"\s*:\s*"[^"]*"`)
+	lastNamePattern        = regexp.MustCompile(`"lastName"\s*:\s*"[^"]*"`)
+	emailPattern           = regexp.MustCompile(`"email"\s*:\s*"[^"]*"`)
+	userNamePattern        = regexp.MustCompile(`"userName"\s*:\s*"[^"]*"`)
+	birthDatePattern       = regexp.MustCompile(`"birthDate"\s*:\s*"[^"]*"`)
+	locationPattern        = regexp.MustCompile(`"location"\s*:\s*"[^"]*"`)
 
 	// Profile image URLs
 	profileImageURLPattern = regexp.MustCompile(`"(ownerProfileImageUrl[^"]*|profileImageUrl[^"]*)"\s*:\s*"https://s3\.amazonaws\.com/garmin-connect-prod/profile_images/[^"]*"`)
 
 	// Auth-related patterns
-	ticketPattern       = regexp.MustCompile(`ticket=ST-[^&"\\]+`)
-	oauth1TokenPattern  = regexp.MustCompile(`oauth_token=[^&\s]+`)
-	oauth1SecretPattern = regexp.MustCompile(`oauth_token_secret=[^&\s]+`)
-	accessTokenPattern  = regexp.MustCompile(`"access_token"\s*:\s*"[^"]*"`)
-	refreshTokenPattern = regexp.MustCompile(`"refresh_token"\s*:\s*"[^"]*"`)
-	garminGUIDPattern   = regexp.MustCompile(`"garmin_guid"\s*:\s*"[^"]*"`)
+	ticketPattern          = regexp.MustCompile(`ticket=ST-[^&"\\]+`)
+	oauth1TokenPattern     = regexp.MustCompile(`oauth_token=[^&\s]+`)
+	oauth1SecretPattern    = regexp.MustCompile(`oauth_token_secret=[^&\s]+`)
+	accessTokenPattern     = regexp.MustCompile(`"access_token"\s*:\s*"[^"]*"`)
+	refreshTokenPattern    = regexp.MustCompile(`"refresh_token"\s*:\s*"[^"]*"`)
+	garminGUIDSnakePattern = regexp.MustCompile(`"garmin_guid"\s*:\s*"[^"]*"`)
+	garminGUIDCamelPattern = regexp.MustCompile(`"garminGUID"\s*:\s*"[^"]*"`)
 )
 
 // CassetteDir is the directory where cassettes are stored.
@@ -161,6 +167,8 @@ func anonymizeBody(body string) string {
 	body = userProfileIDPattern.ReplaceAllString(body, `"userProfileId":12345678`)
 	body = userIDPattern.ReplaceAllString(body, `"userId":12345678`)
 	body = ownerIDPattern.ReplaceAllString(body, `"ownerId":12345678`)
+	body = profileIDPattern.ReplaceAllString(body, `"profileId":12345678`)
+	body = bareIDPattern.ReplaceAllString(body, `"id":12345678`)
 
 	// Display names
 	body = displayNamePattern.ReplaceAllString(body, `"displayName":"anonymous"`)
@@ -171,11 +179,16 @@ func anonymizeBody(body string) string {
 	body = fullNamePattern.ReplaceAllString(body, `"fullName":"Anonymous User"`)
 	body = fullnamePattern.ReplaceAllString(body, `"fullname":"Anonymous User"`)
 	body = ownerFullNamePattern.ReplaceAllString(body, `"ownerFullName":"Anonymous User"`)
+	body = userProfileFullPattern.ReplaceAllString(body, `"userProfileFullName":"Anonymous User"`)
 
 	body = firstNamePattern.ReplaceAllString(body, `"firstName":"Anonymous"`)
 	body = lastNamePattern.ReplaceAllString(body, `"lastName":"User"`)
 	body = emailPattern.ReplaceAllString(body, `"email":"anonymous@example.com"`)
 	body = userNamePattern.ReplaceAllString(body, `"userName":"anonymous"`)
+
+	// Personal info
+	body = birthDatePattern.ReplaceAllString(body, `"birthDate":"1990-01-01"`)
+	body = locationPattern.ReplaceAllString(body, `"location":"Anonymous City"`)
 
 	// Profile image URLs
 	body = profileImageURLPattern.ReplaceAllString(body, `"$1":"https://example.com/profile.png"`)
@@ -186,7 +199,8 @@ func anonymizeBody(body string) string {
 	body = oauth1SecretPattern.ReplaceAllString(body, `oauth_token_secret=[REDACTED]`)
 	body = accessTokenPattern.ReplaceAllString(body, `"access_token":"[REDACTED]"`)
 	body = refreshTokenPattern.ReplaceAllString(body, `"refresh_token":"[REDACTED]"`)
-	body = garminGUIDPattern.ReplaceAllString(body, `"garmin_guid":"00000000-0000-0000-0000-000000000000"`)
+	body = garminGUIDSnakePattern.ReplaceAllString(body, `"garmin_guid":"00000000-0000-0000-0000-000000000000"`)
+	body = garminGUIDCamelPattern.ReplaceAllString(body, `"garminGUID":"00000000-0000-0000-0000-000000000000"`)
 
 	return body
 }

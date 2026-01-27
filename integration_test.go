@@ -859,3 +859,117 @@ func TestIntegration_Metrics_GetHeatAltitudeAcclimation(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_UserProfile_GetSocialProfile(t *testing.T) {
+	skipIfNoCassette(t, "userprofile")
+
+	rec, err := testutil.NewRecorder("userprofile", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	profile, err := client.UserProfile.GetSocialProfile(ctx)
+	if err != nil {
+		t.Fatalf("GetSocialProfile failed: %v", err)
+	}
+
+	if profile == nil {
+		t.Fatal("expected social profile data, got nil")
+	}
+
+	if profile.ID == 0 {
+		t.Error("expected ID to be set")
+	}
+	if profile.DisplayName == "" {
+		t.Error("expected DisplayName to be set")
+	}
+	if profile.UserName == "" {
+		t.Error("expected UserName to be set")
+	}
+	if profile.ProfileVisibility == "" {
+		t.Error("expected ProfileVisibility to be set")
+	}
+
+	if profile.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_UserProfile_GetUserSettings(t *testing.T) {
+	skipIfNoCassette(t, "userprofile")
+
+	rec, err := testutil.NewRecorder("userprofile", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	settings, err := client.UserProfile.GetUserSettings(ctx)
+	if err != nil {
+		t.Fatalf("GetUserSettings failed: %v", err)
+	}
+
+	if settings == nil {
+		t.Fatal("expected user settings data, got nil")
+	}
+
+	if settings.ID == 0 {
+		t.Error("expected ID to be set")
+	}
+	if settings.UserData.Gender == "" {
+		t.Error("expected Gender to be set")
+	}
+	if settings.UserData.MeasurementSystem == "" {
+		t.Error("expected MeasurementSystem to be set")
+	}
+	if settings.UserSleep.SleepTime == 0 && settings.UserSleep.WakeTime == 0 {
+		t.Error("expected sleep times to be set")
+	}
+
+	if settings.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_UserProfile_GetProfileSettings(t *testing.T) {
+	skipIfNoCassette(t, "userprofile")
+
+	rec, err := testutil.NewRecorder("userprofile", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	settings, err := client.UserProfile.GetProfileSettings(ctx)
+	if err != nil {
+		t.Fatalf("GetProfileSettings failed: %v", err)
+	}
+
+	if settings == nil {
+		t.Fatal("expected profile settings data, got nil")
+	}
+
+	if settings.DisplayName == "" {
+		t.Error("expected DisplayName to be set")
+	}
+	if settings.MeasurementSystem == "" {
+		t.Error("expected MeasurementSystem to be set")
+	}
+	if settings.TimeZone == "" {
+		t.Error("expected TimeZone to be set")
+	}
+
+	if settings.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}

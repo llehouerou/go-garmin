@@ -177,10 +177,9 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/userprofile-service/socialProfile` | Social profile |
-| [ ] | GET | `/userprofile-service/userprofile/user-settings` | User settings |
-| [ ] | GET | `/userprofile-service/userprofile/settings` | Profile settings |
-| [ ] | GET | `/userprofile-service/userprofile/profile` | User profile |
+| [x] | GET | `/userprofile-service/socialProfile` | Social profile |
+| [x] | GET | `/userprofile-service/userprofile/user-settings` | User settings |
+| [x] | GET | `/userprofile-service/userprofile/settings` | Profile settings |
 
 ---
 

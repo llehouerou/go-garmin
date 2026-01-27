@@ -16,6 +16,7 @@ Commands:
     weight      Weight data (daily, range)
     metrics     Metrics data (training readiness, VO2 max, scores)
     activities  Activities data (list, details, weather, splits)
+    profile     User profile data (social, settings)
 
 Run 'garmin <command> -h' for command-specific help.
 `
@@ -43,6 +44,8 @@ func main() {
 		weightCmd(os.Args[2:])
 	case "metrics":
 		metricsCmd(os.Args[2:])
+	case "profile":
+		profileCmd(os.Args[2:])
 	case "-h", "--help", "help":
 		fmt.Print(usage)
 	default:

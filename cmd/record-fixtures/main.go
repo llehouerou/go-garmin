@@ -99,6 +99,10 @@ func recordFixtures(email, password string, date time.Time) error {
 		return fmt.Errorf("metrics: %w", err)
 	}
 
+	if err := recordUserProfile(ctx, session); err != nil {
+		return fmt.Errorf("userprofile: %w", err)
+	}
+
 	return nil
 }
 
@@ -484,6 +488,54 @@ func recordMetrics(ctx context.Context, session []byte, date time.Time) error {
 	_, err = doAPIRequest(ctx, httpClient, acclimationURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: heat/altitude acclimation: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordUserProfile(ctx context.Context, session []byte) error {
+	rec, err := testutil.NewRecordingRecorder("userprofile")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+
+	// Social profile
+	fmt.Println("  Getting social profile...")
+	socialProfileURL := fmt.Sprintf("https://connectapi.%s/userprofile-service/socialProfile",
+		authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, socialProfileURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: social profile: %v\n", err)
+	}
+
+	// User settings
+	fmt.Println("  Getting user settings...")
+	userSettingsURL := fmt.Sprintf("https://connectapi.%s/userprofile-service/userprofile/user-settings",
+		authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, userSettingsURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: user settings: %v\n", err)
+	}
+
+	// Profile settings
+	fmt.Println("  Getting profile settings...")
+	profileSettingsURL := fmt.Sprintf("https://connectapi.%s/userprofile-service/userprofile/settings",
+		authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, profileSettingsURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: profile settings: %v\n", err)
 	}
 
 	return nil
