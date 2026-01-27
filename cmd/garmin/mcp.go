@@ -566,4 +566,77 @@ func registerTools(s *server.MCPServer, client *garmin.Client) {
 			return jsonResult(data), nil
 		},
 	)
+
+	// Workout - List
+	s.AddTool(
+		mcp.NewTool("list_workouts",
+			mcp.WithDescription("List saved workouts"),
+			mcp.WithNumber("limit",
+				mcp.Description("Maximum number of workouts to return (default 20)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			limit := 20
+			if l, err := request.RequireFloat("limit"); err == nil {
+				limit = int(l)
+			}
+			data, err := client.Workouts.List(ctx, 0, limit)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Workout - Get
+	s.AddTool(
+		mcp.NewTool("get_workout",
+			mcp.WithDescription("Get details of a specific workout"),
+			mcp.WithString("workout_id",
+				mcp.Required(),
+				mcp.Description("The workout ID"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			idStr, err := request.RequireString("workout_id")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			id, err := strconv.ParseInt(idStr, 10, 64)
+			if err != nil {
+				return errorResult(fmt.Errorf("invalid workout_id: %w", err)), nil
+			}
+			data, err := client.Workouts.Get(ctx, id)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Workout - Delete
+	s.AddTool(
+		mcp.NewTool("delete_workout",
+			mcp.WithDescription("Delete a workout"),
+			mcp.WithString("workout_id",
+				mcp.Required(),
+				mcp.Description("The workout ID to delete"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			idStr, err := request.RequireString("workout_id")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			id, err := strconv.ParseInt(idStr, 10, 64)
+			if err != nil {
+				return errorResult(fmt.Errorf("invalid workout_id: %w", err)), nil
+			}
+			err = client.Workouts.Delete(ctx, id)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return mcp.NewToolResultText("Workout deleted successfully"), nil
+		},
+	)
 }
