@@ -111,3 +111,62 @@ func (a *HandlerArgs) Bool(name string) bool {
 	}
 	return false
 }
+
+// Registry holds all registered endpoints.
+type Registry struct {
+	endpoints []*Endpoint
+	byName    map[string]*Endpoint
+	byCLI     map[string]*Endpoint
+	byMCP     map[string]*Endpoint
+}
+
+// NewRegistry creates a new endpoint registry.
+func NewRegistry() *Registry {
+	return &Registry{
+		byName: make(map[string]*Endpoint),
+		byCLI:  make(map[string]*Endpoint),
+		byMCP:  make(map[string]*Endpoint),
+	}
+}
+
+// Register adds an endpoint to the registry.
+func (r *Registry) Register(e Endpoint) {
+	ep := &e // Allocate copy on heap with stable address
+	r.endpoints = append(r.endpoints, ep)
+
+	if e.Name != "" {
+		r.byName[e.Name] = ep
+	}
+
+	if e.CLICommand != "" {
+		key := e.CLICommand
+		if e.CLISubcommand != "" {
+			key = e.CLICommand + ":" + e.CLISubcommand
+		}
+		r.byCLI[key] = ep
+	}
+
+	if e.MCPTool != "" {
+		r.byMCP[e.MCPTool] = ep
+	}
+}
+
+// All returns all registered endpoints.
+func (r *Registry) All() []*Endpoint {
+	return r.endpoints
+}
+
+// ByName returns an endpoint by name, or nil if not found.
+func (r *Registry) ByName(name string) *Endpoint {
+	return r.byName[name]
+}
+
+// ByCLI returns endpoints indexed by CLI command key.
+func (r *Registry) ByCLI() map[string]*Endpoint {
+	return r.byCLI
+}
+
+// ByMCP returns endpoints indexed by MCP tool name.
+func (r *Registry) ByMCP() map[string]*Endpoint {
+	return r.byMCP
+}

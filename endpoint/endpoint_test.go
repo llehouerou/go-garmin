@@ -2,6 +2,7 @@
 package endpoint
 
 import (
+	"fmt"
 	"testing"
 	"time"
 )
@@ -76,5 +77,76 @@ func TestHandlerArgs_Bool(t *testing.T) {
 	}
 	if got := args.Bool("missing"); got != false {
 		t.Errorf("Bool() for missing = %v, want false", got)
+	}
+}
+
+func TestRegistry_Register(t *testing.T) {
+	r := NewRegistry()
+
+	ep := Endpoint{
+		Name:       "GetSleep",
+		CLICommand: "sleep",
+		MCPTool:    "get_sleep",
+	}
+	r.Register(ep)
+
+	if len(r.All()) != 1 {
+		t.Errorf("All() len = %d, want 1", len(r.All()))
+	}
+}
+
+func TestRegistry_ByCLI(t *testing.T) {
+	r := NewRegistry()
+
+	r.Register(Endpoint{Name: "GetSleep", CLICommand: "sleep", MCPTool: "get_sleep"})
+	r.Register(Endpoint{Name: "ListWorkouts", CLICommand: "workouts", CLISubcommand: "list"})
+
+	byCLI := r.ByCLI()
+	if _, ok := byCLI["sleep"]; !ok {
+		t.Error("expected 'sleep' in ByCLI")
+	}
+	if _, ok := byCLI["workouts:list"]; !ok {
+		t.Error("expected 'workouts:list' in ByCLI")
+	}
+}
+
+func TestRegistry_ByMCP(t *testing.T) {
+	r := NewRegistry()
+
+	r.Register(Endpoint{Name: "GetSleep", MCPTool: "get_sleep"})
+
+	byMCP := r.ByMCP()
+	if _, ok := byMCP["get_sleep"]; !ok {
+		t.Error("expected 'get_sleep' in ByMCP")
+	}
+}
+
+func TestRegistry_ByName(t *testing.T) {
+	r := NewRegistry()
+
+	r.Register(Endpoint{Name: "GetSleep"})
+
+	if ep := r.ByName("GetSleep"); ep == nil {
+		t.Error("expected to find 'GetSleep' by name")
+	}
+	if ep := r.ByName("NotFound"); ep != nil {
+		t.Error("expected nil for unknown name")
+	}
+}
+
+func TestRegistry_PointerStability(t *testing.T) {
+	r := NewRegistry()
+
+	r.Register(Endpoint{Name: "First"})
+	first := r.ByName("First")
+
+	// Register many more to force reallocation
+	for i := range 100 {
+		r.Register(Endpoint{Name: fmt.Sprintf("Endpoint%d", i)})
+	}
+
+	// Verify first pointer is still valid
+	if got := r.ByName("First"); got != first || got.Name != "First" {
+		t.Error("pointer to First became invalid after reallocation")
 	}
 }
