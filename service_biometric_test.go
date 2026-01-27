@@ -145,6 +145,7 @@ func TestPowerToWeightRawJSON(t *testing.T) {
 
 func TestBiometricStatJSONUnmarshal(t *testing.T) {
 	const statDate = "2026-01-26"
+	const seriesRunning = "running"
 	rawJSON := `{"from":"2026-01-26","until":"2026-01-26","series":"running","value":0.33611017,"updatedDate":"2026-01-26"}`
 
 	var stat BiometricStat
@@ -158,8 +159,8 @@ func TestBiometricStatJSONUnmarshal(t *testing.T) {
 	if stat.Until != statDate {
 		t.Errorf("Until = %s, want %s", stat.Until, statDate)
 	}
-	if stat.Series != "running" {
-		t.Errorf("Series = %s, want running", stat.Series)
+	if stat.Series != seriesRunning {
+		t.Errorf("Series = %s, want %s", stat.Series, seriesRunning)
 	}
 	if stat.Value < 0.336 || stat.Value > 0.337 {
 		t.Errorf("Value = %f, want ~0.33611017", stat.Value)

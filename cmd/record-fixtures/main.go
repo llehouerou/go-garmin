@@ -115,6 +115,10 @@ func recordFixtures(email, password string, date time.Time) error {
 		return fmt.Errorf("biometric: %w", err)
 	}
 
+	if err := recordWorkouts(ctx, session); err != nil {
+		return fmt.Errorf("workouts: %w", err)
+	}
+
 	return nil
 }
 
@@ -765,6 +769,50 @@ func recordBiometric(ctx context.Context, session []byte, date time.Time) error 
 	_, err = doAPIRequest(ctx, httpClient, ftpRangeURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: FTP range: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordWorkouts(ctx context.Context, session []byte) error {
+	rec, err := testutil.NewRecordingRecorder("workouts")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+
+	// List workouts
+	fmt.Println("  Getting workouts list...")
+	listURL := fmt.Sprintf("https://connectapi.%s/workout-service/workouts?start=0&limit=10",
+		authState.Domain)
+	workouts, err := doAPIRequest(ctx, httpClient, listURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: workouts list: %v\n", err)
+		return nil
+	}
+
+	// Get first workout details if any exist
+	if len(workouts) > 0 {
+		if workoutID, ok := workouts[0]["workoutId"].(float64); ok {
+			fmt.Printf("  Getting workout %d details...\n", int64(workoutID))
+			detailURL := fmt.Sprintf("https://connectapi.%s/workout-service/workout/%d",
+				authState.Domain, int64(workoutID))
+			_, err = doAPIRequest(ctx, httpClient, detailURL, authState.OAuth2AccessToken)
+			if err != nil {
+				fmt.Printf("  Warning: workout detail: %v\n", err)
+			}
+		}
 	}
 
 	return nil

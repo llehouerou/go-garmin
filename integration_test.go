@@ -1635,3 +1635,98 @@ func TestIntegration_Biometric_GetFTPRange(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_Workout_List(t *testing.T) {
+	skipIfNoCassette(t, "workouts")
+
+	rec, err := testutil.NewRecorder("workouts", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	list, err := client.Workouts.List(ctx, 0, 10)
+	if err != nil {
+		t.Fatalf("List failed: %v", err)
+	}
+
+	if list == nil {
+		t.Fatal("expected workout list, got nil")
+	}
+
+	if len(list.Workouts) == 0 {
+		t.Error("expected Workouts to have data")
+	}
+
+	// Verify first workout has expected fields
+	if len(list.Workouts) > 0 {
+		first := list.Workouts[0]
+		if first.WorkoutID == 0 {
+			t.Error("expected WorkoutID to be set")
+		}
+		if first.WorkoutName == "" {
+			t.Error("expected WorkoutName to be set")
+		}
+		if first.SportType.SportTypeKey == "" {
+			t.Error("expected SportType.SportTypeKey to be set")
+		}
+	}
+
+	if list.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Workout_Get(t *testing.T) {
+	skipIfNoCassette(t, "workouts")
+
+	rec, err := testutil.NewRecorder("workouts", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// First get the list to find a workout ID
+	list, err := client.Workouts.List(ctx, 0, 1)
+	if err != nil {
+		t.Fatalf("List failed: %v", err)
+	}
+
+	if len(list.Workouts) == 0 {
+		t.Skip("no workouts available to test Get")
+	}
+
+	workoutID := list.Workouts[0].WorkoutID
+
+	workout, err := client.Workouts.Get(ctx, workoutID)
+	if err != nil {
+		t.Fatalf("Get failed: %v", err)
+	}
+
+	if workout == nil {
+		t.Fatal("expected workout, got nil")
+	}
+
+	if workout.WorkoutID != workoutID {
+		t.Errorf("WorkoutID = %d, want %d", workout.WorkoutID, workoutID)
+	}
+	if workout.WorkoutName == "" {
+		t.Error("expected WorkoutName to be set")
+	}
+	if workout.SportType.SportTypeKey == "" {
+		t.Error("expected SportType.SportTypeKey to be set")
+	}
+	if len(workout.WorkoutSegments) == 0 {
+		t.Error("expected WorkoutSegments to have data")
+	}
+
+	if workout.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}

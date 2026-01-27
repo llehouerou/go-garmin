@@ -1,0 +1,102 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            limit:
+                - "10"
+            start:
+                - "0"
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/workout-service/workouts?start=0&limit=10
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"workoutId":1454484969,"ownerId":12345678,"workoutName":"Entraînement course à pied","description":null,"updateDate":"2026-01-26T11:24:10.0","createdDate":"2026-01-26T11:24:10.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"trainingPlanId":null,"author":{"userProfilePk":null,"displayName":null,"fullName":null,"profileImgNameLarge":null,"profileImgNameMedium":null,"profileImgNameSmall":null,"userPro":false,"vivokidUser":false},"estimatedDurationInSecs":0,"estimatedDistanceInMeters":0.0,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"poolLength":0.0,"poolLengthUnit":{"unitId":12345678,"unitKey":"meter","factor":100.0},"workoutProvider":null,"workoutSourceId":null,"consumer":null,"atpPlanId":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"workoutThumbnailUrl":null,"shared":false,"estimated":true},{"workoutId":1454449384,"ownerId":12345678,"workoutName":"Test Zone 2 Format C","description":null,"updateDate":"2026-01-26T10:57:41.0","createdDate":"2026-01-26T10:57:41.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"trainingPlanId":null,"author":{"userProfilePk":null,"displayName":null,"fullName":null,"profileImgNameLarge":null,"profileImgNameMedium":null,"profileImgNameSmall":null,"userPro":false,"vivokidUser":false},"estimatedDurationInSecs":null,"estimatedDistanceInMeters":1000.0,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"poolLength":0.0,"poolLengthUnit":{"unitId":null,"unitKey":null,"factor":null},"workoutProvider":null,"workoutSourceId":null,"consumer":null,"atpPlanId":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"workoutThumbnailUrl":null,"shared":false,"estimated":true},{"workoutId":1454449367,"ownerId":12345678,"workoutName":"Test Zone 2 Format B","description":null,"updateDate":"2026-01-26T10:57:40.0","createdDate":"2026-01-26T10:57:40.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"trainingPlanId":null,"author":{"userProfilePk":null,"displayName":null,"fullName":null,"profileImgNameLarge":null,"profileImgNameMedium":null,"profileImgNameSmall":null,"userPro":false,"vivokidUser":false},"estimatedDurationInSecs":null,"estimatedDistanceInMeters":1000.0,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"poolLength":0.0,"poolLengthUnit":{"unitId":null,"unitKey":null,"factor":null},"workoutProvider":null,"workoutSourceId":null,"consumer":null,"atpPlanId":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"workoutThumbnailUrl":null,"shared":false,"estimated":true},{"workoutId":1454449353,"ownerId":12345678,"workoutName":"Test Zone 2 Format A","description":null,"updateDate":"2026-01-26T10:57:40.0","createdDate":"2026-01-26T10:57:40.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"trainingPlanId":null,"author":{"userProfilePk":null,"displayName":null,"fullName":null,"profileImgNameLarge":null,"profileImgNameMedium":null,"profileImgNameSmall":null,"userPro":false,"vivokidUser":false},"estimatedDurationInSecs":null,"estimatedDistanceInMeters":1000.0,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"poolLength":0.0,"poolLengthUnit":{"unitId":null,"unitKey":null,"factor":null},"workoutProvider":null,"workoutSourceId":null,"consumer":null,"atpPlanId":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"workoutThumbnailUrl":null,"shared":false,"estimated":true},{"workoutId":1454447433,"ownerId":12345678,"workoutName":"Easy 7km Z2 (124-141bpm)","description":"Easy run in HR Zone 2 (124-141 bpm). 5min warmup walk, 7km run, 10min cooldown walk.","updateDate":"2026-01-26T10:55:56.0","createdDate":"2026-01-26T10:55:56.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"trainingPlanId":null,"author":{"userProfilePk":null,"displayName":null,"fullName":null,"profileImgNameLarge":null,"profileImgNameMedium":null,"profileImgNameSmall":null,"userPro":false,"vivokidUser":false},"estimatedDurationInSecs":null,"estimatedDistanceInMeters":null,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"poolLength":0.0,"poolLengthUnit":{"unitId":null,"unitKey":null,"factor":null},"workoutProvider":null,"workoutSourceId":null,"consumer":null,"atpPlanId":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"workoutThumbnailUrl":null,"shared":false,"estimated":true},{"workoutId":1454447442,"ownerId":12345678,"workoutName":"Long 10km Z2 (124-141bpm)","description":"Long easy run in HR Zone 2 (124-141 bpm). 5min warmup walk, 10km run, 10min cooldown walk - mandatory for vein health.","updateDate":"2026-01-26T10:55:56.0","createdDate":"2026-01-26T10:55:56.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"trainingPlanId":null,"author":{"userProfilePk":null,"displayName":null,"fullName":null,"profileImgNameLarge":null,"profileImgNameMedium":null,"profileImgNameSmall":null,"userPro":false,"vivokidUser":false},"estimatedDurationInSecs":null,"estimatedDistanceInMeters":null,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"poolLength":0.0,"poolLengthUnit":{"unitId":null,"unitKey":null,"factor":null},"workoutProvider":null,"workoutSourceId":null,"consumer":null,"atpPlanId":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"workoutThumbnailUrl":null,"shared":false,"estimated":true},{"workoutId":1454447407,"ownerId":12345678,"workoutName":"Easy 6km Z2 (124-141bpm)","description":"Easy run in HR Zone 2 (124-141 bpm). 5min warmup walk, 6km run, 10min cooldown walk.","updateDate":"2026-01-26T10:55:55.0","createdDate":"2026-01-26T10:55:55.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"trainingPlanId":null,"author":{"userProfilePk":null,"displayName":null,"fullName":null,"profileImgNameLarge":null,"profileImgNameMedium":null,"profileImgNameSmall":null,"userPro":false,"vivokidUser":false},"estimatedDurationInSecs":null,"estimatedDistanceInMeters":null,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"poolLength":0.0,"poolLengthUnit":{"unitId":null,"unitKey":null,"factor":null},"workoutProvider":null,"workoutSourceId":null,"consumer":null,"atpPlanId":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"workoutThumbnailUrl":null,"shared":false,"estimated":true},{"workoutId":1454447424,"ownerId":12345678,"workoutName":"Short 4km Z2 + Strength","description":"Short easy run in Zone 2 (124-141 bpm), then 15-20min strength. Planks, glute bridges, single leg deadlifts, calf raises, bird dogs.","updateDate":"2026-01-26T10:55:55.0","createdDate":"2026-01-26T10:55:55.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"trainingPlanId":null,"author":{"userProfilePk":null,"displayName":null,"fullName":null,"profileImgNameLarge":null,"profileImgNameMedium":null,"profileImgNameSmall":null,"userPro":false,"vivokidUser":false},"estimatedDurationInSecs":null,"estimatedDistanceInMeters":null,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"poolLength":0.0,"poolLengthUnit":{"unitId":null,"unitKey":null,"factor":null},"workoutProvider":null,"workoutSourceId":null,"consumer":null,"atpPlanId":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"workoutThumbnailUrl":null,"shared":false,"estimated":true},{"workoutId":1454441768,"ownerId":12345678,"workoutName":"Long Easy 10km Zone 2","description":"Long easy run staying relaxed in HR Zone 2. 5min warmup walk, 10km run, 10min cooldown walk - mandatory for vein health.","updateDate":"2026-01-26T10:51:15.0","createdDate":"2026-01-26T10:51:15.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"trainingPlanId":null,"author":{"userProfilePk":null,"displayName":null,"fullName":null,"profileImgNameLarge":null,"profileImgNameMedium":null,"profileImgNameSmall":null,"userPro":false,"vivokidUser":false},"estimatedDurationInSecs":null,"estimatedDistanceInMeters":null,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"poolLength":0.0,"poolLengthUnit":{"unitId":null,"unitKey":null,"factor":null},"workoutProvider":null,"workoutSourceId":null,"consumer":null,"atpPlanId":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"workoutThumbnailUrl":null,"shared":false,"estimated":true},{"workoutId":1454441740,"ownerId":12345678,"workoutName":"Short Easy 4km + Strength","description":"Short easy run in Zone 2, then 15-20min strength work. Planks, glute bridges, single leg deadlifts, calf raises, bird dogs.","updateDate":"2026-01-26T10:51:14.0","createdDate":"2026-01-26T10:51:14.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"trainingPlanId":null,"author":{"userProfilePk":null,"displayName":null,"fullName":null,"profileImgNameLarge":null,"profileImgNameMedium":null,"profileImgNameSmall":null,"userPro":false,"vivokidUser":false},"estimatedDurationInSecs":null,"estimatedDistanceInMeters":null,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"poolLength":0.0,"poolLengthUnit":{"unitId":null,"unitKey":null,"factor":null},"workoutProvider":null,"workoutSourceId":null,"consumer":null,"atpPlanId":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"workoutThumbnailUrl":null,"shared":false,"estimated":true}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c4741729edf739c-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 09:34:41 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=vj6M%2F58Dwf6L9Ukjq0ePq5%2FXmkWevUrJOCRo1z2INg5IdlWuQknvbh9mdMFbL%2F7t5b93t8UojjtSCYecXbr5tK6NFsLkOoPma6Al2bsw6BqxAU6mTwH5asNObgf3Z31e5uuS0YartwTxbxmEV%2BMK9ro2YQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 324.207626ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/workout-service/workout/1454484969
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"workoutId":1454484969,"ownerId":12345678,"workoutName":"Entraînement course à pied","description":null,"updatedDate":"2026-01-26T11:24:10.0","createdDate":"2026-01-26T11:24:10.0","sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"subSportType":"GENERIC","trainingPlanId":null,"author":{"userProfilePk":12345678,"displayName":"anonymous","fullName":"Anonymous User","profileImgNameLarge":null,"profileImgNameMedium":"2d861fa9-abf1-4ce0-933a-1c1f3fe16633-prfr.png","profileImgNameSmall":"2d861fa9-abf1-4ce0-933a-1c1f3fe16633-prth.png","userPro":false,"vivokidUser":false},"sharedWithUsers":null,"estimatedDurationInSecs":0,"estimatedDistanceInMeters":0.0,"workoutSegments":[{"segmentOrder":1,"sportType":{"sportTypeId":1,"sportTypeKey":"running","displayOrder":1},"poolLengthUnit":null,"poolLength":null,"avgTrainingSpeed":null,"estimatedDurationInSecs":null,"estimatedDistanceInMeters":null,"estimatedDistanceUnit":null,"estimateType":null,"description":null,"workoutSteps":[{"type":"ExecutableStepDTO","stepId":12230552633,"stepOrder":1,"stepType":{"stepTypeId":1,"stepTypeKey":"warmup","displayOrder":1},"childStepId":null,"description":null,"endCondition":{"conditionTypeId":1,"conditionTypeKey":"lap.button","displayOrder":1,"displayable":true},"endConditionValue":0.0,"preferredEndConditionUnit":null,"endConditionCompare":null,"targetType":{"workoutTargetTypeId":1,"workoutTargetTypeKey":"no.target","displayOrder":1},"targetValueOne":null,"targetValueTwo":0.0,"targetValueUnit":null,"zoneNumber":null,"secondaryTargetType":null,"secondaryTargetValueOne":null,"secondaryTargetValueTwo":null,"secondaryTargetValueUnit":null,"secondaryZoneNumber":null,"endConditionZone":null,"strokeType":{"strokeTypeId":0,"strokeTypeKey":null,"displayOrder":0},"equipmentType":{"equipmentTypeId":0,"equipmentTypeKey":null,"displayOrder":0},"category":null,"exerciseName":null,"workoutProvider":null,"providerExerciseSourceId":null,"weightValue":null,"weightUnit":{"unitId":12345678,"unitKey":"kilogram","factor":1000.0}},{"type":"ExecutableStepDTO","stepId":12230552634,"stepOrder":2,"stepType":{"stepTypeId":3,"stepTypeKey":"interval","displayOrder":3},"childStepId":null,"description":"","endCondition":{"conditionTypeId":3,"conditionTypeKey":"distance","displayOrder":3,"displayable":true},"endConditionValue":1000.0,"preferredEndConditionUnit":{"unitId":12345678,"unitKey":"kilometer","factor":100000.0},"endConditionCompare":null,"targetType":{"workoutTargetTypeId":4,"workoutTargetTypeKey":"heart.rate.zone","displayOrder":4},"targetValueOne":null,"targetValueTwo":null,"targetValueUnit":null,"zoneNumber":2,"secondaryTargetType":null,"secondaryTargetValueOne":null,"secondaryTargetValueTwo":null,"secondaryTargetValueUnit":null,"secondaryZoneNumber":null,"endConditionZone":null,"strokeType":{"strokeTypeId":0,"strokeTypeKey":null,"displayOrder":0},"equipmentType":{"equipmentTypeId":0,"equipmentTypeKey":null,"displayOrder":0},"category":null,"exerciseName":null,"workoutProvider":null,"providerExerciseSourceId":null,"weightValue":null,"weightUnit":{"unitId":12345678,"unitKey":"kilogram","factor":1000.0}},{"type":"ExecutableStepDTO","stepId":12230552635,"stepOrder":3,"stepType":{"stepTypeId":2,"stepTypeKey":"cooldown","displayOrder":2},"childStepId":null,"description":null,"endCondition":{"conditionTypeId":1,"conditionTypeKey":"lap.button","displayOrder":1,"displayable":true},"endConditionValue":0.0,"preferredEndConditionUnit":null,"endConditionCompare":null,"targetType":{"workoutTargetTypeId":1,"workoutTargetTypeKey":"no.target","displayOrder":1},"targetValueOne":null,"targetValueTwo":0.0,"targetValueUnit":null,"zoneNumber":null,"secondaryTargetType":null,"secondaryTargetValueOne":null,"secondaryTargetValueTwo":null,"secondaryTargetValueUnit":null,"secondaryZoneNumber":null,"endConditionZone":null,"strokeType":{"strokeTypeId":0,"strokeTypeKey":null,"displayOrder":0},"equipmentType":{"equipmentTypeId":0,"equipmentTypeKey":null,"displayOrder":0},"category":null,"exerciseName":null,"workoutProvider":null,"providerExerciseSourceId":null,"weightValue":null,"weightUnit":{"unitId":12345678,"unitKey":"kilogram","factor":1000.0}}]}],"poolLength":null,"poolLengthUnit":null,"locale":null,"workoutProvider":null,"workoutSourceId":null,"uploadTimestamp":null,"atpPlanId":null,"consumer":null,"consumerName":null,"consumerImageURL":null,"consumerWebsiteURL":null,"workoutNameI18nKey":null,"descriptionI18nKey":null,"avgTrainingSpeed":2.3766044649887443,"estimateType":null,"estimatedDistanceUnit":{"unitId":null,"unitKey":null,"factor":null},"workoutThumbnailUrl":null,"isSessionTransitionEnabled":null,"shared":false}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c47417499a4739c-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 09:34:41 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=PKwhImDRgftY8FHkuDfaC3yY6QBVNreVum0b5tfic6geiYNBc9dOPVeppn%2F4REUHSo9yTnfE6ibFhGXC1WsMRsP9J53pp1bRf0zCPLRL4z6sq%2BI4%2FtAAdP9oBOdYtmA%2F4QSZk8oiF78p2Obb2FiYgHTZ2Q%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 349.42169ms

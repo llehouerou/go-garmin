@@ -33,11 +33,14 @@ This document lists all known API endpoints from the reference projects and web 
 | [x] | GET | `/wellness-service/wellness/daily/respiration/{date}` | Daily respiration data |
 | [x] | GET | `/wellness-service/wellness/daily/im/{date}` | Daily intensity minutes |
 | [ ] | GET | `/wellness-service/wellness/dailyEvents/{date}` | Daily events |
-| [ ] | GET | `/wellness-service/wellness/dailySummaryChart/{displayName}?date={date}` | Daily summary chart |
+| [ ] | GET | `/wellness-service/wellness/dailySleepData/{displayName}?date={date}` | Daily sleep (alternative) |
+| [ ] | GET | `/wellness-service/wellness/dailySummaryChart/{displayName}?date={date}` | Daily summary chart (steps) |
 | [ ] | GET | `/wellness-service/wellness/floorsChartData/daily/{date}` | Floor climbing data |
-| [ ] | GET | `/wellness-service/wellness/epoch/request/{date}` | Request epoch data reload |
+| [ ] | POST | `/wellness-service/wellness/epoch/request/{date}` | Request epoch data reload |
 | [ ] | GET | `/wellness-service/wellness/bodyBattery/reports/daily?startDate={start}&endDate={end}` | Body battery reports |
 | [ ] | GET | `/wellness-service/stats/daily/sleep/score/{start}/{end}` | Sleep score stats |
+
+Note: Some endpoints like `dailyHeartRate` can also use `/{displayName}?date={date}` format.
 
 ---
 
@@ -48,6 +51,7 @@ This document lists all known API endpoints from the reference projects and web 
 | [x] | GET | `/activitylist-service/activities/search/activities?start={start}&limit={limit}` | Search activities |
 | [ ] | GET | `/activitylist-service/activities/` | List activities |
 | [ ] | GET | `/activitylist-service/activities/count` | Activity count |
+| [ ] | GET | `/activitylist-service/activities/{gearUUID}/gear?start={start}&limit={limit}` | Activities for gear |
 
 ---
 
@@ -56,9 +60,9 @@ This document lists all known API endpoints from the reference projects and web 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
 | [x] | GET | `/activity-service/activity/{activityId}` | Get single activity |
-| [x] | GET | `/activity-service/activity/{activityId}/details` | Activity details (time-series metrics) |
+| [x] | GET | `/activity-service/activity/{activityId}/details?maxChartSize={n}&maxPolylineSize={n}` | Activity details (time-series) |
 | [x] | GET | `/activity-service/activity/{activityId}/splits` | Activity splits |
-| [ ] | GET | `/activity-service/activity/{activityId}/typedSplits` | Activity typed splits |
+| [ ] | GET | `/activity-service/activity/{activityId}/typedsplits` | Activity typed splits |
 | [ ] | GET | `/activity-service/activity/{activityId}/split_summaries` | Activity split summaries |
 | [x] | GET | `/activity-service/activity/{activityId}/weather` | Activity weather |
 | [x] | GET | `/activity-service/activity/{activityId}/hrTimeInZones` | HR time in zones |
@@ -66,8 +70,11 @@ This document lists all known API endpoints from the reference projects and web 
 | [x] | GET | `/activity-service/activity/{activityId}/exerciseSets` | Exercise sets |
 | [ ] | GET | `/activity-service/activity/{activityId}/gear` | Activity gear |
 | [ ] | GET | `/activity-service/activity/activityTypes` | Activity types |
-| [ ] | GET | `/activity-service/activity/forDate/{date}` | Activities for date |
+| [ ] | POST | `/activity-service/activity` | Create manual activity |
+| [ ] | PUT | `/activity-service/activity/{activityId}` | Update activity (name, type, etc.) |
 | [ ] | DELETE | `/activity-service/activity/{activityId}` | Delete activity |
+
+Note: `typedsplits` is lowercase 'd' in the actual API.
 
 ---
 
@@ -99,7 +106,8 @@ This document lists all known API endpoints from the reference projects and web 
 | [x] | GET | `/weight-service/weight/range/{start}/{end}?includeAll=true` | Weight range |
 | [ ] | GET | `/weight-service/weight/dateRange?startDate={start}&endDate={end}` | Weight date range |
 | [ ] | GET | `/weight-service/weight/daterangesnapshot` | Body composition snapshot |
-| [ ] | DELETE | `/weight-service/weight/{date}/{weightPK}` | Delete weigh-in |
+| [ ] | POST | `/weight-service/user-weight` | Add weigh-in |
+| [ ] | DELETE | `/weight-service/weight/{date}/byversion/{weightPK}` | Delete weigh-in |
 
 ---
 
@@ -107,10 +115,10 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/usersummary-service/usersummary/daily/?calendarDate={date}` | Daily user summary |
+| [ ] | GET | `/usersummary-service/usersummary/daily/{displayName}?calendarDate={date}` | Daily user summary |
 | [ ] | GET | `/usersummary-service/usersummary/hydration/daily/{date}` | Daily hydration |
-| [ ] | PUT | `/usersummary-service/usersummary/hydration/log` | Log/update hydration |
-| [ ] | GET | `/usersummary-service/stats/steps/daily/{start}/{end}` | Daily steps stats |
+| [ ] | POST | `/usersummary-service/usersummary/hydration/log` | Log/update hydration |
+| [ ] | GET | `/usersummary-service/stats/steps/daily/{start}/{end}` | Daily steps stats (max 28 days) |
 | [ ] | GET | `/usersummary-service/stats/steps/weekly/{end}/{weeks}` | Weekly steps stats |
 | [ ] | GET | `/usersummary-service/stats/stress/daily/{start}/{end}` | Daily stress stats |
 | [ ] | GET | `/usersummary-service/stats/stress/weekly/{end}/{weeks}` | Weekly stress stats |
@@ -118,13 +126,15 @@ This document lists all known API endpoints from the reference projects and web 
 | [ ] | GET | `/usersummary-service/stats/im/daily/{start}/{end}` | Daily intensity minutes |
 | [ ] | GET | `/usersummary-service/stats/im/weekly/{start}/{end}` | Weekly intensity minutes |
 
+Note: `daily/{displayName}` can also be accessed as `daily/?calendarDate={date}` (garth variant).
+
 ---
 
 ## User Stats Service (`/userstats-service/`)
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/userstats-service/wellness/daily/{date}` | Daily wellness stats (RHR) |
+| [ ] | GET | `/userstats-service/wellness/daily/{displayName}?fromDate={date}&untilDate={date}&metricId=60` | Daily wellness stats (RHR) |
 
 ---
 
@@ -143,8 +153,12 @@ This document lists all known API endpoints from the reference projects and web 
 |--------|--------|----------|-------------|
 | [x] | GET | `/metrics-service/metrics/trainingreadiness/{date}` | Training readiness |
 | [x] | GET | `/metrics-service/metrics/endurancescore?calendarDate={date}` | Endurance score |
+| [ ] | GET | `/metrics-service/metrics/endurancescore/stats?startDate={start}&endDate={end}&aggregation={agg}` | Endurance score stats |
 | [x] | GET | `/metrics-service/metrics/hillscore?calendarDate={date}` | Hill score |
-| [ ] | GET | `/metrics-service/metrics/racepredictions/latest/{displayName}` | Race predictions (requires display name) |
+| [ ] | GET | `/metrics-service/metrics/hillscore/stats?startDate={start}&endDate={end}&aggregation={agg}` | Hill score stats |
+| [ ] | GET | `/metrics-service/metrics/racepredictions/latest/{displayName}` | Latest race predictions (requires display name) |
+| [ ] | GET | `/metrics-service/metrics/racepredictions/daily/{displayName}?_={timestamp}` | Daily race predictions |
+| [ ] | GET | `/metrics-service/metrics/racepredictions/monthly/{displayName}?_={timestamp}` | Monthly race predictions |
 | [x] | GET | `/metrics-service/metrics/maxmet/daily/{start}/{end}` | Daily VO2 max/MET |
 | [x] | GET | `/metrics-service/metrics/maxmet/latest/{date}` | Latest VO2 max/MET |
 | [x] | GET | `/metrics-service/metrics/trainingstatus/aggregated/{date}` | Training status aggregated |
@@ -161,6 +175,7 @@ This document lists all known API endpoints from the reference projects and web 
 | [x] | GET | `/device-service/deviceregistration/devices` | List devices |
 | [x] | GET | `/device-service/deviceservice/device-info/settings/{deviceId}` | Device settings |
 | [x] | GET | `/device-service/devicemessage/messages` | Device messages |
+| [ ] | GET | `/device-service/deviceservice/mylastused` | Last used device |
 
 ---
 
@@ -169,7 +184,7 @@ This document lists all known API endpoints from the reference projects and web 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
 | [x] | GET | `/web-gateway/device-info/primary-training-device` | Primary training device |
-| [ ] | GET | `/web-gateway/solar/{deviceId}?startDate={start}&endDate={end}` | Solar panel data |
+| [ ] | GET | `/web-gateway/solar/{deviceId}/{startDate}/{endDate}` | Solar panel data |
 
 ---
 
@@ -177,9 +192,10 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [x] | GET | `/userprofile-service/socialProfile` | Social profile |
-| [x] | GET | `/userprofile-service/userprofile/user-settings` | User settings |
+| [x] | GET | `/userprofile-service/socialProfile` | Social profile (displayName, fullName) |
+| [x] | GET | `/userprofile-service/userprofile/user-settings` | User settings (measurementSystem) |
 | [x] | GET | `/userprofile-service/userprofile/settings` | Profile settings |
+| [ ] | GET | `/userprofile-service/userprofile/profile` | User profile details |
 
 ---
 
@@ -197,7 +213,11 @@ This document lists all known API endpoints from the reference projects and web 
 |--------|--------|----------|-------------|
 | [ ] | GET | `/gear-service/gear/filterGear?userProfilePk={pk}` | Get gear |
 | [ ] | GET | `/gear-service/gear/stats/{gearUUID}` | Gear stats |
-| [ ] | GET | `/gear-service/gear/activities/{gearUUID}?start={start}&limit={limit}` | Gear activities |
+| [ ] | GET | `/gear-service/gear/user/{userProfilePk}/activityTypes` | Gear activity types |
+| [ ] | POST | `/gear-service/gear/link/{gearUUID}/activity/{activityId}` | Link gear to activity |
+| [ ] | POST | `/gear-service/gear/unlink/{gearUUID}/activity/{activityId}` | Unlink gear from activity |
+
+Note: Gear activities are fetched via `/activitylist-service/activities/{gearUUID}/gear`
 
 ---
 
@@ -206,7 +226,7 @@ This document lists all known API endpoints from the reference projects and web 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
 | [ ] | GET | `/badge-service/badge/earned` | Earned badges |
-| [ ] | GET | `/badge-service/badge/available` | Available badges |
+| [ ] | GET | `/badge-service/badge/available?showExclusiveBadge=true` | Available badges |
 
 ---
 
@@ -235,7 +255,7 @@ This document lists all known API endpoints from the reference projects and web 
 |--------|--------|----------|-------------|
 | [ ] | GET | `/bloodpressure-service/bloodpressure/range/{start}/{end}` | Blood pressure range |
 | [ ] | POST | `/bloodpressure-service/bloodpressure` | Log blood pressure |
-| [ ] | DELETE | `/bloodpressure-service/bloodpressure/{version}/{date}` | Delete blood pressure |
+| [ ] | DELETE | `/bloodpressure-service/bloodpressure/{date}/{version}` | Delete blood pressure |
 
 ---
 
@@ -243,7 +263,7 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/personalrecord-service/personalrecord/prs/{displayName}` | Personal records |
+| [ ] | GET | `/personalrecord-service/personalrecord/prs/{displayName}` | Personal records (requires display name) |
 
 ---
 
@@ -264,7 +284,7 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/fitnessage-service/fitnessage/{displayName}` | Fitness age |
+| [ ] | GET | `/fitnessage-service/fitnessage/{date}` | Fitness age |
 
 ---
 
@@ -280,14 +300,16 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/workout-service/workouts?start={start}&limit={limit}` | List workouts |
-| [ ] | GET | `/workout-service/workout/{workoutId}` | Get workout |
-| [ ] | GET | `/workout-service/workout/FIT/{workoutId}` | Download workout FIT |
-| [ ] | POST | `/workout-service/workout` | Create workout |
-| [ ] | PUT | `/workout-service/workout/{workoutId}` | Update workout |
-| [ ] | DELETE | `/workout-service/workout/{workoutId}` | Delete workout |
-| [ ] | POST | `/workout-service/schedule/{workoutId}` | Schedule workout |
-| [ ] | GET | `/workout-service/schedule/{scheduleId}` | Get scheduled workout |
+| [x] | GET | `/workout-service/workouts?start={start}&limit={limit}` | List workouts |
+| [x] | GET | `/workout-service/workout/{workoutId}` | Get workout |
+| [x] | GET | `/workout-service/workout/FIT/{workoutId}` | Download workout as FIT |
+| [x] | POST | `/workout-service/workout` | Create workout |
+| [x] | PUT | `/workout-service/workout/{workoutId}` | Update workout |
+| [x] | DELETE | `/workout-service/workout/{workoutId}` | Delete workout |
+| [x] | POST | `/workout-service/schedule/{workoutId}` | Schedule workout (body: {"date": "YYYY-MM-DD"}) |
+| [x] | GET | `/workout-service/schedule/{scheduleId}` | Get scheduled workout |
+
+Note: Can also be accessed via `/proxy/workout-service/` prefix (garmin-workouts).
 
 ---
 
@@ -295,9 +317,9 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/trainingplan-service/trainingplan` | List training plans |
-| [ ] | GET | `/trainingplan-service/trainingplan/{planId}` | Get training plan |
-| [ ] | GET | `/trainingplan-service/trainingplan/adaptive/{planId}` | Get adaptive training plan |
+| [ ] | GET | `/trainingplan-service/trainingplan/plans` | List training plans |
+| [ ] | GET | `/trainingplan-service/trainingplan/phased/{planId}` | Get phased training plan |
+| [ ] | GET | `/trainingplan-service/trainingplan/fbt-adaptive/{planId}` | Get FBT adaptive plan |
 
 ---
 
@@ -305,7 +327,9 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/calendar-service/year/{year}` | Calendar data by year |
+| [ ] | GET | `/calendar-service/year/{year}` | Calendar data by year (unverified) |
+
+Note: This endpoint could not be verified in any reference implementation.
 
 ---
 
@@ -325,7 +349,7 @@ Note: Exact golf endpoint paths are not publicly documented.
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
 | [ ] | GET | `/periodichealth-service/menstrualcycle/dayview/{date}` | Menstrual day view |
-| [ ] | GET | `/periodichealth-service/menstrualcycle/calendar?startDate={start}&endDate={end}` | Menstrual calendar |
+| [ ] | GET | `/periodichealth-service/menstrualcycle/calendar/{start}/{end}` | Menstrual calendar |
 | [ ] | GET | `/periodichealth-service/menstrualcycle/pregnancysnapshot` | Pregnancy snapshot |
 
 ---
@@ -342,14 +366,16 @@ Note: Exact golf endpoint paths are not publicly documented.
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/mobile-gateway/usersummary/trainingstatus/latest/{date}` | Latest training status |
-| [ ] | GET | `/mobile-gateway/usersummary/trainingstatus/monthly/{start}/{end}` | Monthly training status |
-| [ ] | GET | `/mobile-gateway/usersummary/trainingstatus/weekly/{start}/{end}` | Weekly training status |
 | [ ] | GET | `/mobile-gateway/heartRate/forDate/{date}` | Heart rate for date |
+| [ ] | GET | `/mobile-gateway/usersummary/trainingstatus/latest/{date}` | Latest training status (unverified) |
+| [ ] | GET | `/mobile-gateway/usersummary/trainingstatus/monthly/{start}/{end}` | Monthly training status (unverified) |
+| [ ] | GET | `/mobile-gateway/usersummary/trainingstatus/weekly/{start}/{end}` | Weekly training status (unverified) |
+
+Note: heartRate/forDate verified in python-garminconnect. Training status endpoints may be mobile app specific.
 
 ---
 
-## GraphQL Gateway
+## GraphQL Gateway (`/graphql-gateway/`)
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|

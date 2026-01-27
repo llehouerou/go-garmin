@@ -124,6 +124,32 @@ func (c *Client) doAPI(ctx context.Context, method, path string, body io.Reader)
 	return c.transport.do(req)
 }
 
+// doAPIWithBody performs an authenticated API request with a JSON body.
+func (c *Client) doAPIWithBody(ctx context.Context, method, path string, body io.Reader) (*http.Response, error) {
+	if !c.auth.isAuthenticated() {
+		return nil, ErrNotAuthenticated
+	}
+
+	if c.auth.isExpired() {
+		if err := c.refreshOAuth2(ctx); err != nil {
+			return nil, err
+		}
+	}
+
+	url := fmt.Sprintf("https://connectapi.%s%s", c.auth.Domain, path)
+	req, err := http.NewRequestWithContext(ctx, method, url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.auth.OAuth2AccessToken)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("User-Agent", "GCM-iOS-5.19.1.2")
+	req.Header.Set("nk", "NT")
+
+	return c.transport.do(req)
+}
+
 // refreshOAuth2 re-exchanges OAuth1 for a fresh OAuth2 token.
 //
 //nolint:unused // Will be used by service implementations
