@@ -27,3 +27,7 @@ result
 
 # Reference repos
 refs/
+
+# HAR files (browser network recordings)
+*.har
+har.json
