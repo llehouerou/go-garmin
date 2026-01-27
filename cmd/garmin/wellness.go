@@ -14,6 +14,7 @@ const wellnessUsage = `Usage: garmin wellness <command> [date]
 Commands:
     stress        Get stress data
     body-battery  Get body battery data
+    heart-rate    Get heart rate data
 
 Date format: YYYY-MM-DD (defaults to today)
 `
@@ -58,6 +59,14 @@ func wellnessCmd(args []string) {
 			os.Exit(1)
 		}
 		_ = json.NewEncoder(os.Stdout).Encode(data.Events)
+
+	case "heart-rate":
+		data, err := client.Wellness.GetDailyHeartRate(ctx, date)
+		if err != nil {
+			printError(err)
+			os.Exit(1)
+		}
+		_ = json.NewEncoder(os.Stdout).Encode(data)
 
 	case "-h", "--help", "help": //nolint:goconst // CLI help flags
 		fmt.Print(wellnessUsage)

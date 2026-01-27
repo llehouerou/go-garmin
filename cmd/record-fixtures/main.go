@@ -83,6 +83,14 @@ func recordFixtures(email, password string, date time.Time) error {
 		return fmt.Errorf("activities: %w", err)
 	}
 
+	if err := recordHeartRate(ctx, session, date); err != nil {
+		return fmt.Errorf("heart_rate: %w", err)
+	}
+
+	if err := recordHRV(ctx, session, date); err != nil {
+		return fmt.Errorf("hrv: %w", err)
+	}
+
 	return nil
 }
 
@@ -185,6 +193,75 @@ func recordBodyBattery(ctx context.Context, session []byte, date time.Time) erro
 
 	fmt.Printf("  Getting body battery data for %s...\n", date.Format("2006-01-02"))
 	_, err = client.Wellness.GetBodyBatteryEvents(ctx, date)
+	if err != nil {
+		fmt.Printf("  Warning: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordHeartRate(ctx context.Context, session []byte, date time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("wellness_heart_rate")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+
+	fmt.Printf("  Getting heart rate data for %s...\n", date.Format("2006-01-02"))
+	url := fmt.Sprintf("https://connectapi.%s/wellness-service/wellness/dailyHeartRate/?date=%s",
+		authState.Domain, date.Format("2006-01-02"))
+	_, err = doAPIRequest(ctx, httpClient, url, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordHRV(ctx context.Context, session []byte, date time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("hrv")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+
+	// Record daily HRV
+	fmt.Printf("  Getting HRV data for %s...\n", date.Format("2006-01-02"))
+	dailyURL := fmt.Sprintf("https://connectapi.%s/hrv-service/hrv/%s",
+		authState.Domain, date.Format("2006-01-02"))
+	_, err = doAPIRequest(ctx, httpClient, dailyURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: %v\n", err)
+	}
+
+	// Record HRV range (last 7 days)
+	startDate := date.AddDate(0, 0, -7)
+	fmt.Printf("  Getting HRV range from %s to %s...\n", startDate.Format("2006-01-02"), date.Format("2006-01-02"))
+	rangeURL := fmt.Sprintf("https://connectapi.%s/hrv-service/hrv/daily/%s/%s",
+		authState.Domain, startDate.Format("2006-01-02"), date.Format("2006-01-02"))
+	_, err = doAPIRequest(ctx, httpClient, rangeURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: %v\n", err)
 	}

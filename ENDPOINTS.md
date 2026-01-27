@@ -28,7 +28,7 @@ This document lists all known API endpoints from the reference projects and web 
 |--------|--------|----------|-------------|
 | [x] | GET | `/wellness-service/wellness/dailyStress/{date}` | Daily stress and body battery data |
 | [x] | GET | `/wellness-service/wellness/bodyBattery/events/{date}` | Body battery events |
-| [ ] | GET | `/wellness-service/wellness/dailyHeartRate/?date={date}` | Daily heart rate data |
+| [x] | GET | `/wellness-service/wellness/dailyHeartRate/?date={date}` | Daily heart rate data |
 | [ ] | GET | `/wellness-service/wellness/daily/spo2/{date}` | Daily SpO2 data |
 | [ ] | GET | `/wellness-service/wellness/daily/respiration/{date}` | Daily respiration data |
 | [ ] | GET | `/wellness-service/wellness/daily/im/{date}` | Daily intensity minutes |
@@ -132,8 +132,8 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/hrv-service/hrv/{date}` | Daily HRV data |
-| [ ] | GET | `/hrv-service/hrv/daily/{start}/{end}` | HRV range |
+| [x] | GET | `/hrv-service/hrv/{date}` | Daily HRV data |
+| [x] | GET | `/hrv-service/hrv/daily/{start}/{end}` | HRV range |
 
 ---
 

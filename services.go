@@ -47,3 +47,6 @@ type StepsService struct{ client *Client }
 
 // UserProfileService provides access to user profile-related API endpoints.
 type UserProfileService struct{ client *Client }
+
+// HRVService provides access to HRV (heart rate variability) related API endpoints.
+type HRVService struct{ client *Client }

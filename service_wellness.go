@@ -111,3 +111,60 @@ func (s *WellnessService) GetBodyBatteryEvents(ctx context.Context, date time.Ti
 
 	return &BodyBatteryEvents{Events: events, raw: raw}, nil
 }
+
+// HeartRateValueDescriptor describes the format of heart rate values.
+type HeartRateValueDescriptor struct {
+	Key   string `json:"key"`
+	Index int    `json:"index"`
+}
+
+// DailyHeartRate represents heart rate data for a single day.
+type DailyHeartRate struct {
+	UserProfilePK                    int64                      `json:"userProfilePK"`
+	CalendarDate                     string                     `json:"calendarDate"`
+	StartTimestampGMT                string                     `json:"startTimestampGMT"`
+	EndTimestampGMT                  string                     `json:"endTimestampGMT"`
+	StartTimestampLocal              string                     `json:"startTimestampLocal"`
+	EndTimestampLocal                string                     `json:"endTimestampLocal"`
+	MaxHeartRate                     int                        `json:"maxHeartRate"`
+	MinHeartRate                     int                        `json:"minHeartRate"`
+	RestingHeartRate                 int                        `json:"restingHeartRate"`
+	LastSevenDaysAvgRestingHeartRate int                        `json:"lastSevenDaysAvgRestingHeartRate"`
+	HeartRateValueDescriptors        []HeartRateValueDescriptor `json:"heartRateValueDescriptors"`
+	HeartRateValues                  [][]int64                  `json:"heartRateValues"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (d *DailyHeartRate) RawJSON() json.RawMessage {
+	return d.raw
+}
+
+// GetDailyHeartRate retrieves heart rate data for the specified date.
+func (s *WellnessService) GetDailyHeartRate(ctx context.Context, date time.Time) (*DailyHeartRate, error) {
+	path := "/wellness-service/wellness/dailyHeartRate/?date=" + date.Format("2006-01-02")
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNoContent {
+		return nil, ErrNotFound
+	}
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var hr DailyHeartRate
+	if err := json.Unmarshal(raw, &hr); err != nil {
+		return nil, err
+	}
+	hr.raw = raw
+
+	return &hr, nil
+}

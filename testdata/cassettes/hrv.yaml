@@ -1,0 +1,97 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/hrv-service/hrv/2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"userProfilePk":12345678,"hrvSummary":{"calendarDate":"2026-01-27","weeklyAvg":53,"lastNightAvg":56,"lastNight5MinHigh":72,"baseline":{"lowUpper":47,"balancedLow":49,"balancedUpper":56,"markerValue":0.53570557},"status":"BALANCED","feedbackPhrase":"HRV_BALANCED_2","createTimeStamp":"2026-01-27T02:40:24.187"},"hrvReadings":[{"hrvValue":47,"readingTimeGMT":"2026-01-26T19:30:37.0","readingTimeLocal":"2026-01-26T23:30:37.0"},{"hrvValue":53,"readingTimeGMT":"2026-01-26T19:35:37.0","readingTimeLocal":"2026-01-26T23:35:37.0"},{"hrvValue":52,"readingTimeGMT":"2026-01-26T19:40:37.0","readingTimeLocal":"2026-01-26T23:40:37.0"},{"hrvValue":54,"readingTimeGMT":"2026-01-26T19:45:37.0","readingTimeLocal":"2026-01-26T23:45:37.0"},{"hrvValue":58,"readingTimeGMT":"2026-01-26T19:50:37.0","readingTimeLocal":"2026-01-26T23:50:37.0"},{"hrvValue":53,"readingTimeGMT":"2026-01-26T19:55:37.0","readingTimeLocal":"2026-01-26T23:55:37.0"},{"hrvValue":55,"readingTimeGMT":"2026-01-26T20:00:37.0","readingTimeLocal":"2026-01-27T00:00:37.0"},{"hrvValue":62,"readingTimeGMT":"2026-01-26T20:05:37.0","readingTimeLocal":"2026-01-27T00:05:37.0"},{"hrvValue":63,"readingTimeGMT":"2026-01-26T20:10:37.0","readingTimeLocal":"2026-01-27T00:10:37.0"},{"hrvValue":63,"readingTimeGMT":"2026-01-26T20:15:37.0","readingTimeLocal":"2026-01-27T00:15:37.0"},{"hrvValue":60,"readingTimeGMT":"2026-01-26T20:20:37.0","readingTimeLocal":"2026-01-27T00:20:37.0"},{"hrvValue":63,"readingTimeGMT":"2026-01-26T20:25:37.0","readingTimeLocal":"2026-01-27T00:25:37.0"},{"hrvValue":64,"readingTimeGMT":"2026-01-26T20:30:37.0","readingTimeLocal":"2026-01-27T00:30:37.0"},{"hrvValue":69,"readingTimeGMT":"2026-01-26T20:35:37.0","readingTimeLocal":"2026-01-27T00:35:37.0"},{"hrvValue":65,"readingTimeGMT":"2026-01-26T20:40:37.0","readingTimeLocal":"2026-01-27T00:40:37.0"},{"hrvValue":61,"readingTimeGMT":"2026-01-26T20:45:37.0","readingTimeLocal":"2026-01-27T00:45:37.0"},{"hrvValue":64,"readingTimeGMT":"2026-01-26T20:50:37.0","readingTimeLocal":"2026-01-27T00:50:37.0"},{"hrvValue":60,"readingTimeGMT":"2026-01-26T20:55:37.0","readingTimeLocal":"2026-01-27T00:55:37.0"},{"hrvValue":65,"readingTimeGMT":"2026-01-26T21:00:37.0","readingTimeLocal":"2026-01-27T01:00:37.0"},{"hrvValue":54,"readingTimeGMT":"2026-01-26T21:05:37.0","readingTimeLocal":"2026-01-27T01:05:37.0"},{"hrvValue":62,"readingTimeGMT":"2026-01-26T21:10:37.0","readingTimeLocal":"2026-01-27T01:10:37.0"},{"hrvValue":62,"readingTimeGMT":"2026-01-26T21:15:37.0","readingTimeLocal":"2026-01-27T01:15:37.0"},{"hrvValue":54,"readingTimeGMT":"2026-01-26T21:20:37.0","readingTimeLocal":"2026-01-27T01:20:37.0"},{"hrvValue":60,"readingTimeGMT":"2026-01-26T21:25:37.0","readingTimeLocal":"2026-01-27T01:25:37.0"},{"hrvValue":60,"readingTimeGMT":"2026-01-26T21:30:37.0","readingTimeLocal":"2026-01-27T01:30:37.0"},{"hrvValue":57,"readingTimeGMT":"2026-01-26T21:35:37.0","readingTimeLocal":"2026-01-27T01:35:37.0"},{"hrvValue":53,"readingTimeGMT":"2026-01-26T21:40:37.0","readingTimeLocal":"2026-01-27T01:40:37.0"},{"hrvValue":46,"readingTimeGMT":"2026-01-26T21:45:37.0","readingTimeLocal":"2026-01-27T01:45:37.0"},{"hrvValue":50,"readingTimeGMT":"2026-01-26T21:50:37.0","readingTimeLocal":"2026-01-27T01:50:37.0"},{"hrvValue":44,"readingTimeGMT":"2026-01-26T21:55:37.0","readingTimeLocal":"2026-01-27T01:55:37.0"},{"hrvValue":43,"readingTimeGMT":"2026-01-26T22:00:37.0","readingTimeLocal":"2026-01-27T02:00:37.0"},{"hrvValue":45,"readingTimeGMT":"2026-01-26T22:05:37.0","readingTimeLocal":"2026-01-27T02:05:37.0"},{"hrvValue":54,"readingTimeGMT":"2026-01-26T22:10:37.0","readingTimeLocal":"2026-01-27T02:10:37.0"},{"hrvValue":52,"readingTimeGMT":"2026-01-26T22:15:37.0","readingTimeLocal":"2026-01-27T02:15:37.0"},{"hrvValue":54,"readingTimeGMT":"2026-01-26T22:20:37.0","readingTimeLocal":"2026-01-27T02:20:37.0"},{"hrvValue":54,"readingTimeGMT":"2026-01-26T22:25:37.0","readingTimeLocal":"2026-01-27T02:25:37.0"},{"hrvValue":66,"readingTimeGMT":"2026-01-26T22:30:37.0","readingTimeLocal":"2026-01-27T02:30:37.0"},{"hrvValue":50,"readingTimeGMT":"2026-01-26T22:35:37.0","readingTimeLocal":"2026-01-27T02:35:37.0"},{"hrvValue":64,"readingTimeGMT":"2026-01-26T22:40:37.0","readingTimeLocal":"2026-01-27T02:40:37.0"},{"hrvValue":51,"readingTimeGMT":"2026-01-26T22:45:37.0","readingTimeLocal":"2026-01-27T02:45:37.0"},{"hrvValue":52,"readingTimeGMT":"2026-01-26T22:50:37.0","readingTimeLocal":"2026-01-27T02:50:37.0"},{"hrvValue":49,"readingTimeGMT":"2026-01-26T22:55:37.0","readingTimeLocal":"2026-01-27T02:55:37.0"},{"hrvValue":57,"readingTimeGMT":"2026-01-26T23:00:37.0","readingTimeLocal":"2026-01-27T03:00:37.0"},{"hrvValue":47,"readingTimeGMT":"2026-01-26T23:05:37.0","readingTimeLocal":"2026-01-27T03:05:37.0"},{"hrvValue":62,"readingTimeGMT":"2026-01-26T23:10:37.0","readingTimeLocal":"2026-01-27T03:10:37.0"},{"hrvValue":58,"readingTimeGMT":"2026-01-26T23:15:37.0","readingTimeLocal":"2026-01-27T03:15:37.0"},{"hrvValue":55,"readingTimeGMT":"2026-01-26T23:20:37.0","readingTimeLocal":"2026-01-27T03:20:37.0"},{"hrvValue":60,"readingTimeGMT":"2026-01-26T23:25:37.0","readingTimeLocal":"2026-01-27T03:25:37.0"},{"hrvValue":55,"readingTimeGMT":"2026-01-26T23:30:37.0","readingTimeLocal":"2026-01-27T03:30:37.0"},{"hrvValue":48,"readingTimeGMT":"2026-01-26T23:35:37.0","readingTimeLocal":"2026-01-27T03:35:37.0"},{"hrvValue":52,"readingTimeGMT":"2026-01-26T23:40:37.0","readingTimeLocal":"2026-01-27T03:40:37.0"},{"hrvValue":50,"readingTimeGMT":"2026-01-26T23:45:37.0","readingTimeLocal":"2026-01-27T03:45:37.0"},{"hrvValue":56,"readingTimeGMT":"2026-01-26T23:50:37.0","readingTimeLocal":"2026-01-27T03:50:37.0"},{"hrvValue":58,"readingTimeGMT":"2026-01-26T23:55:37.0","readingTimeLocal":"2026-01-27T03:55:37.0"},{"hrvValue":52,"readingTimeGMT":"2026-01-27T00:00:37.0","readingTimeLocal":"2026-01-27T04:00:37.0"},{"hrvValue":57,"readingTimeGMT":"2026-01-27T00:05:37.0","readingTimeLocal":"2026-01-27T04:05:37.0"},{"hrvValue":56,"readingTimeGMT":"2026-01-27T00:10:37.0","readingTimeLocal":"2026-01-27T04:10:37.0"},{"hrvValue":59,"readingTimeGMT":"2026-01-27T00:15:37.0","readingTimeLocal":"2026-01-27T04:15:37.0"},{"hrvValue":71,"readingTimeGMT":"2026-01-27T00:20:37.0","readingTimeLocal":"2026-01-27T04:20:37.0"},{"hrvValue":68,"readingTimeGMT":"2026-01-27T00:25:37.0","readingTimeLocal":"2026-01-27T04:25:37.0"},{"hrvValue":66,"readingTimeGMT":"2026-01-27T00:30:37.0","readingTimeLocal":"2026-01-27T04:30:37.0"},{"hrvValue":72,"readingTimeGMT":"2026-01-27T00:35:37.0","readingTimeLocal":"2026-01-27T04:35:37.0"},{"hrvValue":52,"readingTimeGMT":"2026-01-27T00:40:37.0","readingTimeLocal":"2026-01-27T04:40:37.0"},{"hrvValue":49,"readingTimeGMT":"2026-01-27T00:45:37.0","readingTimeLocal":"2026-01-27T04:45:37.0"},{"hrvValue":48,"readingTimeGMT":"2026-01-27T00:50:37.0","readingTimeLocal":"2026-01-27T04:50:37.0"},{"hrvValue":60,"readingTimeGMT":"2026-01-27T00:55:37.0","readingTimeLocal":"2026-01-27T04:55:37.0"},{"hrvValue":54,"readingTimeGMT":"2026-01-27T01:00:37.0","readingTimeLocal":"2026-01-27T05:00:37.0"},{"hrvValue":47,"readingTimeGMT":"2026-01-27T01:05:37.0","readingTimeLocal":"2026-01-27T05:05:37.0"},{"hrvValue":58,"readingTimeGMT":"2026-01-27T01:10:37.0","readingTimeLocal":"2026-01-27T05:10:37.0"},{"hrvValue":51,"readingTimeGMT":"2026-01-27T01:15:37.0","readingTimeLocal":"2026-01-27T05:15:37.0"},{"hrvValue":66,"readingTimeGMT":"2026-01-27T01:20:37.0","readingTimeLocal":"2026-01-27T05:20:37.0"},{"hrvValue":61,"readingTimeGMT":"2026-01-27T01:25:37.0","readingTimeLocal":"2026-01-27T05:25:37.0"},{"hrvValue":58,"readingTimeGMT":"2026-01-27T01:30:37.0","readingTimeLocal":"2026-01-27T05:30:37.0"},{"hrvValue":58,"readingTimeGMT":"2026-01-27T01:35:37.0","readingTimeLocal":"2026-01-27T05:35:37.0"},{"hrvValue":57,"readingTimeGMT":"2026-01-27T01:40:37.0","readingTimeLocal":"2026-01-27T05:40:37.0"},{"hrvValue":48,"readingTimeGMT":"2026-01-27T01:45:37.0","readingTimeLocal":"2026-01-27T05:45:37.0"},{"hrvValue":47,"readingTimeGMT":"2026-01-27T01:50:37.0","readingTimeLocal":"2026-01-27T05:50:37.0"},{"hrvValue":51,"readingTimeGMT":"2026-01-27T01:55:37.0","readingTimeLocal":"2026-01-27T05:55:37.0"},{"hrvValue":49,"readingTimeGMT":"2026-01-27T02:00:37.0","readingTimeLocal":"2026-01-27T06:00:37.0"},{"hrvValue":48,"readingTimeGMT":"2026-01-27T02:05:37.0","readingTimeLocal":"2026-01-27T06:05:37.0"},{"hrvValue":59,"readingTimeGMT":"2026-01-27T02:10:37.0","readingTimeLocal":"2026-01-27T06:10:37.0"},{"hrvValue":55,"readingTimeGMT":"2026-01-27T02:15:37.0","readingTimeLocal":"2026-01-27T06:15:37.0"},{"hrvValue":56,"readingTimeGMT":"2026-01-27T02:20:37.0","readingTimeLocal":"2026-01-27T06:20:37.0"},{"hrvValue":62,"readingTimeGMT":"2026-01-27T02:25:37.0","readingTimeLocal":"2026-01-27T06:25:37.0"},{"hrvValue":51,"readingTimeGMT":"2026-01-27T02:30:37.0","readingTimeLocal":"2026-01-27T06:30:37.0"},{"hrvValue":44,"readingTimeGMT":"2026-01-27T02:35:37.0","readingTimeLocal":"2026-01-27T06:35:37.0"}],"startTimestampGMT":"2026-01-26T19:27:28.0","endTimestampGMT":"2026-01-27T02:35:37.0","startTimestampLocal":"2026-01-26T23:27:28.0","endTimestampLocal":"2026-01-27T06:35:37.0","sleepStartTimestampGMT":"2026-01-26T19:27:28.0","sleepEndTimestampGMT":"2026-01-27T02:40:15.0","sleepStartTimestampLocal":"2026-01-26T23:27:28.0","sleepEndTimestampLocal":"2026-01-27T06:40:15.0"}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c4617539c7dd931-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 06:11:10 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=qRfsHc0W7QY1TuC368D1X3fXhzxm8A2bToDim0vSH4%2FpBfezCAdaG0BKi906Tkn%2FCnOiSLuxcUN%2BatBlBh29ZHiYM9XyNqKXX4%2FbZ17RKOBJ6kVyEGe6hngUSkPVpqnnBzM9TisiKTXSVyPyRqTzQVouqQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 321.824173ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/hrv-service/hrv/daily/2026-01-20/2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"hrvSummaries":[{"calendarDate":"2026-01-20","weeklyAvg":48,"lastNightAvg":45,"lastNight5MinHigh":62,"baseline":{"lowUpper":47,"balancedLow":49,"balancedUpper":57,"markerValue":0.14430237},"status":"UNBALANCED","feedbackPhrase":"HRV_UNBALANCED_12","createTimeStamp":"2026-01-20T04:46:11.947"},{"calendarDate":"2026-01-21","weeklyAvg":48,"lastNightAvg":54,"lastNight5MinHigh":74,"baseline":{"lowUpper":47,"balancedLow":49,"balancedUpper":57,"markerValue":0.1401825},"status":"UNBALANCED","feedbackPhrase":"HRV_UNBALANCED_11","createTimeStamp":"2026-01-21T04:16:29.20"},{"calendarDate":"2026-01-22","weeklyAvg":48,"lastNightAvg":50,"lastNight5MinHigh":73,"baseline":{"lowUpper":47,"balancedLow":49,"balancedUpper":57,"markerValue":0.1706543},"status":"UNBALANCED","feedbackPhrase":"HRV_UNBALANCED_11","createTimeStamp":"2026-01-22T03:04:08.573"},{"calendarDate":"2026-01-23","weeklyAvg":49,"lastNightAvg":51,"lastNight5MinHigh":73,"baseline":{"lowUpper":48,"balancedLow":50,"balancedUpper":56,"markerValue":0.19664001},"status":"UNBALANCED","feedbackPhrase":"HRV_UNBALANCED_11","createTimeStamp":"2026-01-23T02:41:19.223"},{"calendarDate":"2026-01-24","weeklyAvg":50,"lastNightAvg":58,"lastNight5MinHigh":87,"baseline":{"lowUpper":48,"balancedLow":49,"balancedUpper":56,"markerValue":0.3214264},"status":"BALANCED","feedbackPhrase":"HRV_BALANCED_4","createTimeStamp":"2026-01-24T05:11:41.988"},{"calendarDate":"2026-01-25","weeklyAvg":51,"lastNightAvg":50,"lastNight5MinHigh":69,"baseline":{"lowUpper":48,"balancedLow":49,"balancedUpper":56,"markerValue":0.39285278},"status":"BALANCED","feedbackPhrase":"HRV_BALANCED_2","createTimeStamp":"2026-01-25T04:45:57.994"},{"calendarDate":"2026-01-26","weeklyAvg":51,"lastNightAvg":53,"lastNight5MinHigh":72,"baseline":{"lowUpper":48,"balancedLow":49,"balancedUpper":56,"markerValue":0.39285278},"status":"BALANCED","feedbackPhrase":"HRV_BALANCED_2","createTimeStamp":"2026-01-26T03:02:26.935"},{"calendarDate":"2026-01-27","weeklyAvg":53,"lastNightAvg":56,"lastNight5MinHigh":72,"baseline":{"lowUpper":47,"balancedLow":49,"balancedUpper":56,"markerValue":0.53570557},"status":"BALANCED","feedbackPhrase":"HRV_BALANCED_2","createTimeStamp":"2026-01-27T02:40:24.187"}],"userProfilePk":12345678}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c461755aafcd931-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 06:11:10 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=40kR1jExR9XRrBoFLoBN8QJKXaDuRvXyrGauULQKSRo9GTn7cg%2FFIJTfYleqR8%2Fx19h5MDd115G%2BKMJvwOb0Yh9ETUGM83ERy8XtCNCjAxSEq%2BtlNFyLMD3WA0Z17yoIMFg3k2cNBr99LOJauxbko33Oaw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 308.748985ms

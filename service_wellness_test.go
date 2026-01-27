@@ -115,3 +115,70 @@ func TestBodyBatteryEventsRawJSON(t *testing.T) {
 		t.Error("RawJSON should return original JSON")
 	}
 }
+
+func TestDailyHeartRateJSONUnmarshal(t *testing.T) {
+	rawJSON := `{
+		"userProfilePK": 12345678,
+		"calendarDate": "2026-01-27",
+		"startTimestampGMT": "2026-01-26T20:00:00.0",
+		"endTimestampGMT": "2026-01-27T06:04:00.0",
+		"startTimestampLocal": "2026-01-27T00:00:00.0",
+		"endTimestampLocal": "2026-01-28T00:00:00.0",
+		"maxHeartRate": 119,
+		"minHeartRate": 50,
+		"restingHeartRate": 51,
+		"lastSevenDaysAvgRestingHeartRate": 54,
+		"heartRateValueDescriptors": [
+			{"key": "timestamp", "index": 0},
+			{"key": "heartrate", "index": 1}
+		],
+		"heartRateValues": [[1769457600000, 51], [1769457720000, 52]]
+	}`
+
+	var hr DailyHeartRate
+	if err := json.Unmarshal([]byte(rawJSON), &hr); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+
+	if hr.UserProfilePK != 12345678 {
+		t.Errorf("UserProfilePK = %d, want 12345678", hr.UserProfilePK)
+	}
+	if hr.CalendarDate != "2026-01-27" {
+		t.Errorf("CalendarDate = %s, want 2026-01-27", hr.CalendarDate)
+	}
+	if hr.MaxHeartRate != 119 {
+		t.Errorf("MaxHeartRate = %d, want 119", hr.MaxHeartRate)
+	}
+	if hr.MinHeartRate != 50 {
+		t.Errorf("MinHeartRate = %d, want 50", hr.MinHeartRate)
+	}
+	if hr.RestingHeartRate != 51 {
+		t.Errorf("RestingHeartRate = %d, want 51", hr.RestingHeartRate)
+	}
+	if hr.LastSevenDaysAvgRestingHeartRate != 54 {
+		t.Errorf("LastSevenDaysAvgRestingHeartRate = %d, want 54", hr.LastSevenDaysAvgRestingHeartRate)
+	}
+	if len(hr.HeartRateValueDescriptors) != 2 {
+		t.Errorf("HeartRateValueDescriptors length = %d, want 2", len(hr.HeartRateValueDescriptors))
+	}
+	if len(hr.HeartRateValues) != 2 {
+		t.Errorf("HeartRateValues length = %d, want 2", len(hr.HeartRateValues))
+	}
+	if hr.HeartRateValues[0][1] != 51 {
+		t.Errorf("HeartRateValues[0][1] = %d, want 51", hr.HeartRateValues[0][1])
+	}
+}
+
+func TestDailyHeartRateRawJSON(t *testing.T) {
+	rawJSON := `{"calendarDate":"2026-01-27","maxHeartRate":119}`
+
+	var hr DailyHeartRate
+	if err := json.Unmarshal([]byte(rawJSON), &hr); err != nil {
+		t.Fatal(err)
+	}
+	hr.raw = json.RawMessage(rawJSON)
+
+	if string(hr.RawJSON()) != rawJSON {
+		t.Error("RawJSON should return original JSON")
+	}
+}

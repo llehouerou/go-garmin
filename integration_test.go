@@ -320,3 +320,131 @@ func TestIntegration_Activity_GetSplits(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_Wellness_GetDailyHeartRate(t *testing.T) {
+	skipIfNoCassette(t, "wellness_heart_rate")
+
+	rec, err := testutil.NewRecorder("wellness_heart_rate", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	hr, err := client.Wellness.GetDailyHeartRate(ctx, date)
+	if err != nil {
+		t.Fatalf("GetDailyHeartRate failed: %v", err)
+	}
+
+	if hr == nil {
+		t.Fatal("expected heart rate data, got nil")
+	}
+
+	if hr.CalendarDate == "" {
+		t.Error("expected CalendarDate to be set")
+	}
+	if hr.MaxHeartRate == 0 {
+		t.Error("expected MaxHeartRate to be set")
+	}
+	if hr.MinHeartRate == 0 {
+		t.Error("expected MinHeartRate to be set")
+	}
+	if hr.RestingHeartRate == 0 {
+		t.Error("expected RestingHeartRate to be set")
+	}
+	if len(hr.HeartRateValues) == 0 {
+		t.Error("expected HeartRateValues to have data")
+	}
+
+	// Verify RawJSON is available
+	if hr.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_HRV_GetDaily(t *testing.T) {
+	skipIfNoCassette(t, "hrv")
+
+	rec, err := testutil.NewRecorder("hrv", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	hrv, err := client.HRV.GetDaily(ctx, date)
+	if err != nil {
+		t.Fatalf("GetDaily failed: %v", err)
+	}
+
+	if hrv == nil {
+		t.Fatal("expected HRV data, got nil")
+	}
+
+	if hrv.HRVSummary.CalendarDate == "" {
+		t.Error("expected HRVSummary.CalendarDate to be set")
+	}
+	if hrv.HRVSummary.Status == "" {
+		t.Error("expected HRVSummary.Status to be set")
+	}
+	if hrv.HRVSummary.WeeklyAvg == 0 {
+		t.Error("expected HRVSummary.WeeklyAvg to be set")
+	}
+	if len(hrv.HRVReadings) == 0 {
+		t.Error("expected HRVReadings to have data")
+	}
+
+	// Verify RawJSON is available
+	if hrv.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_HRV_GetRange(t *testing.T) {
+	skipIfNoCassette(t, "hrv")
+
+	rec, err := testutil.NewRecorder("hrv", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	endDate := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	startDate := endDate.AddDate(0, 0, -7)
+
+	hrvRange, err := client.HRV.GetRange(ctx, startDate, endDate)
+	if err != nil {
+		t.Fatalf("GetRange failed: %v", err)
+	}
+
+	if hrvRange == nil {
+		t.Fatal("expected HRV range data, got nil")
+	}
+
+	if len(hrvRange.HRVSummaries) == 0 {
+		t.Error("expected HRVSummaries to have data")
+	}
+
+	// Verify each summary has expected fields
+	for i, summary := range hrvRange.HRVSummaries {
+		if summary.CalendarDate == "" {
+			t.Errorf("HRVSummaries[%d].CalendarDate is empty", i)
+		}
+		if summary.Status == "" {
+			t.Errorf("HRVSummaries[%d].Status is empty", i)
+		}
+	}
+
+	// Verify RawJSON is available
+	if hrvRange.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
