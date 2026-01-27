@@ -75,11 +75,11 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/download-service/files/activity/{activityId}` | Download activity (original FIT) |
-| [ ] | GET | `/download-service/export/tcx/activity/{activityId}` | Export activity as TCX |
-| [ ] | GET | `/download-service/export/gpx/activity/{activityId}` | Export activity as GPX |
-| [ ] | GET | `/download-service/export/kml/activity/{activityId}` | Export activity as KML |
-| [ ] | GET | `/download-service/export/csv/activity/{activityId}` | Export activity as CSV |
+| [x] | GET | `/download-service/files/activity/{activityId}` | Download activity (original FIT) |
+| [x] | GET | `/download-service/export/tcx/activity/{activityId}` | Export activity as TCX |
+| [x] | GET | `/download-service/export/gpx/activity/{activityId}` | Export activity as GPX |
+| [x] | GET | `/download-service/export/kml/activity/{activityId}` | Export activity as KML |
+| [x] | GET | `/download-service/export/csv/activity/{activityId}` | Export activity as CSV |
 
 ---
 

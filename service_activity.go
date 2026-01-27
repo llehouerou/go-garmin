@@ -779,3 +779,88 @@ func (s *ActivityService) GetSplits(ctx context.Context, activityID int64) (*Act
 
 	return &splits, nil
 }
+
+// DownloadFIT downloads the original FIT file for an activity.
+func (s *ActivityService) DownloadFIT(ctx context.Context, activityID int64) ([]byte, error) {
+	path := fmt.Sprintf("/download-service/files/activity/%d", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	return io.ReadAll(resp.Body)
+}
+
+// DownloadTCX exports and downloads the activity as a TCX file.
+func (s *ActivityService) DownloadTCX(ctx context.Context, activityID int64) ([]byte, error) {
+	path := fmt.Sprintf("/download-service/export/tcx/activity/%d", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	return io.ReadAll(resp.Body)
+}
+
+// DownloadGPX exports and downloads the activity as a GPX file.
+func (s *ActivityService) DownloadGPX(ctx context.Context, activityID int64) ([]byte, error) {
+	path := fmt.Sprintf("/download-service/export/gpx/activity/%d", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	return io.ReadAll(resp.Body)
+}
+
+// DownloadKML exports and downloads the activity as a KML file.
+func (s *ActivityService) DownloadKML(ctx context.Context, activityID int64) ([]byte, error) {
+	path := fmt.Sprintf("/download-service/export/kml/activity/%d", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	return io.ReadAll(resp.Body)
+}
+
+// DownloadCSV exports and downloads the activity as a CSV file.
+func (s *ActivityService) DownloadCSV(ctx context.Context, activityID int64) ([]byte, error) {
+	path := fmt.Sprintf("/download-service/export/csv/activity/%d", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	return io.ReadAll(resp.Body)
+}
