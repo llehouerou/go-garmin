@@ -1,93 +1,109 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"errors"
 	"fmt"
-	"os"
 	"strconv"
+
+	"github.com/spf13/cobra"
 )
 
-const devicesUsage = `Usage: garmin devices <command> [arguments]
+var devicesCmd = &cobra.Command{
+	Use:   "devices",
+	Short: "Device data (list, settings, messages)",
+}
 
-Commands:
-    list                   List registered devices
-    settings <device-id>   Get settings for a specific device
-    messages               Get device messages
-    primary                Get primary training device info
+var devicesListCmd = &cobra.Command{
+	Use:   "list",
+	Short: "List registered devices",
+	Args:  cobra.NoArgs,
+	RunE:  runDevicesList,
+}
 
-Examples:
-    garmin devices list
-    garmin devices settings 12345678
-    garmin devices messages
-    garmin devices primary
-`
+var devicesSettingsCmd = &cobra.Command{
+	Use:   "settings <device-id>",
+	Short: "Get settings for a specific device",
+	Args:  cobra.ExactArgs(1),
+	RunE:  runDevicesSettings,
+}
 
-func devicesCmd(args []string) {
-	if len(args) < 1 {
-		fmt.Fprint(os.Stderr, devicesUsage)
-		os.Exit(1)
+var devicesMessagesCmd = &cobra.Command{
+	Use:   "messages",
+	Short: "Get device messages",
+	Args:  cobra.NoArgs,
+	RunE:  runDevicesMessages,
+}
+
+var devicesPrimaryCmd = &cobra.Command{
+	Use:   "primary",
+	Short: "Get primary training device info",
+	Args:  cobra.NoArgs,
+	RunE:  runDevicesPrimary,
+}
+
+func init() {
+	devicesCmd.AddCommand(devicesListCmd)
+	devicesCmd.AddCommand(devicesSettingsCmd)
+	devicesCmd.AddCommand(devicesMessagesCmd)
+	devicesCmd.AddCommand(devicesPrimaryCmd)
+}
+
+func runDevicesList(cmd *cobra.Command, _ []string) error {
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	devices, err := client.Devices.GetDevices(cmd.Context())
+	if err != nil {
+		return err
+	}
+
+	return printJSON(devices)
+}
+
+func runDevicesSettings(cmd *cobra.Command, args []string) error {
+	deviceID, err := strconv.ParseInt(args[0], 10, 64)
+	if err != nil {
+		return fmt.Errorf("invalid device ID: %s", args[0])
 	}
 
 	client, err := loadClient()
 	if err != nil {
-		printError(err)
-		os.Exit(1)
+		return err
 	}
 
-	ctx := context.Background()
-
-	switch args[0] {
-	case "list":
-		devices, err := client.Devices.GetDevices(ctx)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(devices)
-
-	case "settings":
-		if len(args) < 2 {
-			printError(errors.New("missing device ID"))
-			fmt.Fprint(os.Stderr, devicesUsage)
-			os.Exit(1)
-		}
-
-		deviceID, err := strconv.ParseInt(args[1], 10, 64)
-		if err != nil {
-			printError(fmt.Errorf("invalid device ID: %s", args[1]))
-			os.Exit(1)
-		}
-
-		settings, err := client.Devices.GetSettings(ctx, deviceID)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(settings)
-
-	case "messages":
-		messages, err := client.Devices.GetMessages(ctx)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(messages)
-
-	case "primary":
-		info, err := client.Devices.GetPrimaryTrainingDevice(ctx)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(info)
-
-	case "-h", "--help", "help": //nolint:goconst // CLI help flags
-		fmt.Print(devicesUsage)
-
-	default:
-		fmt.Fprintf(os.Stderr, "Unknown devices command: %s\n\n%s", args[0], devicesUsage)
-		os.Exit(1)
+	settings, err := client.Devices.GetSettings(cmd.Context(), deviceID)
+	if err != nil {
+		return err
 	}
+
+	return printJSON(settings)
+}
+
+func runDevicesMessages(cmd *cobra.Command, _ []string) error {
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	messages, err := client.Devices.GetMessages(cmd.Context())
+	if err != nil {
+		return err
+	}
+
+	return printJSON(messages)
+}
+
+func runDevicesPrimary(cmd *cobra.Command, _ []string) error {
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	info, err := client.Devices.GetPrimaryTrainingDevice(cmd.Context())
+	if err != nil {
+		return err
+	}
+
+	return printJSON(info)
 }

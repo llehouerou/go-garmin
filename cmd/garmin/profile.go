@@ -1,69 +1,79 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
-	"os"
+	"github.com/spf13/cobra"
 )
 
-const profileUsage = `Usage: garmin profile <command>
+var profileCmd = &cobra.Command{
+	Use:   "profile",
+	Short: "User profile data (social, settings)",
+}
 
-Commands:
-    social      Get social profile
-    settings    Get profile settings
-    user        Get user settings (detailed)
+var profileSocialCmd = &cobra.Command{
+	Use:   "social",
+	Short: "Get social profile",
+	Args:  cobra.NoArgs,
+	RunE:  runProfileSocial,
+}
 
-Examples:
-    garmin profile social
-    garmin profile settings
-    garmin profile user
-`
+var profileSettingsCmd = &cobra.Command{
+	Use:   "settings",
+	Short: "Get profile settings",
+	Args:  cobra.NoArgs,
+	RunE:  runProfileSettings,
+}
 
-func profileCmd(args []string) {
-	if len(args) < 1 {
-		fmt.Fprint(os.Stderr, profileUsage)
-		os.Exit(1)
-	}
+var profileUserCmd = &cobra.Command{
+	Use:   "user",
+	Short: "Get user settings (detailed)",
+	Args:  cobra.NoArgs,
+	RunE:  runProfileUser,
+}
 
+func init() {
+	profileCmd.AddCommand(profileSocialCmd)
+	profileCmd.AddCommand(profileSettingsCmd)
+	profileCmd.AddCommand(profileUserCmd)
+}
+
+func runProfileSocial(cmd *cobra.Command, _ []string) error {
 	client, err := loadClient()
 	if err != nil {
-		printError(err)
-		os.Exit(1)
+		return err
 	}
 
-	ctx := context.Background()
-
-	switch args[0] {
-	case "social":
-		data, err := client.UserProfile.GetSocialProfile(ctx)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
-	case "settings":
-		data, err := client.UserProfile.GetProfileSettings(ctx)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
-	case "user":
-		data, err := client.UserProfile.GetUserSettings(ctx)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
-	case "-h", "--help", "help": //nolint:goconst // CLI help flags
-		fmt.Print(profileUsage)
-
-	default:
-		fmt.Fprintf(os.Stderr, "Unknown profile command: %s\n\n%s", args[0], profileUsage)
-		os.Exit(1)
+	data, err := client.UserProfile.GetSocialProfile(cmd.Context())
+	if err != nil {
+		return err
 	}
+
+	return printJSON(data)
+}
+
+func runProfileSettings(cmd *cobra.Command, _ []string) error {
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	data, err := client.UserProfile.GetProfileSettings(cmd.Context())
+	if err != nil {
+		return err
+	}
+
+	return printJSON(data)
+}
+
+func runProfileUser(cmd *cobra.Command, _ []string) error {
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	data, err := client.UserProfile.GetUserSettings(cmd.Context())
+	if err != nil {
+		return err
+	}
+
+	return printJSON(data)
 }

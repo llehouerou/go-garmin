@@ -1,91 +1,77 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"errors"
 	"fmt"
-	"os"
 	"time"
+
+	"github.com/spf13/cobra"
 )
 
-const weightUsage = `Usage: garmin weight <command> [arguments]
+var weightCmd = &cobra.Command{
+	Use:   "weight",
+	Short: "Weight data (daily, range)",
+}
 
-Commands:
-    daily [date]              Get daily weight data (default: today)
-    range <start> <end>       Get weight data for a date range
+var weightDailyCmd = &cobra.Command{
+	Use:   "daily [date]",
+	Short: "Get daily weight data",
+	Long:  "Get daily weight data for the specified date (defaults to today). Date format: YYYY-MM-DD",
+	Args:  cobra.MaximumNArgs(1),
+	RunE:  runWeightDaily,
+}
 
-Date format: YYYY-MM-DD
+var weightRangeCmd = &cobra.Command{
+	Use:   "range <start> <end>",
+	Short: "Get weight data for a date range",
+	Long:  "Get weight data for the specified date range. Date format: YYYY-MM-DD",
+	Args:  cobra.ExactArgs(2),
+	RunE:  runWeightRange,
+}
 
-Examples:
-    garmin weight daily
-    garmin weight daily 2026-01-27
-    garmin weight range 2025-12-28 2026-01-27
-`
+func init() {
+	weightCmd.AddCommand(weightDailyCmd)
+	weightCmd.AddCommand(weightRangeCmd)
+}
 
-func weightCmd(args []string) {
-	if len(args) < 1 {
-		fmt.Fprint(os.Stderr, weightUsage)
-		os.Exit(1)
+func runWeightDaily(cmd *cobra.Command, args []string) error {
+	date, err := parseDate(args)
+	if err != nil {
+		return err
 	}
 
 	client, err := loadClient()
 	if err != nil {
-		printError(err)
-		os.Exit(1)
+		return err
 	}
 
-	ctx := context.Background()
-
-	switch args[0] {
-	case "daily":
-		date := time.Now()
-		if len(args) > 1 {
-			date, err = time.Parse("2006-01-02", args[1])
-			if err != nil {
-				printError(errors.New("invalid date format, use YYYY-MM-DD"))
-				os.Exit(1)
-			}
-		}
-
-		data, err := client.Weight.GetDaily(ctx, date)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
-	case "range":
-		if len(args) < 3 {
-			printError(errors.New("range requires start and end dates"))
-			fmt.Fprint(os.Stderr, weightUsage)
-			os.Exit(1)
-		}
-
-		startDate, err := time.Parse("2006-01-02", args[1])
-		if err != nil {
-			printError(fmt.Errorf("invalid start date: %s", args[1]))
-			os.Exit(1)
-		}
-
-		endDate, err := time.Parse("2006-01-02", args[2])
-		if err != nil {
-			printError(fmt.Errorf("invalid end date: %s", args[2]))
-			os.Exit(1)
-		}
-
-		data, err := client.Weight.GetRange(ctx, startDate, endDate)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
-	case "-h", "--help", "help": //nolint:goconst // CLI help flags
-		fmt.Print(weightUsage)
-
-	default:
-		fmt.Fprintf(os.Stderr, "Unknown weight command: %s\n\n%s", args[0], weightUsage)
-		os.Exit(1)
+	data, err := client.Weight.GetDaily(cmd.Context(), date)
+	if err != nil {
+		return err
 	}
+
+	return printJSON(data)
+}
+
+func runWeightRange(cmd *cobra.Command, args []string) error {
+	startDate, err := time.Parse("2006-01-02", args[0])
+	if err != nil {
+		return fmt.Errorf("invalid start date: %s", args[0])
+	}
+
+	endDate, err := time.Parse("2006-01-02", args[1])
+	if err != nil {
+		return fmt.Errorf("invalid end date: %s", args[1])
+	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	data, err := client.Weight.GetRange(cmd.Context(), startDate, endDate)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(data)
 }

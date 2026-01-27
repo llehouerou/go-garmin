@@ -1,105 +1,175 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"os"
-	"time"
+	"github.com/spf13/cobra"
 )
 
-const wellnessUsage = `Usage: garmin wellness <command> [date]
+var wellnessCmd = &cobra.Command{
+	Use:   "wellness",
+	Short: "Wellness data (stress, body battery, heart rate, SpO2, respiration, intensity)",
+}
 
-Commands:
-    stress           Get stress data
-    body-battery     Get body battery data
-    heart-rate       Get heart rate data
-    spo2             Get blood oxygen (SpO2) data
-    respiration      Get respiration data
-    intensity        Get intensity minutes data
+var wellnessStressCmd = &cobra.Command{
+	Use:   "stress [date]",
+	Short: "Get stress data",
+	Args:  cobra.MaximumNArgs(1),
+	RunE:  runWellnessStress,
+}
 
-Date format: YYYY-MM-DD (defaults to today)
-`
+var wellnessBodyBatteryCmd = &cobra.Command{
+	Use:   "body-battery [date]",
+	Short: "Get body battery data",
+	Args:  cobra.MaximumNArgs(1),
+	RunE:  runWellnessBodyBattery,
+}
 
-func wellnessCmd(args []string) {
-	if len(args) < 1 {
-		fmt.Fprint(os.Stderr, wellnessUsage)
-		os.Exit(1)
+var wellnessHeartRateCmd = &cobra.Command{
+	Use:   "heart-rate [date]",
+	Short: "Get heart rate data",
+	Args:  cobra.MaximumNArgs(1),
+	RunE:  runWellnessHeartRate,
+}
+
+var wellnessSpO2Cmd = &cobra.Command{
+	Use:   "spo2 [date]",
+	Short: "Get blood oxygen (SpO2) data",
+	Args:  cobra.MaximumNArgs(1),
+	RunE:  runWellnessSpO2,
+}
+
+var wellnessRespirationCmd = &cobra.Command{
+	Use:   "respiration [date]",
+	Short: "Get respiration data",
+	Args:  cobra.MaximumNArgs(1),
+	RunE:  runWellnessRespiration,
+}
+
+var wellnessIntensityCmd = &cobra.Command{
+	Use:   "intensity [date]",
+	Short: "Get intensity minutes data",
+	Args:  cobra.MaximumNArgs(1),
+	RunE:  runWellnessIntensity,
+}
+
+func init() {
+	wellnessCmd.AddCommand(wellnessStressCmd)
+	wellnessCmd.AddCommand(wellnessBodyBatteryCmd)
+	wellnessCmd.AddCommand(wellnessHeartRateCmd)
+	wellnessCmd.AddCommand(wellnessSpO2Cmd)
+	wellnessCmd.AddCommand(wellnessRespirationCmd)
+	wellnessCmd.AddCommand(wellnessIntensityCmd)
+}
+
+func runWellnessStress(cmd *cobra.Command, args []string) error {
+	date, err := parseDate(args)
+	if err != nil {
+		return err
 	}
 
 	client, err := loadClient()
 	if err != nil {
-		printError(err)
-		os.Exit(1)
+		return err
 	}
 
-	// Parse date (default to today)
-	date := time.Now()
-	if len(args) > 1 {
-		date, err = time.Parse("2006-01-02", args[1])
-		if err != nil {
-			printError(errors.New("invalid date format, use YYYY-MM-DD"))
-			os.Exit(1)
-		}
+	data, err := client.Wellness.GetDailyStress(cmd.Context(), date)
+	if err != nil {
+		return err
 	}
 
-	ctx := context.Background()
+	return printJSON(data)
+}
 
-	switch args[0] {
-	case "stress":
-		data, err := client.Wellness.GetDailyStress(ctx, date)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
-	case "body-battery":
-		data, err := client.Wellness.GetBodyBatteryEvents(ctx, date)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data.Events)
-
-	case "heart-rate":
-		data, err := client.Wellness.GetDailyHeartRate(ctx, date)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
-	case "spo2":
-		data, err := client.Wellness.GetDailySpO2(ctx, date)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
-	case "respiration":
-		data, err := client.Wellness.GetDailyRespiration(ctx, date)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
-	case "intensity":
-		data, err := client.Wellness.GetDailyIntensityMinutes(ctx, date)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(data)
-
-	case "-h", "--help", "help": //nolint:goconst // CLI help flags
-		fmt.Print(wellnessUsage)
-
-	default:
-		fmt.Fprintf(os.Stderr, "Unknown wellness command: %s\n\n%s", args[0], wellnessUsage)
-		os.Exit(1)
+func runWellnessBodyBattery(cmd *cobra.Command, args []string) error {
+	date, err := parseDate(args)
+	if err != nil {
+		return err
 	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	data, err := client.Wellness.GetBodyBatteryEvents(cmd.Context(), date)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(data.Events)
+}
+
+func runWellnessHeartRate(cmd *cobra.Command, args []string) error {
+	date, err := parseDate(args)
+	if err != nil {
+		return err
+	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	data, err := client.Wellness.GetDailyHeartRate(cmd.Context(), date)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(data)
+}
+
+func runWellnessSpO2(cmd *cobra.Command, args []string) error {
+	date, err := parseDate(args)
+	if err != nil {
+		return err
+	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	data, err := client.Wellness.GetDailySpO2(cmd.Context(), date)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(data)
+}
+
+func runWellnessRespiration(cmd *cobra.Command, args []string) error {
+	date, err := parseDate(args)
+	if err != nil {
+		return err
+	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	data, err := client.Wellness.GetDailyRespiration(cmd.Context(), date)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(data)
+}
+
+func runWellnessIntensity(cmd *cobra.Command, args []string) error {
+	date, err := parseDate(args)
+	if err != nil {
+		return err
+	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	data, err := client.Wellness.GetDailyIntensityMinutes(cmd.Context(), date)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(data)
 }

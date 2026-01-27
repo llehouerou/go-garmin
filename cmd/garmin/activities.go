@@ -1,129 +1,186 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 	"strconv"
 
+	"github.com/spf13/cobra"
+
 	garmin "github.com/llehouerou/go-garmin"
 )
 
-const activitiesUsage = `Usage: garmin activities <command> [arguments]
+var activitiesCmd = &cobra.Command{
+	Use:   "activities",
+	Short: "Activities data (list, details, weather, splits, download)",
+}
 
-Commands:
-    list [limit]         List recent activities (default: 10)
-    get <activity-id>    Get detailed activity information
-    weather <activity-id> Get weather data for an activity
-    splits <activity-id>  Get splits/laps data for an activity
+var activitiesListCmd = &cobra.Command{
+	Use:   "list [limit]",
+	Short: "List recent activities",
+	Long:  "List recent activities (default: 10)",
+	Args:  cobra.MaximumNArgs(1),
+	RunE:  runActivitiesList,
+}
 
-Examples:
-    garmin activities list
-    garmin activities list 20
-    garmin activities get 21661023200
-    garmin activities weather 21661023200
-    garmin activities splits 21661023200
-`
+var activitiesGetCmd = &cobra.Command{
+	Use:   "get <activity-id>",
+	Short: "Get detailed activity information",
+	Args:  cobra.ExactArgs(1),
+	RunE:  runActivitiesGet,
+}
 
-func activitiesCmd(args []string) {
-	if len(args) < 1 {
-		fmt.Fprint(os.Stderr, activitiesUsage)
-		os.Exit(1)
+var activitiesWeatherCmd = &cobra.Command{
+	Use:   "weather <activity-id>",
+	Short: "Get weather data for an activity",
+	Args:  cobra.ExactArgs(1),
+	RunE:  runActivitiesWeather,
+}
+
+var activitiesSplitsCmd = &cobra.Command{
+	Use:   "splits <activity-id>",
+	Short: "Get splits/laps data for an activity",
+	Args:  cobra.ExactArgs(1),
+	RunE:  runActivitiesSplits,
+}
+
+var activitiesDownloadCmd = &cobra.Command{
+	Use:       "download <activity-id> <format>",
+	Short:     "Download activity file",
+	Long:      "Download activity file in the specified format (fit, tcx, gpx, kml, csv)",
+	Args:      cobra.ExactArgs(2),
+	ValidArgs: []string{"fit", "tcx", "gpx", "kml", "csv"},
+	RunE:      runActivitiesDownload,
+}
+
+func init() {
+	activitiesCmd.AddCommand(activitiesListCmd)
+	activitiesCmd.AddCommand(activitiesGetCmd)
+	activitiesCmd.AddCommand(activitiesWeatherCmd)
+	activitiesCmd.AddCommand(activitiesSplitsCmd)
+	activitiesCmd.AddCommand(activitiesDownloadCmd)
+}
+
+func runActivitiesList(cmd *cobra.Command, args []string) error {
+	limit := 10
+	if len(args) > 0 {
+		var err error
+		limit, err = strconv.Atoi(args[0])
+		if err != nil || limit < 1 {
+			return fmt.Errorf("invalid limit: %s", args[0])
+		}
 	}
 
 	client, err := loadClient()
 	if err != nil {
-		printError(err)
-		os.Exit(1)
+		return err
 	}
 
-	ctx := context.Background()
+	activities, err := client.Activities.List(cmd.Context(), &garmin.ListOptions{Limit: limit})
+	if err != nil {
+		return err
+	}
 
-	switch args[0] {
-	case "list":
-		limit := 10
-		if len(args) > 1 {
-			limit, err = strconv.Atoi(args[1])
-			if err != nil || limit < 1 {
-				printError(fmt.Errorf("invalid limit: %s", args[1]))
-				os.Exit(1)
-			}
-		}
+	return printJSON(activities)
+}
 
-		activities, err := client.Activities.List(ctx, &garmin.ListOptions{Limit: limit})
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(activities)
+func runActivitiesGet(cmd *cobra.Command, args []string) error {
+	activityID, err := strconv.ParseInt(args[0], 10, 64)
+	if err != nil {
+		return fmt.Errorf("invalid activity ID: %s", args[0])
+	}
 
-	case "get":
-		if len(args) < 2 {
-			printError(errors.New("missing activity ID"))
-			fmt.Fprint(os.Stderr, activitiesUsage)
-			os.Exit(1)
-		}
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
 
-		activityID, err := strconv.ParseInt(args[1], 10, 64)
-		if err != nil {
-			printError(fmt.Errorf("invalid activity ID: %s", args[1]))
-			os.Exit(1)
-		}
+	activity, err := client.Activities.Get(cmd.Context(), activityID)
+	if err != nil {
+		return err
+	}
 
-		activity, err := client.Activities.Get(ctx, activityID)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(activity)
+	return printJSON(activity)
+}
 
-	case "weather":
-		if len(args) < 2 {
-			printError(errors.New("missing activity ID"))
-			fmt.Fprint(os.Stderr, activitiesUsage)
-			os.Exit(1)
-		}
+func runActivitiesWeather(cmd *cobra.Command, args []string) error {
+	activityID, err := strconv.ParseInt(args[0], 10, 64)
+	if err != nil {
+		return fmt.Errorf("invalid activity ID: %s", args[0])
+	}
 
-		activityID, err := strconv.ParseInt(args[1], 10, 64)
-		if err != nil {
-			printError(fmt.Errorf("invalid activity ID: %s", args[1]))
-			os.Exit(1)
-		}
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
 
-		weather, err := client.Activities.GetWeather(ctx, activityID)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(weather)
+	weather, err := client.Activities.GetWeather(cmd.Context(), activityID)
+	if err != nil {
+		return err
+	}
 
-	case "splits":
-		if len(args) < 2 {
-			printError(errors.New("missing activity ID"))
-			fmt.Fprint(os.Stderr, activitiesUsage)
-			os.Exit(1)
-		}
+	return printJSON(weather)
+}
 
-		activityID, err := strconv.ParseInt(args[1], 10, 64)
-		if err != nil {
-			printError(fmt.Errorf("invalid activity ID: %s", args[1]))
-			os.Exit(1)
-		}
+func runActivitiesSplits(cmd *cobra.Command, args []string) error {
+	activityID, err := strconv.ParseInt(args[0], 10, 64)
+	if err != nil {
+		return fmt.Errorf("invalid activity ID: %s", args[0])
+	}
 
-		splits, err := client.Activities.GetSplits(ctx, activityID)
-		if err != nil {
-			printError(err)
-			os.Exit(1)
-		}
-		_ = json.NewEncoder(os.Stdout).Encode(splits)
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
 
-	case "-h", "--help", "help": //nolint:goconst // CLI help flags
-		fmt.Print(activitiesUsage)
+	splits, err := client.Activities.GetSplits(cmd.Context(), activityID)
+	if err != nil {
+		return err
+	}
 
+	return printJSON(splits)
+}
+
+func runActivitiesDownload(cmd *cobra.Command, args []string) error {
+	activityID, err := strconv.ParseInt(args[0], 10, 64)
+	if err != nil {
+		return fmt.Errorf("invalid activity ID: %s", args[0])
+	}
+
+	format := args[1]
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	var data []byte
+	ctx := cmd.Context()
+
+	switch format {
+	case "fit":
+		data, err = client.Activities.DownloadFIT(ctx, activityID)
+	case "tcx":
+		data, err = client.Activities.DownloadTCX(ctx, activityID)
+	case "gpx":
+		data, err = client.Activities.DownloadGPX(ctx, activityID)
+	case "kml":
+		data, err = client.Activities.DownloadKML(ctx, activityID)
+	case "csv":
+		data, err = client.Activities.DownloadCSV(ctx, activityID)
 	default:
-		fmt.Fprintf(os.Stderr, "Unknown activities command: %s\n\n%s", args[0], activitiesUsage)
-		os.Exit(1)
+		return fmt.Errorf("unknown format: %s (use fit, tcx, gpx, kml, or csv)", format)
 	}
+
+	if err != nil {
+		return err
+	}
+
+	filename := fmt.Sprintf("%d.%s", activityID, format)
+	if err := os.WriteFile(filename, data, 0o600); err != nil {
+		return err
+	}
+
+	fmt.Printf("Downloaded %s (%d bytes)\n", filename, len(data))
+	return nil
 }

@@ -1,49 +1,32 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"os"
-	"time"
+	"github.com/spf13/cobra"
 )
 
-const sleepUsage = `Usage: garmin sleep [date]
+var sleepCmd = &cobra.Command{
+	Use:   "sleep [date]",
+	Short: "Get sleep data",
+	Long:  "Get sleep data for the specified date. Date format: YYYY-MM-DD (defaults to today).",
+	Args:  cobra.MaximumNArgs(1),
+	RunE:  runSleep,
+}
 
-Get sleep data for the specified date.
-
-Date format: YYYY-MM-DD (defaults to today)
-`
-
-func sleepCmd(args []string) {
-	if len(args) > 0 && (args[0] == "-h" || args[0] == "--help" || args[0] == "help") {
-		fmt.Print(sleepUsage)
-		return
+func runSleep(cmd *cobra.Command, args []string) error {
+	date, err := parseDate(args)
+	if err != nil {
+		return err
 	}
 
 	client, err := loadClient()
 	if err != nil {
-		printError(err)
-		os.Exit(1)
+		return err
 	}
 
-	// Parse date (default to today)
-	date := time.Now()
-	if len(args) > 0 {
-		date, err = time.Parse("2006-01-02", args[0])
-		if err != nil {
-			printError(errors.New("invalid date format, use YYYY-MM-DD"))
-			os.Exit(1)
-		}
-	}
-
-	ctx := context.Background()
-
-	data, err := client.Sleep.GetDaily(ctx, date)
+	data, err := client.Sleep.GetDaily(cmd.Context(), date)
 	if err != nil {
-		printError(err)
-		os.Exit(1)
+		return err
 	}
-	_ = json.NewEncoder(os.Stdout).Encode(data)
+
+	return printJSON(data)
 }
