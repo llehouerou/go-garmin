@@ -630,6 +630,50 @@ func TestIntegration_Metrics_GetEnduranceScore(t *testing.T) {
 	}
 }
 
+func TestIntegration_Metrics_GetEnduranceScoreStats(t *testing.T) {
+	skipIfNoCassette(t, "metrics")
+
+	rec, err := testutil.NewRecorder("metrics", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	endDate := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	startDate := endDate.AddDate(0, 0, -84)
+
+	stats, err := client.Metrics.GetEnduranceScoreStats(ctx, startDate, endDate, AggregationWeekly)
+	if err != nil {
+		t.Fatalf("GetEnduranceScoreStats failed: %v", err)
+	}
+
+	if stats == nil {
+		t.Fatal("expected endurance score stats, got nil")
+	}
+
+	if stats.StartDate == "" {
+		t.Error("expected StartDate to be set")
+	}
+	if stats.EndDate == "" {
+		t.Error("expected EndDate to be set")
+	}
+	if stats.Avg == 0 {
+		t.Error("expected Avg to be set")
+	}
+	if stats.Max == 0 {
+		t.Error("expected Max to be set")
+	}
+	if len(stats.GroupMap) == 0 {
+		t.Error("expected GroupMap to have entries")
+	}
+
+	if stats.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
 func TestIntegration_Metrics_GetHillScore(t *testing.T) {
 	skipIfNoCassette(t, "metrics")
 

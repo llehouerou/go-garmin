@@ -95,6 +95,31 @@ func (e *EnduranceScore) RawJSON() json.RawMessage {
 	return e.raw
 }
 
+// EnduranceScoreStatsGroup represents a single time period's endurance score statistics.
+type EnduranceScoreStatsGroup struct {
+	GroupAverage int                `json:"groupAverage"`
+	GroupMax     int                `json:"groupMax"`
+	Contributors []ScoreContributor `json:"enduranceContributorDTOList"`
+}
+
+// EnduranceScoreStats represents endurance score statistics over a date range.
+type EnduranceScoreStats struct {
+	UserProfilePK  int64                                `json:"userProfilePK"`
+	StartDate      string                               `json:"startDate"`
+	EndDate        string                               `json:"endDate"`
+	Avg            int                                  `json:"avg"`
+	Max            int                                  `json:"max"`
+	GroupMap       map[string]*EnduranceScoreStatsGroup `json:"groupMap"`
+	EnduranceScore *EnduranceScore                      `json:"enduranceScoreDTO"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (e *EnduranceScoreStats) RawJSON() json.RawMessage {
+	return e.raw
+}
+
 // HillScore represents the hill score response.
 type HillScore struct {
 	UserProfilePK             int64   `json:"userProfilePK"`
@@ -346,6 +371,43 @@ func (s *MetricsService) GetEnduranceScore(ctx context.Context, date time.Time) 
 	score.raw = raw
 
 	return &score, nil
+}
+
+// Aggregation represents the time period aggregation for stats endpoints.
+type Aggregation string
+
+const (
+	AggregationDaily  Aggregation = "daily"
+	AggregationWeekly Aggregation = "weekly"
+)
+
+// GetEnduranceScoreStats retrieves endurance score statistics for a date range.
+func (s *MetricsService) GetEnduranceScoreStats(ctx context.Context, startDate, endDate time.Time, aggregation Aggregation) (*EnduranceScoreStats, error) {
+	path := fmt.Sprintf("/metrics-service/metrics/endurancescore/stats?startDate=%s&endDate=%s&aggregation=%s",
+		startDate.Format("2006-01-02"), endDate.Format("2006-01-02"), aggregation)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var stats EnduranceScoreStats
+	if err := json.Unmarshal(raw, &stats); err != nil {
+		return nil, err
+	}
+	stats.raw = raw
+
+	return &stats, nil
 }
 
 // GetHillScore retrieves hill score data for the specified date.

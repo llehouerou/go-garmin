@@ -153,7 +153,7 @@ Note: `daily/{displayName}` can also be accessed as `daily/?calendarDate={date}`
 |--------|--------|----------|-------------|
 | [x] | GET | `/metrics-service/metrics/trainingreadiness/{date}` | Training readiness |
 | [x] | GET | `/metrics-service/metrics/endurancescore?calendarDate={date}` | Endurance score |
-| [ ] | GET | `/metrics-service/metrics/endurancescore/stats?startDate={start}&endDate={end}&aggregation={agg}` | Endurance score stats |
+| [x] | GET | `/metrics-service/metrics/endurancescore/stats?startDate={start}&endDate={end}&aggregation={agg}` | Endurance score stats |
 | [x] | GET | `/metrics-service/metrics/hillscore?calendarDate={date}` | Hill score |
 | [ ] | GET | `/metrics-service/metrics/hillscore/stats?startDate={start}&endDate={end}&aggregation={agg}` | Hill score stats |
 | [ ] | GET | `/metrics-service/metrics/racepredictions/latest/{displayName}` | Latest race predictions (requires display name) |

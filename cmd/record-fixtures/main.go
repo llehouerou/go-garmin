@@ -468,6 +468,16 @@ func recordMetrics(ctx context.Context, session []byte, date time.Time) error {
 		fmt.Printf("  Warning: endurance score: %v\n", err)
 	}
 
+	// Endurance score stats (weekly aggregation, last ~12 weeks)
+	statsStartDate := date.AddDate(0, 0, -84)
+	fmt.Printf("  Getting endurance score stats from %s to %s...\n", statsStartDate.Format("2006-01-02"), dateStr)
+	enduranceStatsURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/endurancescore/stats?startDate=%s&endDate=%s&aggregation=weekly",
+		authState.Domain, statsStartDate.Format("2006-01-02"), dateStr)
+	_, err = doAPIRequest(ctx, httpClient, enduranceStatsURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: endurance score stats: %v\n", err)
+	}
+
 	// Hill score
 	fmt.Printf("  Getting hill score for %s...\n", dateStr)
 	hillURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/hillscore?calendarDate=%s",

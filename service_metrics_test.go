@@ -88,6 +88,73 @@ func TestEnduranceScoreJSONUnmarshal(t *testing.T) {
 	}
 }
 
+func TestEnduranceScoreStatsJSONUnmarshal(t *testing.T) {
+	rawJSON := `{
+		"userProfilePK": 12345678,
+		"startDate": "2025-11-04",
+		"endDate": "2026-01-27",
+		"avg": 5570,
+		"max": 5637,
+		"groupMap": {
+			"2025-11-05": {
+				"groupAverage": 5590,
+				"groupMax": 5603,
+				"enduranceContributorDTOList": [
+					{"activityTypeId": 3, "group": null, "contribution": 25.16},
+					{"activityTypeId": null, "group": 0, "contribution": 74.84}
+				]
+			}
+		},
+		"enduranceScoreDTO": {
+			"userProfilePK": 12345678,
+			"deviceId": 3490854130,
+			"calendarDate": "2026-01-27",
+			"overallScore": 5549,
+			"classification": 2
+		}
+	}`
+
+	var stats EnduranceScoreStats
+	if err := json.Unmarshal([]byte(rawJSON), &stats); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+
+	if stats.StartDate != "2025-11-04" {
+		t.Errorf("StartDate = %s, want 2025-11-04", stats.StartDate)
+	}
+	if stats.EndDate != "2026-01-27" {
+		t.Errorf("EndDate = %s, want 2026-01-27", stats.EndDate)
+	}
+	if stats.Avg != 5570 {
+		t.Errorf("Avg = %d, want 5570", stats.Avg)
+	}
+	if stats.Max != 5637 {
+		t.Errorf("Max = %d, want 5637", stats.Max)
+	}
+	if len(stats.GroupMap) != 1 {
+		t.Fatalf("GroupMap length = %d, want 1", len(stats.GroupMap))
+	}
+	group, ok := stats.GroupMap["2025-11-05"]
+	if !ok {
+		t.Fatal("GroupMap missing key 2025-11-05")
+	}
+	if group.GroupAverage != 5590 {
+		t.Errorf("GroupAverage = %d, want 5590", group.GroupAverage)
+	}
+	if group.GroupMax != 5603 {
+		t.Errorf("GroupMax = %d, want 5603", group.GroupMax)
+	}
+	if len(group.Contributors) != 2 {
+		t.Fatalf("Contributors length = %d, want 2", len(group.Contributors))
+	}
+	if stats.EnduranceScore == nil {
+		t.Fatal("EnduranceScore is nil")
+	}
+	if stats.EnduranceScore.OverallScore != 5549 {
+		t.Errorf("EnduranceScore.OverallScore = %d, want 5549", stats.EnduranceScore.OverallScore)
+	}
+}
+
 func TestHillScoreJSONUnmarshal(t *testing.T) {
 	rawJSON := `{
 		"userProfilePK": 12345678,

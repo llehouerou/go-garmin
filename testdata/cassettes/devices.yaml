@@ -21,7 +21,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '[{"appSupport":true,"applicationKey":"forerunner965","deviceTypePk":37086,"bestInClassVideoLink":null,"bluetoothClassicDevice":false,"bluetoothLowEnergyDevice":true,"deviceCategories":["FITNESS","WELLNESS","GOLF","OUTDOOR"],"deviceEmbedVideoLink":null,"deviceSettingsFile":"RealTimeDeviceSettings_942cc9b6-c5ed-491f-8468-d151a2881156.json","gcmSettingsFile":null,"deviceVideoPageLink":null,"displayOrder":0,"golfDisplayOrder":0,"hasOpticalHeartRate":true,"highlighted":false,"hybrid":true,"imageUrl":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","minGCMAndroidVersion":5045,"minGCMWindowsVersion":99999,"minGCMiOSVersion":10075,"minGCMHarmonyVersion":0,"minGolfAppiOSVersion":0,"minGolfAppAndroidVersion":0,"partNumber":"006-B4315-00","primary":true,"productDisplayName":"Forerunner 965","deviceTags":null,"productSku":"010-02809-10","wasp":false,"weightScale":false,"wellness":false,"wifi":true,"hasPowerButton":true,"supportsSecondaryUsers":false,"primaryApplication":"GCM","incompatibleApplications":["GOLF","DIVE","JUNIOR"],"deviceTypeSimpleName":"Garmin Forerunner 965","abnormalHeartRateAlertCapable":true,"activitySummFitFileCapable":true,"aerobicTrainingEffectCapable":true,"alarmDaysCapable":true,"allDayStressCapable":true,"anaerobicTrainingEffectCapable":true,"atpWorkoutCapable":true,"bodyBatteryCapable":true,"brickWorkoutCapable":true,"cardioCapable":true,"cardioOptionCapable":false,"cardioSportsCapable":false,"cardioWorkoutCapable":true,"cellularCapable":false,"changeLogCapable":true,"contactManagementCapable":true,"courseCapable":true,"courseFileType":"FIT","coursePromptCapable":false,"customIntensityMinutesCapable":true,"customWorkoutCapable":true,"cyclingSegmentCapable":true,"cyclingSportsCapable":false,"cyclingWorkoutCapable":true,"defaultSettingCapable":true,"deviceSettingCapable":true,"deviceSettingFileType":null,"displayFieldsExtCapable":true,"divingCapable":false,"ellipticalOptionCapable":false,"floorsClimbedGoalCapable":true,"ftpCapable":true,"gcj02CourseCapable":true,"glonassCapable":true,"goalCapable":true,"goalFileType":"FIT","golfAppSyncCapable":false,"gpsRouteCapable":true,"handednessCapable":true,"hrZoneCapable":true,"hrvStressCapable":true,"intensityMinutesGoalCapable":true,"lactateThresholdCapable":true,"languageSettingCapable":true,"languageSettingFileType":null,"lowHrAlertCapable":true,"maxHRCapable":true,"maxWorkoutCount":200,"metricsFitFileReceiveCapable":true,"metricsUploadCapable":true,"militaryTimeCapable":false,"moderateIntensityMinutesGoalCapable":true,"nfcCapable":true,"otherOptionCapable":false,"otherSportsCapable":false,"personalRecordCapable":true,"personalRecordFileType":"FIT","poolSwimOptionCapable":false,"powerCurveCapable":true,"powerZonesCapable":true,"pulseOxAllDayCapable":true,"pulseOxOnDemandCapable":true,"pulseOxSleepCapable":true,"remCapable":true,"reminderAlarmCapable":false,"reorderablePagesCapable":false,"restingHRCapable":true,"rideOptionsCapable":false,"runOptionIndoorCapable":false,"runOptionsCapable":false,"runningSegmentCapable":true,"runningSportsCapable":false,"runningWorkoutCapable":true,"scheduleCapable":true,"scheduleFileType":"FIT","segmentCapable":true,"segmentPointCapable":true,"settingCapable":true,"settingFileType":"FIT","sleepTimeCapable":true,"smallFitFileOnlyCapable":false,"sportCapable":true,"sportFileType":"FIT","stairStepperOptionCapable":false,"strengthOptionsCapable":false,"strengthWorkoutCapable":true,"supportedHrZones":["RUNNING","CYCLING","SWIMMING","ALL"],"swimWorkoutCapable":true,"trainingPlanCapable":true,"trainingStatusCapable":true,"trainingStatusPauseCapable":true,"userProfileCapable":false,"userProfileFileType":null,"userTcxExportCapable":false,"vo2MaxBikeCapable":true,"vo2MaxRunCapable":true,"walkOptionCapable":false,"walkingSportsCapable":false,"weatherAlertsCapable":false,"weatherSettingsCapable":false,"workoutCapable":true,"workoutFileType":"FIT","yogaCapable":true,"yogaOptionCapable":false,"heatAndAltitudeAcclimationCapable":true,"trainingLoadBalanceCapable":true,"indoorTrackOptionsCapable":false,"indoorBikeOptionsCapable":false,"indoorWalkOptionsCapable":false,"trainingEffectLabelCapable":true,"pacebandCapable":true,"respirationCapable":true,"openWaterSwimOptionCapable":false,"phoneVerificationCheckRequired":true,"weightGoalCapable":false,"yogaWorkoutCapable":true,"pilatesWorkoutCapable":true,"connectedGPSCapable":false,"diveAppSyncCapable":false,"golfLiveScoringCapable":false,"solarPanelUtilizationCapable":false,"sweatLossCapable":true,"diveAlertCapable":false,"requiresInitialDeviceNickname":false,"defaultSettingsHbaseMigrated":true,"sleepScoreCapable":true,"fitnessAgeV2Capable":true,"intensityMinutesV2Capable":true,"collapsibleControlMenuCapable":false,"measurementUnitSettingCapable":false,"onDeviceSleepCalculationCapable":true,"hiitWorkoutCapable":true,"runningHeartRateZoneCapable":true,"cyclingHeartRateZoneCapable":true,"swimmingHeartRateZoneCapable":true,"defaultHeartRateZoneCapable":true,"cyclingPowerZonesCapable":true,"xcSkiPowerZonesCapable":true,"swimAlgorithmCapable":true,"benchmarkExerciseCapable":true,"spectatorMessagingCapable":true,"ecgCapable":false,"lteLiveEventSharingCapable":false,"sleepFitFileReceiveCapable":true,"secondaryWorkoutStepTargetCapable":true,"assistancePlusCapable":false,"powerGuidanceCapable":true,"airIntegrationCapable":false,"healthSnapshotCapable":true,"racePredictionsRunCapable":true,"vivohubCompatible":false,"stepsTrueUpChartCapable":true,"sportingEventCapable":true,"solarChargeCapable":false,"realTimeSettingsCapable":true,"emergencyCallingCapable":false,"personalRepRecordCapable":true,"hrvStatusCapable":true,"trainingReadinessCapable":true,"publicBetaSoftwareCapable":true,"workoutAudioPromptsCapable":true,"actualStepRecordingCapable":true,"groupTrack2Capable":false,"golfAppPairingCapable":false,"localWindConditionsCapable":false,"multipleGolfCourseCapable":false,"beaconTrackingCapable":false,"batteryStatusCapable":false,"runningPowerZonesCapable":true,"acuteTrainingLoadCapable":true,"criticalSwimSpeedCapable":true,"primaryTrainingCapable":true,"dayOfWeekSleepWindowCapable":true,"golfCourseDownloadCapable":false,"launchMonitorEventSharingCapable":false,"lhaBackupCapable":true,"jetlagCapable":true,"bloodPressureCapable":false,"bbiRecordingCapable":true,"wheelchairCapable":false,"primaryActivityTrackerSettingCapable":true,"setBodyCompositionCapable":false,"acuteChronicWorkloadRatioCapable":true,"sleepNeedCapable":true,"wearableBackupRestoreCapable":true,"cyclingComputerBackupRestoreCapable":false,"descriptiveTrainingEffectCapable":false,"sleepSkinTemperatureCapable":false,"runningLactateThresholdCapable":true,"altitudeAcclimationPercentageCapable":true,"hillScoreAndEnduranceScoreCapable":true,"swimWorkout2Capable":true,"enhancedWorkoutStepCapable":true,"primaryTrainingBackupCapable":true,"hideSoftwareUpdateVersionCapable":false,"adaptiveCoachingScheduleCapable":true,"openWaterSwimWorkoutCapable":false,"multisportWorkoutCapable":false,"fullNameSettingsCapable":true,"bodyBatteryTrueUpCapable":true,"skipLastWorkoutStepInRepeatBlockCapable":true,"adaptiveCoachingStrengthCapable":true,"mobilityWorkoutCapable":false,"coursePlannerCapable":false,"trainableTriathlonEventCapable":false,"passcodeLockCapable":false,"strengthTrainingPlanCapable":true,"breathingDisruptionsCapable":true,"standaloneFirstbeatActivityProcessingCapable":false,"rts20Capable":false,"accessorySensorCanGenerateActivityCapable":false,"garminWellnessCoachCapable":false,"adaptiveCoachingWorkoutSettingsCapable":false,"lifestyleLoggingCapable":false,"topoactiveMapsRealTimeSettingCapable":false,"runningToleranceCapable":false,"rechargeableSensorCapable":false,"lapByCoursePointsCapable":false,"sleepAlignmentCapable":false,"runningEconomyCapable":false,"projectedRaceTimePredictionCapable":false,"cyclingAbilityCapable":false,"archeryXCapable":false,"registrationMetricsBackfillUnsupported":false,"healthStatusCapable":true,"adaptiveCoachingFitnessCapable":false,"vbtCapable":false,"healthStatusTrueUpCapable":false,"walkWorkoutCapable":false,"adaptiveCoachingNoviceCapable":false,"adaptiveCoachingWalkCapable":false,"rowingCapable":false,"gearTrackingCapable":false,"liveTrackCapable":true,"adaptiveCoachingStrengthReceiveCapable":false,"incidentDetectionCapable":true,"garminEpicsCapable":false,"syncActivityEditsCapable":false,"startActivityCapable":false,"datasource":"C","deviceStatus":"active","registeredDate":1737031539000,"actualProductSku":"010-02809-10","vivohubConfigurable":null,"unRetirable":false,"corporateDevice":false,"prePairedWithHRM":false,"otherAssociation":false,"serialNumber":"ABC123456","shortName":null,"displayName":"anonymous","deviceId":12345678,"unitId":12345678,"wifiSetup":false,"activeInd":1,"primaryActivityTrackerIndicator":true,"currentFirmwareVersionMajor":27,"currentFirmwareVersionMinor":9,"isPrimaryUser":false,"currentFirmwareVersion":"27.09"}]'
+        body: '[{"appSupport":true,"applicationKey":"forerunner965","deviceTypePk":37086,"bestInClassVideoLink":null,"bluetoothClassicDevice":false,"bluetoothLowEnergyDevice":true,"deviceCategories":["FITNESS","WELLNESS","GOLF","OUTDOOR"],"deviceEmbedVideoLink":null,"deviceSettingsFile":"RealTimeDeviceSettings_942cc9b6-c5ed-491f-8468-d151a2881156.json","gcmSettingsFile":null,"deviceVideoPageLink":null,"displayOrder":0,"golfDisplayOrder":0,"hasOpticalHeartRate":true,"highlighted":false,"hybrid":true,"imageUrl":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","minGCMAndroidVersion":5045,"minGCMWindowsVersion":99999,"minGCMiOSVersion":10075,"minGCMHarmonyVersion":0,"minGolfAppiOSVersion":0,"minGolfAppAndroidVersion":0,"partNumber":"006-B4315-00","primary":true,"productDisplayName":"Forerunner 965","deviceTags":null,"productSku":"010-02809-10","wasp":false,"weightScale":false,"wellness":false,"wifi":true,"hasPowerButton":true,"supportsSecondaryUsers":false,"primaryApplication":"GCM","incompatibleApplications":["GOLF","DIVE","JUNIOR"],"deviceTypeSimpleName":"Garmin Forerunner 965","abnormalHeartRateAlertCapable":true,"activitySummFitFileCapable":true,"aerobicTrainingEffectCapable":true,"alarmDaysCapable":true,"allDayStressCapable":true,"anaerobicTrainingEffectCapable":true,"atpWorkoutCapable":true,"bodyBatteryCapable":true,"brickWorkoutCapable":true,"cardioCapable":true,"cardioOptionCapable":false,"cardioSportsCapable":false,"cardioWorkoutCapable":true,"cellularCapable":false,"changeLogCapable":true,"contactManagementCapable":true,"courseCapable":true,"courseFileType":"FIT","coursePromptCapable":false,"customIntensityMinutesCapable":true,"customWorkoutCapable":true,"cyclingSegmentCapable":true,"cyclingSportsCapable":false,"cyclingWorkoutCapable":true,"defaultSettingCapable":true,"deviceSettingCapable":true,"deviceSettingFileType":null,"displayFieldsExtCapable":true,"divingCapable":false,"ellipticalOptionCapable":false,"floorsClimbedGoalCapable":true,"ftpCapable":true,"gcj02CourseCapable":true,"glonassCapable":true,"goalCapable":true,"goalFileType":"FIT","golfAppSyncCapable":false,"gpsRouteCapable":true,"handednessCapable":true,"hrZoneCapable":true,"hrvStressCapable":true,"intensityMinutesGoalCapable":true,"lactateThresholdCapable":true,"languageSettingCapable":true,"languageSettingFileType":null,"lowHrAlertCapable":true,"maxHRCapable":true,"maxWorkoutCount":200,"metricsFitFileReceiveCapable":true,"metricsUploadCapable":true,"militaryTimeCapable":false,"moderateIntensityMinutesGoalCapable":true,"nfcCapable":true,"otherOptionCapable":false,"otherSportsCapable":false,"personalRecordCapable":true,"personalRecordFileType":"FIT","poolSwimOptionCapable":false,"powerCurveCapable":true,"powerZonesCapable":true,"pulseOxAllDayCapable":true,"pulseOxOnDemandCapable":true,"pulseOxSleepCapable":true,"remCapable":true,"reminderAlarmCapable":false,"reorderablePagesCapable":false,"restingHRCapable":true,"rideOptionsCapable":false,"runOptionIndoorCapable":false,"runOptionsCapable":false,"runningSegmentCapable":true,"runningSportsCapable":false,"runningWorkoutCapable":true,"scheduleCapable":true,"scheduleFileType":"FIT","segmentCapable":true,"segmentPointCapable":true,"settingCapable":true,"settingFileType":"FIT","sleepTimeCapable":true,"smallFitFileOnlyCapable":false,"sportCapable":true,"sportFileType":"FIT","stairStepperOptionCapable":false,"strengthOptionsCapable":false,"strengthWorkoutCapable":true,"supportedHrZones":["RUNNING","CYCLING","SWIMMING","ALL"],"swimWorkoutCapable":true,"trainingPlanCapable":true,"trainingStatusCapable":true,"trainingStatusPauseCapable":true,"userProfileCapable":false,"userProfileFileType":null,"userTcxExportCapable":false,"vo2MaxBikeCapable":true,"vo2MaxRunCapable":true,"walkOptionCapable":false,"walkingSportsCapable":false,"weatherAlertsCapable":false,"weatherSettingsCapable":false,"workoutCapable":true,"workoutFileType":"FIT","yogaCapable":true,"yogaOptionCapable":false,"heatAndAltitudeAcclimationCapable":true,"trainingLoadBalanceCapable":true,"indoorTrackOptionsCapable":false,"indoorBikeOptionsCapable":false,"indoorWalkOptionsCapable":false,"trainingEffectLabelCapable":true,"pacebandCapable":true,"respirationCapable":true,"openWaterSwimOptionCapable":false,"phoneVerificationCheckRequired":true,"weightGoalCapable":false,"yogaWorkoutCapable":true,"pilatesWorkoutCapable":true,"connectedGPSCapable":false,"diveAppSyncCapable":false,"golfLiveScoringCapable":false,"solarPanelUtilizationCapable":false,"sweatLossCapable":true,"diveAlertCapable":false,"requiresInitialDeviceNickname":false,"defaultSettingsHbaseMigrated":true,"sleepScoreCapable":true,"fitnessAgeV2Capable":true,"intensityMinutesV2Capable":true,"collapsibleControlMenuCapable":false,"measurementUnitSettingCapable":false,"onDeviceSleepCalculationCapable":true,"hiitWorkoutCapable":true,"runningHeartRateZoneCapable":true,"cyclingHeartRateZoneCapable":true,"swimmingHeartRateZoneCapable":true,"defaultHeartRateZoneCapable":true,"cyclingPowerZonesCapable":true,"xcSkiPowerZonesCapable":true,"swimAlgorithmCapable":true,"benchmarkExerciseCapable":true,"spectatorMessagingCapable":true,"ecgCapable":false,"lteLiveEventSharingCapable":false,"sleepFitFileReceiveCapable":true,"secondaryWorkoutStepTargetCapable":true,"assistancePlusCapable":false,"powerGuidanceCapable":true,"airIntegrationCapable":false,"healthSnapshotCapable":true,"racePredictionsRunCapable":true,"vivohubCompatible":false,"stepsTrueUpChartCapable":true,"sportingEventCapable":true,"solarChargeCapable":false,"realTimeSettingsCapable":true,"emergencyCallingCapable":false,"personalRepRecordCapable":true,"hrvStatusCapable":true,"trainingReadinessCapable":true,"publicBetaSoftwareCapable":true,"workoutAudioPromptsCapable":true,"actualStepRecordingCapable":true,"groupTrack2Capable":false,"golfAppPairingCapable":false,"localWindConditionsCapable":false,"multipleGolfCourseCapable":false,"beaconTrackingCapable":false,"batteryStatusCapable":false,"runningPowerZonesCapable":true,"acuteTrainingLoadCapable":true,"criticalSwimSpeedCapable":true,"primaryTrainingCapable":true,"dayOfWeekSleepWindowCapable":true,"golfCourseDownloadCapable":false,"launchMonitorEventSharingCapable":false,"lhaBackupCapable":true,"jetlagCapable":true,"bloodPressureCapable":false,"bbiRecordingCapable":true,"wheelchairCapable":false,"primaryActivityTrackerSettingCapable":true,"setBodyCompositionCapable":false,"acuteChronicWorkloadRatioCapable":true,"sleepNeedCapable":true,"wearableBackupRestoreCapable":true,"cyclingComputerBackupRestoreCapable":false,"descriptiveTrainingEffectCapable":false,"sleepSkinTemperatureCapable":false,"runningLactateThresholdCapable":true,"altitudeAcclimationPercentageCapable":true,"hillScoreAndEnduranceScoreCapable":true,"swimWorkout2Capable":true,"enhancedWorkoutStepCapable":true,"primaryTrainingBackupCapable":true,"hideSoftwareUpdateVersionCapable":false,"adaptiveCoachingScheduleCapable":true,"openWaterSwimWorkoutCapable":false,"multisportWorkoutCapable":false,"fullNameSettingsCapable":true,"bodyBatteryTrueUpCapable":true,"skipLastWorkoutStepInRepeatBlockCapable":true,"adaptiveCoachingStrengthCapable":true,"mobilityWorkoutCapable":false,"coursePlannerCapable":false,"trainableTriathlonEventCapable":false,"passcodeLockCapable":false,"strengthTrainingPlanCapable":true,"breathingDisruptionsCapable":true,"standaloneFirstbeatActivityProcessingCapable":false,"rts20Capable":false,"accessorySensorCanGenerateActivityCapable":false,"garminWellnessCoachCapable":false,"adaptiveCoachingWorkoutSettingsCapable":false,"lifestyleLoggingCapable":false,"topoactiveMapsRealTimeSettingCapable":false,"runningToleranceCapable":false,"rechargeableSensorCapable":false,"lapByCoursePointsCapable":false,"sleepAlignmentCapable":false,"runningEconomyCapable":false,"projectedRaceTimePredictionCapable":false,"cyclingAbilityCapable":false,"archeryXCapable":false,"registrationMetricsBackfillUnsupported":false,"healthStatusCapable":true,"adaptiveCoachingFitnessCapable":false,"vbtCapable":false,"healthStatusTrueUpCapable":false,"walkWorkoutCapable":false,"adaptiveCoachingNoviceCapable":false,"adaptiveCoachingWalkCapable":false,"rowingCapable":false,"gearTrackingCapable":false,"liveTrackCapable":true,"adaptiveCoachingStrengthReceiveCapable":false,"incidentDetectionCapable":true,"garminEpicsCapable":false,"syncActivityEditsCapable":false,"startActivityCapable":false,"datasource":"C","deviceStatus":"active","registeredDate":1737031539000,"actualProductSku":"010-02809-10","vivohubConfigurable":null,"isPrimaryUser":false,"currentFirmwareVersion":"27.09","currentFirmwareVersionMajor":27,"currentFirmwareVersionMinor":9,"prePairedWithHRM":false,"unRetirable":false,"corporateDevice":false,"otherAssociation":false,"serialNumber":"ABC123456","shortName":null,"displayName":"anonymous","deviceId":12345678,"activeInd":1,"primaryActivityTrackerIndicator":true,"unitId":12345678,"wifiSetup":false}]'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=86400
@@ -30,24 +30,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c475fda3a614eca-JNB
+                - 9c4798712e3dda14-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 09:55:26 GMT
+                - Tue, 27 Jan 2026 10:34:04 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=OqZ4fmqU594P02CoKwMeJVpZLfIsgdJPX%2F4%2BvCOAvFQXABYKW8ZI4RU1pJ8J61TPor1syM%2FnBkfLBOegu7kJxkpsG8wPDX4nP%2BrBl0pxPUOM6sWh1Vv4WrxxFFmOUwSDIBBIa%2FxhlqxgOoJJjGCrMlqdtw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=hRjPPsATKDv9w8T221vP19vc%2FZV5rt1nbrucoBnR3jJeJNcz7diXrPoBAONoFGa6p%2FdKM83e6lJPswQFwM3aKx1NFqibDtKV%2F5WXxyeI%2BLRwRqH1OFM7v5K44RCqql25CivYh5cYAJWatXTGiCb0Jn%2BEDA%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 321.047217ms
+        duration: 351.395064ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -77,24 +77,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c475fdc3d114eca-JNB
+                - 9c4798736f03da14-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 09:55:27 GMT
+                - Tue, 27 Jan 2026 10:34:05 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=6LiuRQwT7DxJ5ECpJjwQsFVp3ZAesT0rxFjIGUYTHY81j8So5pbGClW5afrg5pmPhr3ipVRNCdKM1X2He%2B7LkUQ%2F8Ob9N9vexFquVjsErkjsojOXN7cm5OxkOE%2BiP5zBHWCeNzh6l3yxAWcb2iW319Q%2B0g%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=WSfcVBmAV5m4%2FBp3GYyrmibM%2FfiFn6LogP6gHnTn9Lx%2F2n1xR9uqSrVi2GzbubMI6DHJoyzXhS4aEWYiwL2qAoMcmdWLVhpCEv7N1XF432Q6TkaUYUhRiwPWgNO8efYq4ZNQhFZTxqKankwquf9QvU1CYA%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 381.788014ms
+        duration: 446.085893ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -124,24 +124,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c475fde9fc74eca-JNB
+                - 9c4798763a63da14-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 09:55:27 GMT
+                - Tue, 27 Jan 2026 10:34:05 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=%2FHY5FnKnnFBd3qZv3pYdRcMd7f4k%2BNfeYKAhj23iQHxg52TJIuL4lPKL3%2BxYQfL3ytQyfAK56wLdrpOTVne166MLhscnr5LlrLcPyWkxo0Jtw%2Bl7jpPoLVC1BmZSKll5p2FjLVEbHY5uUX3C62vis6ui1A%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=%2BjFelSd%2BTu6TIUKU0upk5HC2I%2BMiBi2j3Fl7JgeKlKU7Y1o9CSm0mIWl3RCWFxCx6OA0X2fDHeIaR%2FvdFJ9HfS%2BvplysjiRPIVeNk7ZFdnUcFEtMYyugqKs2OE4loj6h3geD5D67FXTzNCa0oB8v6%2BKcLw%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 359.581215ms
+        duration: 369.322592ms
     - id: 3
       request:
         proto: HTTP/1.1
@@ -171,21 +171,21 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c475fe0ea8f4eca-JNB
+                - 9c4798788bf2da14-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 09:55:27 GMT
+                - Tue, 27 Jan 2026 10:34:05 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=eh8Q%2BwESutmZZ4v%2FHBxH%2BS%2B9voQw8UGq%2FJTC%2BIzxzWAglE%2FAqvNtHVCftpYZem39QkykzsQqm4nphYVPUF1bFCb5i5KtsEsXhyStPniRKdEydJvZlw%2BLY2RASZAqw3iqjl2L5itBKbmoN8%2BaufVwoM13XA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=WZThedChInuM3XhblF0sl%2BIdc%2FgdM9YwhJCVpaBNSNN4VnZAJUwPeJyfBoVIom5uSd8WXhCvuEG2ZK4BYreOfMT7ZzciZbFUEgR1a7d%2FtLJh1tWXKx40GcRjiueE28yYgg3zS5%2BHyfB8WZ8%2BPZXQ0L%2F2vA%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 363.971257ms
+        duration: 350.635587ms

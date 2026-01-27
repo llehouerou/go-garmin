@@ -5,6 +5,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+
+	garmin "github.com/llehouerou/go-garmin"
 )
 
 var metricsCmd = &cobra.Command{
@@ -24,6 +26,14 @@ var metricsEnduranceCmd = &cobra.Command{
 	Short: "Get endurance score",
 	Args:  cobra.MaximumNArgs(1),
 	RunE:  runMetricsEndurance,
+}
+
+var metricsEnduranceStatsCmd = &cobra.Command{
+	Use:   "endurance-stats <start> <end>",
+	Short: "Get endurance score stats for a date range",
+	Long:  "Get endurance score stats for a date range. Use --weekly or --daily for aggregation (default: weekly).",
+	Args:  cobra.ExactArgs(2),
+	RunE:  runMetricsEnduranceStats,
 }
 
 var metricsHillCmd = &cobra.Command{
@@ -76,8 +86,10 @@ var metricsAcclimationCmd = &cobra.Command{
 }
 
 func init() {
+	metricsEnduranceStatsCmd.Flags().Bool("daily", false, "Use daily aggregation")
 	metricsCmd.AddCommand(metricsReadinessCmd)
 	metricsCmd.AddCommand(metricsEnduranceCmd)
+	metricsCmd.AddCommand(metricsEnduranceStatsCmd)
 	metricsCmd.AddCommand(metricsHillCmd)
 	metricsCmd.AddCommand(metricsVO2MaxCmd)
 	metricsCmd.AddCommand(metricsVO2MaxRangeCmd)
@@ -118,6 +130,36 @@ func runMetricsEndurance(cmd *cobra.Command, args []string) error {
 	}
 
 	data, err := client.Metrics.GetEnduranceScore(cmd.Context(), date)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(data)
+}
+
+func runMetricsEnduranceStats(cmd *cobra.Command, args []string) error {
+	startDate, err := time.Parse("2006-01-02", args[0])
+	if err != nil {
+		return fmt.Errorf("invalid start date: %s", args[0])
+	}
+
+	endDate, err := time.Parse("2006-01-02", args[1])
+	if err != nil {
+		return fmt.Errorf("invalid end date: %s", args[1])
+	}
+
+	daily, _ := cmd.Flags().GetBool("daily")
+	aggregation := garmin.AggregationWeekly
+	if daily {
+		aggregation = garmin.AggregationDaily
+	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	data, err := client.Metrics.GetEnduranceScoreStats(cmd.Context(), startDate, endDate, aggregation)
 	if err != nil {
 		return err
 	}
