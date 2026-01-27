@@ -141,16 +141,16 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/metrics-service/metrics/trainingreadiness/{date}` | Training readiness |
-| [ ] | GET | `/metrics-service/metrics/endurancescore?calendarDate={date}` | Endurance score |
-| [ ] | GET | `/metrics-service/metrics/hillscore?calendarDate={date}` | Hill score |
-| [ ] | GET | `/metrics-service/metrics/racepredictions?calendarDate={date}` | Race predictions |
-| [ ] | GET | `/metrics-service/metrics/maxmet/daily/{start}/{end}` | Daily VO2 max/MET |
-| [ ] | GET | `/metrics-service/metrics/maxmet/latest/{date}` | Latest VO2 max/MET |
-| [ ] | GET | `/metrics-service/metrics/trainingstatus/aggregated` | Training status aggregated |
-| [ ] | GET | `/metrics-service/metrics/trainingstatus/daily/{date}` | Daily training status |
-| [ ] | GET | `/metrics-service/metrics/trainingloadbalance/latest/{date}` | Training load balance |
-| [ ] | GET | `/metrics-service/metrics/heataltitudeacclimation/latest/{date}` | Heat/altitude acclimation |
+| [x] | GET | `/metrics-service/metrics/trainingreadiness/{date}` | Training readiness |
+| [x] | GET | `/metrics-service/metrics/endurancescore?calendarDate={date}` | Endurance score |
+| [x] | GET | `/metrics-service/metrics/hillscore?calendarDate={date}` | Hill score |
+| [ ] | GET | `/metrics-service/metrics/racepredictions/latest/{displayName}` | Race predictions (requires display name) |
+| [x] | GET | `/metrics-service/metrics/maxmet/daily/{start}/{end}` | Daily VO2 max/MET |
+| [x] | GET | `/metrics-service/metrics/maxmet/latest/{date}` | Latest VO2 max/MET |
+| [x] | GET | `/metrics-service/metrics/trainingstatus/aggregated/{date}` | Training status aggregated |
+| [x] | GET | `/metrics-service/metrics/trainingstatus/daily/{date}` | Daily training status |
+| [x] | GET | `/metrics-service/metrics/trainingloadbalance/latest/{date}` | Training load balance |
+| [x] | GET | `/metrics-service/metrics/heataltitudeacclimation/latest/{date}` | Heat/altitude acclimation |
 
 ---
 

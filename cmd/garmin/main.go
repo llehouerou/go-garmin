@@ -14,6 +14,7 @@ Commands:
     wellness    Wellness data (stress, body battery, heart rate)
     hrv         HRV data (daily, range)
     weight      Weight data (daily, range)
+    metrics     Metrics data (training readiness, VO2 max, scores)
     activities  Activities data (list, details, weather, splits)
 
 Run 'garmin <command> -h' for command-specific help.
@@ -40,6 +41,8 @@ func main() {
 		hrvCmd(os.Args[2:])
 	case "weight":
 		weightCmd(os.Args[2:])
+	case "metrics":
+		metricsCmd(os.Args[2:])
 	case "-h", "--help", "help":
 		fmt.Print(usage)
 	default:

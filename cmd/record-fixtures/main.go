@@ -95,6 +95,10 @@ func recordFixtures(email, password string, date time.Time) error {
 		return fmt.Errorf("weight: %w", err)
 	}
 
+	if err := recordMetrics(ctx, session, date); err != nil {
+		return fmt.Errorf("metrics: %w", err)
+	}
+
 	return nil
 }
 
@@ -376,6 +380,113 @@ func recordActivityDetails(ctx context.Context, client *http.Client, domain, tok
 	if err != nil {
 		fmt.Printf("  Warning: activity weather: %v\n", err)
 	}
+}
+
+func recordMetrics(ctx context.Context, session []byte, date time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("metrics")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+	dateStr := date.Format("2006-01-02")
+
+	// Training readiness
+	fmt.Printf("  Getting training readiness for %s...\n", dateStr)
+	trainingReadinessURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/trainingreadiness/%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, trainingReadinessURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: training readiness: %v\n", err)
+	}
+
+	// Endurance score
+	fmt.Printf("  Getting endurance score for %s...\n", dateStr)
+	enduranceURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/endurancescore?calendarDate=%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, enduranceURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: endurance score: %v\n", err)
+	}
+
+	// Hill score
+	fmt.Printf("  Getting hill score for %s...\n", dateStr)
+	hillURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/hillscore?calendarDate=%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, hillURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: hill score: %v\n", err)
+	}
+
+	// Race predictions - skipped, requires display name from user profile
+	// URL: /metrics-service/metrics/racepredictions/latest/{displayName}
+
+	// VO2 max / MET - latest
+	fmt.Printf("  Getting latest VO2 max for %s...\n", dateStr)
+	maxMetLatestURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/maxmet/latest/%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, maxMetLatestURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: maxmet latest: %v\n", err)
+	}
+
+	// VO2 max / MET - daily range (last 30 days)
+	startDate := date.AddDate(0, 0, -30)
+	fmt.Printf("  Getting VO2 max range from %s to %s...\n", startDate.Format("2006-01-02"), dateStr)
+	maxMetDailyURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/maxmet/daily/%s/%s",
+		authState.Domain, startDate.Format("2006-01-02"), dateStr)
+	_, err = doAPIRequest(ctx, httpClient, maxMetDailyURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: maxmet daily: %v\n", err)
+	}
+
+	// Training status - aggregated (requires date in path)
+	fmt.Printf("  Getting aggregated training status for %s...\n", dateStr)
+	trainingStatusAggURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/trainingstatus/aggregated/%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, trainingStatusAggURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: training status aggregated: %v\n", err)
+	}
+
+	// Training status - daily
+	fmt.Printf("  Getting daily training status for %s...\n", dateStr)
+	trainingStatusDailyURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/trainingstatus/daily/%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, trainingStatusDailyURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: training status daily: %v\n", err)
+	}
+
+	// Training load balance
+	fmt.Printf("  Getting training load balance for %s...\n", dateStr)
+	loadBalanceURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/trainingloadbalance/latest/%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, loadBalanceURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: training load balance: %v\n", err)
+	}
+
+	// Heat/altitude acclimation
+	fmt.Printf("  Getting heat/altitude acclimation for %s...\n", dateStr)
+	acclimationURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/heataltitudeacclimation/latest/%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, acclimationURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: heat/altitude acclimation: %v\n", err)
+	}
+
+	return nil
 }
 
 func doAPIRequest(ctx context.Context, client *http.Client, url, token string) ([]map[string]any, error) {

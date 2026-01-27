@@ -1,0 +1,432 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/metrics-service/metrics/trainingreadiness/2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"userProfilePK":12345678,"calendarDate":"2026-01-27","timestamp":"2026-01-27T02:40:15.0","timestampLocal":"2026-01-27T06:40:15.0","deviceId":3490854130,"level":"HIGH","feedbackLong":"HIGH_RT_AVAILABLE_SS_HIGHEST","feedbackShort":"RESTED_AND_READY","score":91,"sleepScore":96,"sleepScoreFactorPercent":96,"sleepScoreFactorFeedback":"VERY_GOOD","recoveryTime":0,"recoveryTimeFactorPercent":100,"recoveryTimeFactorFeedback":"VERY_GOOD","acwrFactorPercent":85,"acwrFactorFeedback":"GOOD","acuteLoad":249,"stressHistoryFactorPercent":87,"stressHistoryFactorFeedback":"GOOD","hrvFactorPercent":96,"hrvFactorFeedback":"GOOD","hrvWeeklyAverage":53,"sleepHistoryFactorPercent":69,"sleepHistoryFactorFeedback":"MODERATE","validSleep":true,"inputContext":"AFTER_WAKEUP_RESET","primaryActivityTracker":true,"recoveryTimeChangePhrase":"REACHED_ZERO","sleepHistoryFactorFeedbackPhrase":null,"hrvFactorFeedbackPhrase":null,"stressHistoryFactorFeedbackPhrase":null,"acwrFactorFeedbackPhrase":null,"recoveryTimeFactorFeedbackPhrase":null,"sleepScoreFactorFeedbackPhrase":null},{"userProfilePK":12345678,"calendarDate":"2026-01-27","timestamp":"2026-01-26T23:59:37.0","timestampLocal":"2026-01-27T03:59:37.0","deviceId":3490854130,"level":"MODERATE","feedbackLong":"UNKNOWN","feedbackShort":"UNKNOWN","score":64,"sleepScore":null,"sleepScoreFactorPercent":0,"sleepScoreFactorFeedback":"NONE","recoveryTime":70,"recoveryTimeFactorPercent":98,"recoveryTimeFactorFeedback":"GOOD","acwrFactorPercent":85,"acwrFactorFeedback":"GOOD","acuteLoad":298,"stressHistoryFactorPercent":77,"stressHistoryFactorFeedback":"GOOD","hrvFactorPercent":100,"hrvFactorFeedback":"VERY_GOOD","hrvWeeklyAverage":51,"sleepHistoryFactorPercent":69,"sleepHistoryFactorFeedback":"MODERATE","validSleep":false,"inputContext":"UPDATE_REALTIME_VARIABLES","primaryActivityTracker":true,"recoveryTimeChangePhrase":null,"sleepHistoryFactorFeedbackPhrase":null,"hrvFactorFeedbackPhrase":null,"stressHistoryFactorFeedbackPhrase":null,"acwrFactorFeedbackPhrase":null,"recoveryTimeFactorFeedbackPhrase":null,"sleepScoreFactorFeedbackPhrase":null},{"userProfilePK":12345678,"calendarDate":"2026-01-27","timestamp":"2026-01-26T20:59:37.0","timestampLocal":"2026-01-27T00:59:37.0","deviceId":3490854130,"level":"HIGH","feedbackLong":"HIGH_RT_AVAILABLE_SS_UNKNOWN","feedbackShort":"WELL_RECOVERED","score":75,"sleepScore":null,"sleepScoreFactorPercent":0,"sleepScoreFactorFeedback":"NONE","recoveryTime":250,"recoveryTimeFactorPercent":93,"recoveryTimeFactorFeedback":"GOOD","acwrFactorPercent":85,"acwrFactorFeedback":"GOOD","acuteLoad":298,"stressHistoryFactorPercent":77,"stressHistoryFactorFeedback":"GOOD","hrvFactorPercent":100,"hrvFactorFeedback":"VERY_GOOD","hrvWeeklyAverage":51,"sleepHistoryFactorPercent":69,"sleepHistoryFactorFeedback":"MODERATE","validSleep":false,"inputContext":"UPDATE_REALTIME_VARIABLES","primaryActivityTracker":true,"recoveryTimeChangePhrase":null,"sleepHistoryFactorFeedbackPhrase":null,"hrvFactorFeedbackPhrase":null,"stressHistoryFactorFeedbackPhrase":null,"acwrFactorFeedbackPhrase":null,"recoveryTimeFactorFeedbackPhrase":null,"sleepScoreFactorFeedbackPhrase":null}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c463ed75fcedf1a-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Tue, 27 Jan 2026 06:38:08 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=qGJW445FPf0KeCwHY%2Fcadvy0rGGMrb4G5UYtawxAZEDeeMY0gVJdiLI4ogmH8TY2TgE1VMkh%2BxCjTtc7bT9cCUNjebmFzZ6vaLzTqBDqf14dZZnE5fzjx71aEG9SrEb1T%2BUbna7lDvcTaRob%2FgpJ5mJHLQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 310.590915ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            calendarDate:
+                - "2026-01-27"
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/metrics-service/metrics/endurancescore?calendarDate=2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"userProfilePK":12345678,"deviceId":3490854130,"calendarDate":"2026-01-27","overallScore":5549,"classification":2,"feedbackPhrase":30,"primaryTrainingDevice":true,"gaugeLowerLimit":3570,"classificationLowerLimitIntermediate":5100,"classificationLowerLimitTrained":5800,"classificationLowerLimitWellTrained":6500,"classificationLowerLimitExpert":7200,"classificationLowerLimitSuperior":7900,"classificationLowerLimitElite":8600,"gaugeUpperLimit":10320,"contributors":[{"activityTypeId":null,"group":0,"contribution":94.29},{"activityTypeId":3,"group":null,"contribution":5.71},{"activityTypeId":null,"group":8,"contribution":0.0}]}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c463ed94ed6df1a-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Tue, 27 Jan 2026 06:38:09 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=%2Fe3lAuTJgS4vLAmnbPFst0HxheIy%2BiI3m4puNshLJnmghVr%2FAJdPigQHDiRSe7S16ekB19kujfZIVK05bMiWJ1ZzrseNg4UnTP9sNfA6RvwQFM5vO6ZKmGop%2FsBYQlQ88G82UPEHzWqgjT%2BYqmjoS7bnaQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 310.498004ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            calendarDate:
+                - "2026-01-27"
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/metrics-service/metrics/hillscore?calendarDate=2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"userProfilePK":12345678,"deviceId":3490854130,"calendarDate":"2026-01-27","strengthScore":7,"enduranceScore":11,"hillScoreClassificationId":2,"overallScore":32,"hillScoreFeedbackPhraseId":4,"vo2Max":50.0,"vo2MaxPreciseValue":50.1,"primaryTrainingDevice":true}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c463edb3dc1df1a-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Tue, 27 Jan 2026 06:38:09 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=BjuuzO74kMZOdoFaP7dK2qV9iM%2FcggGC2BtOfjbFlcBijQpPwQyXkqznVBMhwq%2ByhhTCaWNf19gZXGE206k3iVUmncLFIEUmb4PyZQD%2BKFskD%2BXOtz3pCIBU40JKa%2BHXzKlPO6g1rTWhw4hphs7LVmZlOQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 346.324105ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/metrics-service/metrics/maxmet/latest/2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"userId":12345678,"generic":{"calendarDate":"2026-01-25","vo2MaxPreciseValue":50.1,"vo2MaxValue":50.0,"fitnessAge":null,"fitnessAgeDescription":null,"maxMetCategory":0},"cycling":null,"heatAltitudeAcclimation":{"calendarDate":"2026-01-27","altitudeAcclimationDate":"2026-01-26","previousAltitudeAcclimationDate":"2026-01-26","heatAcclimationDate":"2026-01-26","previousHeatAcclimationDate":"2026-01-25","altitudeAcclimation":0,"previousAltitudeAcclimation":0,"heatAcclimationPercentage":100,"previousHeatAcclimationPercentage":100,"heatTrend":"ACCLIMATIZED","altitudeTrend":null,"currentAltitude":0,"previousAltitude":0,"acclimationPercentage":0,"previousAcclimationPercentage":0,"altitudeAcclimationLocalTimestamp":"2026-01-27T00:05:37.0"}}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c463edd6e3fdf1a-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Tue, 27 Jan 2026 06:38:09 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=PbC8rJf3X3nEaTbqiFN27oj1DP51tNk3pS69hrkMG8wdEwgad3NFC4eBJ38piLdFCnUgauC6%2BKpLcmxnLuwZ52LIq88jGt%2FcZJh25Q29JRkjk19pZ%2F3oyZXOwVWIYqEG634unlRfMa%2B%2BLVaswpdh8JTDSQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 367.320544ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/metrics-service/metrics/maxmet/daily/2025-12-28/2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"userId":12345678,"generic":{"calendarDate":"2026-01-19","vo2MaxPreciseValue":50.4,"vo2MaxValue":50.0,"fitnessAge":null,"fitnessAgeDescription":null,"maxMetCategory":0},"cycling":null,"heatAltitudeAcclimation":{"calendarDate":"2026-01-19","altitudeAcclimationDate":"2026-01-19","previousAltitudeAcclimationDate":"2026-01-19","heatAcclimationDate":"2026-01-19","previousHeatAcclimationDate":"2026-01-17","altitudeAcclimation":0,"previousAltitudeAcclimation":850,"heatAcclimationPercentage":29,"previousHeatAcclimationPercentage":5,"heatTrend":"ACCLIMATIZING","altitudeTrend":null,"currentAltitude":64,"previousAltitude":0,"acclimationPercentage":0,"previousAcclimationPercentage":0,"altitudeAcclimationLocalTimestamp":"2026-01-19T23:56:47.0"}},{"userId":12345678,"generic":{"calendarDate":"2026-01-21","vo2MaxPreciseValue":50.2,"vo2MaxValue":50.0,"fitnessAge":null,"fitnessAgeDescription":null,"maxMetCategory":0},"cycling":null,"heatAltitudeAcclimation":{"calendarDate":"2026-01-21","altitudeAcclimationDate":"2026-01-21","previousAltitudeAcclimationDate":"2026-01-21","heatAcclimationDate":"2026-01-21","previousHeatAcclimationDate":"2026-01-19","altitudeAcclimation":0,"previousAltitudeAcclimation":0,"heatAcclimationPercentage":54,"previousHeatAcclimationPercentage":29,"heatTrend":"ACCLIMATIZING","altitudeTrend":null,"currentAltitude":63,"previousAltitude":0,"acclimationPercentage":0,"previousAcclimationPercentage":0,"altitudeAcclimationLocalTimestamp":"2026-01-21T23:57:03.0"}},{"userId":12345678,"generic":{"calendarDate":"2026-01-24","vo2MaxPreciseValue":50.1,"vo2MaxValue":50.0,"fitnessAge":null,"fitnessAgeDescription":null,"maxMetCategory":0},"cycling":null,"heatAltitudeAcclimation":{"calendarDate":"2026-01-24","altitudeAcclimationDate":"2026-01-24","previousAltitudeAcclimationDate":"2026-01-24","heatAcclimationDate":"2026-01-24","previousHeatAcclimationDate":"2026-01-22","altitudeAcclimation":0,"previousAltitudeAcclimation":0,"heatAcclimationPercentage":78,"previousHeatAcclimationPercentage":53,"heatTrend":"ACCLIMATIZING","altitudeTrend":null,"currentAltitude":72,"previousAltitude":0,"acclimationPercentage":0,"previousAcclimationPercentage":0,"altitudeAcclimationLocalTimestamp":"2026-01-24T23:55:20.0"}},{"userId":12345678,"generic":{"calendarDate":"2026-01-25","vo2MaxPreciseValue":50.1,"vo2MaxValue":50.0,"fitnessAge":null,"fitnessAgeDescription":null,"maxMetCategory":0},"cycling":null,"heatAltitudeAcclimation":{"calendarDate":"2026-01-25","altitudeAcclimationDate":"2026-01-25","previousAltitudeAcclimationDate":"2026-01-25","heatAcclimationDate":"2026-01-25","previousHeatAcclimationDate":"2026-01-25","altitudeAcclimation":0,"previousAltitudeAcclimation":0,"heatAcclimationPercentage":100,"previousHeatAcclimationPercentage":78,"heatTrend":"ACCLIMATIZING","altitudeTrend":null,"currentAltitude":67,"previousAltitude":0,"acclimationPercentage":0,"previousAcclimationPercentage":0,"altitudeAcclimationLocalTimestamp":"2026-01-25T23:58:38.0"}}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c463edfbf3cdf1a-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Tue, 27 Jan 2026 06:38:10 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=9p2mG7MJ760bZ2TBPjlyDHyF9EoGmF80NPfG44QWuCmmJ3bdGDcOXVCj2WkFDqcqtI%2FeV5U%2B3EYDvJy2ItBI78JRZsVaE2hWbBbMnWbXpg%2FMiBcEEpharRm%2FPKx8OwOvr8gPMKtv0N3mva3O%2F0mhdwu0ig%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 358.490544ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/metrics-service/metrics/trainingstatus/aggregated/2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"userId":12345678,"mostRecentVO2Max":{"userId":12345678,"generic":{"calendarDate":"2026-01-25","vo2MaxPreciseValue":50.1,"vo2MaxValue":50.0,"fitnessAge":null,"fitnessAgeDescription":null,"maxMetCategory":0},"cycling":null,"heatAltitudeAcclimation":{"calendarDate":"2026-01-27","altitudeAcclimationDate":"2026-01-26","previousAltitudeAcclimationDate":"2026-01-26","heatAcclimationDate":"2026-01-26","previousHeatAcclimationDate":"2026-01-25","altitudeAcclimation":0,"previousAltitudeAcclimation":0,"heatAcclimationPercentage":100,"previousHeatAcclimationPercentage":100,"heatTrend":"ACCLIMATIZED","altitudeTrend":null,"currentAltitude":0,"previousAltitude":0,"acclimationPercentage":0,"previousAcclimationPercentage":0,"altitudeAcclimationLocalTimestamp":"2026-01-27T00:05:37.0"}},"mostRecentTrainingLoadBalance":{"userId":12345678,"metricsTrainingLoadBalanceDTOMap":{"3490854130":{"calendarDate":"2026-01-27","deviceId":3490854130,"monthlyLoadAerobicLow":187.12384,"monthlyLoadAerobicHigh":209.70392,"monthlyLoadAnaerobic":0.0,"monthlyLoadAerobicLowTargetMin":186,"monthlyLoadAerobicLowTargetMax":449,"monthlyLoadAerobicHighTargetMin":295,"monthlyLoadAerobicHighTargetMax":558,"monthlyLoadAnaerobicTargetMin":0,"monthlyLoadAnaerobicTargetMax":262,"trainingBalanceFeedbackPhrase":"AEROBIC_HIGH_SHORTAGE","primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":3490854130,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}]},"mostRecentTrainingStatus":{"userId":12345678,"latestTrainingStatusData":{"3490854130":{"calendarDate":"2026-01-27","sinceDate":"2026-01-25","weeklyTrainingLoad":null,"trainingStatus":7,"timestamp":1769481615000,"deviceId":3490854130,"loadTunnelMin":null,"loadTunnelMax":null,"loadLevelTrend":null,"sport":null,"subSport":null,"fitnessTrendSport":"NONE","fitnessTrend":0,"trainingStatusFeedbackPhrase":"PRODUCTIVE_1","trainingPaused":false,"acuteTrainingLoadDTO":{"acwrPercent":47,"acwrStatus":"OPTIMAL","acwrStatusFeedback":"FEEDBACK_2","dailyTrainingLoadAcute":249,"maxTrainingLoadChronic":328.5,"minTrainingLoadChronic":175.20000000000002,"dailyTrainingLoadChronic":219,"dailyAcuteChronicWorkloadRatio":1.1},"primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":3490854130,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}],"showSelector":false,"lastPrimarySyncDate":"2026-01-27"},"heatAltitudeAcclimationDTO":null}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c463ee1ff7fdf1a-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Tue, 27 Jan 2026 06:38:10 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=ynhgwa%2FoY4p%2BC1XbTpL5WwEbEbsAbLR7oecUEjM7XiHOl4yNpADmK5OwZTce00uf6Pu8A94AhGTeI3SOPBT3uIiOb7zoOHKNRsUNiZYUGtGJx4Wzff9ZAjcJmSXXA9R6VM2UODSlX%2Bqj9lrouLuj4XOQHw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 403.435418ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/metrics-service/metrics/trainingstatus/daily/2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"userId":12345678,"latestTrainingStatusData":{"3490854130":{"calendarDate":"2026-01-27","sinceDate":"2026-01-25","weeklyTrainingLoad":null,"trainingStatus":7,"timestamp":1769481615000,"deviceId":3490854130,"loadTunnelMin":null,"loadTunnelMax":null,"loadLevelTrend":null,"sport":null,"subSport":null,"fitnessTrendSport":"NONE","fitnessTrend":0,"trainingStatusFeedbackPhrase":"PRODUCTIVE_1","trainingPaused":false,"acuteTrainingLoadDTO":{"acwrPercent":47,"acwrStatus":"OPTIMAL","acwrStatusFeedback":"FEEDBACK_2","dailyTrainingLoadAcute":249,"maxTrainingLoadChronic":328.5,"minTrainingLoadChronic":175.20000000000002,"dailyTrainingLoadChronic":219,"dailyAcuteChronicWorkloadRatio":1.1},"primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":3490854130,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}],"showSelector":false,"lastPrimarySyncDate":"2026-01-27"}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c463ee47955df1a-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Tue, 27 Jan 2026 06:38:10 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=bJ31RmpUzXG5RiQVZMNHcZjYhC1BW2iQs46Q8DEjPGIroK6RanbAAhJM2i0yDQYls2HMqNFL9WDJx3XFSsQq7NS3LRs2nq185P4mMG%2FEqsWUV6dzDGaeWrxu1LH1HCViCdgk%2BkCFDvv7ErKlpijwC0Jr2g%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 328.729157ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/metrics-service/metrics/trainingloadbalance/latest/2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"userId":12345678,"metricsTrainingLoadBalanceDTOMap":{"3490854130":{"calendarDate":"2026-01-27","deviceId":3490854130,"monthlyLoadAerobicLow":187.12384,"monthlyLoadAerobicHigh":209.70392,"monthlyLoadAnaerobic":0.0,"monthlyLoadAerobicLowTargetMin":186,"monthlyLoadAerobicLowTargetMax":449,"monthlyLoadAerobicHighTargetMin":295,"monthlyLoadAerobicHighTargetMax":558,"monthlyLoadAnaerobicTargetMin":0,"monthlyLoadAnaerobicTargetMax":262,"trainingBalanceFeedbackPhrase":"AEROBIC_HIGH_SHORTAGE","primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":3490854130,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}]}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c463ee689cadf1a-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Tue, 27 Jan 2026 06:38:11 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=VPf63q1IG9CYrMfH9l6c0p4n5TOuInELtxFX6tbkKIXQYomnQV9uFEW85h%2F6bt7lUvmJi6H3XKvi%2FUVrbeu%2B0P0b9%2FMTblTNJN5oqGksbPYgtk%2FV5sSnLzC3v7M93lKb3TySDE%2Bkx3XmyHZnSs%2ByLGajEA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 344.454566ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/metrics-service/metrics/heataltitudeacclimation/latest/2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"calendarDate":"2026-01-27","altitudeAcclimationDate":"2026-01-26","previousAltitudeAcclimationDate":"2026-01-26","heatAcclimationDate":"2026-01-26","previousHeatAcclimationDate":"2026-01-25","altitudeAcclimation":0,"previousAltitudeAcclimation":0,"heatAcclimationPercentage":100,"previousHeatAcclimationPercentage":100,"heatTrend":"ACCLIMATIZED","altitudeTrend":null,"currentAltitude":0,"previousAltitude":0,"acclimationPercentage":0,"previousAcclimationPercentage":0,"altitudeAcclimationLocalTimestamp":"2026-01-27T00:05:37.0"}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c463ee8b95edf1a-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Tue, 27 Jan 2026 06:38:11 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=sKD%2FSaafHH%2FExvji1YtFk82dyuJsTT47chDYy%2BgpMnapwlfP0F1iEJ9EmRuZog4F3ZJjJZXxn%2BsrRZGzIjDy0IZFW9iDpd3hLlhHAZWeiFtorMp7bn53JO1znAmqihIYaumyBf2Iy5TCMnNEZAC5wTWQGw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 340.896075ms

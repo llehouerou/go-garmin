@@ -550,3 +550,312 @@ func TestIntegration_Weight_GetRange(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_Metrics_GetTrainingReadiness(t *testing.T) {
+	skipIfNoCassette(t, "metrics")
+
+	rec, err := testutil.NewRecorder("metrics", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	readiness, err := client.Metrics.GetTrainingReadiness(ctx, date)
+	if err != nil {
+		t.Fatalf("GetTrainingReadiness failed: %v", err)
+	}
+
+	if readiness == nil {
+		t.Fatal("expected training readiness data, got nil")
+	}
+
+	if len(readiness.Entries) == 0 {
+		t.Error("expected Entries to have data")
+	}
+
+	// Verify first entry has expected fields
+	if len(readiness.Entries) > 0 {
+		entry := readiness.Entries[0]
+		if entry.CalendarDate == "" {
+			t.Error("expected entry CalendarDate to be set")
+		}
+		if entry.Level == "" {
+			t.Error("expected entry Level to be set")
+		}
+		if entry.Score == 0 {
+			t.Error("expected entry Score to be set")
+		}
+	}
+
+	if readiness.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Metrics_GetEnduranceScore(t *testing.T) {
+	skipIfNoCassette(t, "metrics")
+
+	rec, err := testutil.NewRecorder("metrics", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	score, err := client.Metrics.GetEnduranceScore(ctx, date)
+	if err != nil {
+		t.Fatalf("GetEnduranceScore failed: %v", err)
+	}
+
+	if score == nil {
+		t.Fatal("expected endurance score data, got nil")
+	}
+
+	if score.CalendarDate == "" {
+		t.Error("expected CalendarDate to be set")
+	}
+	if score.OverallScore == 0 {
+		t.Error("expected OverallScore to be set")
+	}
+
+	if score.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Metrics_GetHillScore(t *testing.T) {
+	skipIfNoCassette(t, "metrics")
+
+	rec, err := testutil.NewRecorder("metrics", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	score, err := client.Metrics.GetHillScore(ctx, date)
+	if err != nil {
+		t.Fatalf("GetHillScore failed: %v", err)
+	}
+
+	if score == nil {
+		t.Fatal("expected hill score data, got nil")
+	}
+
+	if score.CalendarDate == "" {
+		t.Error("expected CalendarDate to be set")
+	}
+	if score.VO2Max == 0 {
+		t.Error("expected VO2Max to be set")
+	}
+
+	if score.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Metrics_GetMaxMetLatest(t *testing.T) {
+	skipIfNoCassette(t, "metrics")
+
+	rec, err := testutil.NewRecorder("metrics", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	maxMet, err := client.Metrics.GetMaxMetLatest(ctx, date)
+	if err != nil {
+		t.Fatalf("GetMaxMetLatest failed: %v", err)
+	}
+
+	if maxMet == nil {
+		t.Fatal("expected max met data, got nil")
+	}
+
+	if maxMet.Generic == nil {
+		t.Error("expected Generic to be set")
+	}
+	if maxMet.Generic != nil && maxMet.Generic.VO2MaxValue == 0 {
+		t.Error("expected Generic.VO2MaxValue to be set")
+	}
+
+	if maxMet.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Metrics_GetMaxMetDaily(t *testing.T) {
+	skipIfNoCassette(t, "metrics")
+
+	rec, err := testutil.NewRecorder("metrics", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	endDate := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	startDate := endDate.AddDate(0, 0, -30)
+
+	maxMet, err := client.Metrics.GetMaxMetDaily(ctx, startDate, endDate)
+	if err != nil {
+		t.Fatalf("GetMaxMetDaily failed: %v", err)
+	}
+
+	if maxMet == nil {
+		t.Fatal("expected max met daily data, got nil")
+	}
+
+	if len(maxMet.Entries) == 0 {
+		t.Error("expected Entries to have data")
+	}
+
+	if maxMet.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Metrics_GetTrainingStatusAggregated(t *testing.T) {
+	skipIfNoCassette(t, "metrics")
+
+	rec, err := testutil.NewRecorder("metrics", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	status, err := client.Metrics.GetTrainingStatusAggregated(ctx, date)
+	if err != nil {
+		t.Fatalf("GetTrainingStatusAggregated failed: %v", err)
+	}
+
+	if status == nil {
+		t.Fatal("expected training status aggregated data, got nil")
+	}
+
+	if status.MostRecentVO2Max == nil {
+		t.Error("expected MostRecentVO2Max to be set")
+	}
+	if status.MostRecentTrainingStatus == nil {
+		t.Error("expected MostRecentTrainingStatus to be set")
+	}
+
+	if status.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Metrics_GetTrainingStatusDaily(t *testing.T) {
+	skipIfNoCassette(t, "metrics")
+
+	rec, err := testutil.NewRecorder("metrics", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	status, err := client.Metrics.GetTrainingStatusDaily(ctx, date)
+	if err != nil {
+		t.Fatalf("GetTrainingStatusDaily failed: %v", err)
+	}
+
+	if status == nil {
+		t.Fatal("expected training status daily data, got nil")
+	}
+
+	if len(status.LatestTrainingStatusData) == 0 {
+		t.Error("expected LatestTrainingStatusData to have data")
+	}
+
+	if status.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Metrics_GetTrainingLoadBalance(t *testing.T) {
+	skipIfNoCassette(t, "metrics")
+
+	rec, err := testutil.NewRecorder("metrics", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	balance, err := client.Metrics.GetTrainingLoadBalance(ctx, date)
+	if err != nil {
+		t.Fatalf("GetTrainingLoadBalance failed: %v", err)
+	}
+
+	if balance == nil {
+		t.Fatal("expected training load balance data, got nil")
+	}
+
+	if len(balance.MetricsTrainingLoadBalanceDTOMap) == 0 {
+		t.Error("expected MetricsTrainingLoadBalanceDTOMap to have data")
+	}
+
+	if balance.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Metrics_GetHeatAltitudeAcclimation(t *testing.T) {
+	skipIfNoCassette(t, "metrics")
+
+	rec, err := testutil.NewRecorder("metrics", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	acclimation, err := client.Metrics.GetHeatAltitudeAcclimation(ctx, date)
+	if err != nil {
+		t.Fatalf("GetHeatAltitudeAcclimation failed: %v", err)
+	}
+
+	if acclimation == nil {
+		t.Fatal("expected heat altitude acclimation data, got nil")
+	}
+
+	if acclimation.CalendarDate == "" {
+		t.Error("expected CalendarDate to be set")
+	}
+	if acclimation.HeatTrend == "" {
+		t.Error("expected HeatTrend to be set")
+	}
+
+	if acclimation.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}

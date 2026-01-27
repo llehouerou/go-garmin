@@ -17,6 +17,7 @@ var (
 	userProfilePKPattern = regexp.MustCompile(`"userProfilePK"\s*:\s*\d+`)
 	userProfilePkPattern = regexp.MustCompile(`"userProfilePk"\s*:\s*\d+`)
 	userProfileIDPattern = regexp.MustCompile(`"userProfileId"\s*:\s*\d+`)
+	userIDPattern        = regexp.MustCompile(`"userId"\s*:\s*\d+`)
 	ownerIDPattern       = regexp.MustCompile(`"ownerId"\s*:\s*\d+`)
 	displayNamePattern   = regexp.MustCompile(`"displayName"\s*:\s*"[^"]*"`)
 	displaynamePattern   = regexp.MustCompile(`"displayname"\s*:\s*"[^"]*"`)
@@ -158,6 +159,7 @@ func anonymizeBody(body string) string {
 	body = userProfilePKPattern.ReplaceAllString(body, `"userProfilePK":12345678`)
 	body = userProfilePkPattern.ReplaceAllString(body, `"userProfilePk":12345678`)
 	body = userProfileIDPattern.ReplaceAllString(body, `"userProfileId":12345678`)
+	body = userIDPattern.ReplaceAllString(body, `"userId":12345678`)
 	body = ownerIDPattern.ReplaceAllString(body, `"ownerId":12345678`)
 
 	// Display names
