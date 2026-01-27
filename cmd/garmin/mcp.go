@@ -705,6 +705,70 @@ func registerTools(s *server.MCPServer, client *garmin.Client) {
 		},
 	)
 
+	// Workout - Schedule
+	s.AddTool(
+		mcp.NewTool("schedule_workout",
+			mcp.WithDescription("Schedule a workout for a specific date"),
+			mcp.WithString("workout_id",
+				mcp.Required(),
+				mcp.Description("The workout ID to schedule"),
+			),
+			mcp.WithString("date",
+				mcp.Required(),
+				mcp.Description("Date to schedule the workout (YYYY-MM-DD format)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			idStr, err := request.RequireString("workout_id")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			id, err := strconv.ParseInt(idStr, 10, 64)
+			if err != nil {
+				return errorResult(fmt.Errorf("invalid workout_id: %w", err)), nil
+			}
+			dateStr, err := request.RequireString("date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			date, err := time.Parse("2006-01-02", dateStr)
+			if err != nil {
+				return errorResult(fmt.Errorf("invalid date format: %w", err)), nil
+			}
+			scheduled, err := client.Workouts.Schedule(ctx, id, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(scheduled), nil
+		},
+	)
+
+	// Workout - Unschedule
+	s.AddTool(
+		mcp.NewTool("unschedule_workout",
+			mcp.WithDescription("Remove a scheduled workout"),
+			mcp.WithString("schedule_id",
+				mcp.Required(),
+				mcp.Description("The schedule ID to remove (from schedule_workout response)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			idStr, err := request.RequireString("schedule_id")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			id, err := strconv.ParseInt(idStr, 10, 64)
+			if err != nil {
+				return errorResult(fmt.Errorf("invalid schedule_id: %w", err)), nil
+			}
+			err = client.Workouts.Unschedule(ctx, id)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return mcp.NewToolResultText("Workout unscheduled successfully"), nil
+		},
+	)
+
 	// User Profile
 	s.AddTool(
 		mcp.NewTool("get_profile",

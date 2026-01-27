@@ -406,3 +406,25 @@ func (s *WorkoutService) GetScheduled(ctx context.Context, scheduleID int64) (*S
 
 	return &scheduled, nil
 }
+
+// Unschedule removes a scheduled workout by schedule ID.
+func (s *WorkoutService) Unschedule(ctx context.Context, scheduleID int64) error {
+	path := fmt.Sprintf("/workout-service/schedule/%d", scheduleID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodDelete, path, http.NoBody)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return ErrNotFound
+	}
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("failed to unschedule workout: status %d: %s", resp.StatusCode, string(body))
+	}
+
+	return nil
+}
