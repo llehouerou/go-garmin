@@ -33,4 +33,5 @@ func init() {
 	rootCmd.AddCommand(biometricCmd)
 	rootCmd.AddCommand(workoutsCmd)
 	rootCmd.AddCommand(completionCmd)
+	rootCmd.AddCommand(mcpCmd)
 }
