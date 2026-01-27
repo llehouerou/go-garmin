@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"strconv"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
@@ -175,6 +177,85 @@ func registerTools(s *server.MCPServer, client *garmin.Client) {
 				return errorResult(err), nil
 			}
 			data, err := client.Wellness.GetDailyIntensityMinutes(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Activity - List
+	s.AddTool(
+		mcp.NewTool("list_activities",
+			mcp.WithDescription("List activities with optional filters"),
+			mcp.WithNumber("start",
+				mcp.Description("Starting index (0-based, default 0)"),
+			),
+			mcp.WithNumber("limit",
+				mcp.Description("Maximum number of activities to return (default 20)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			opts := &garmin.ListOptions{}
+			if start, err := request.RequireFloat("start"); err == nil {
+				opts.Start = int(start)
+			}
+			if limit, err := request.RequireFloat("limit"); err == nil {
+				opts.Limit = int(limit)
+			}
+			data, err := client.Activities.List(ctx, opts)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Activity - Get
+	s.AddTool(
+		mcp.NewTool("get_activity",
+			mcp.WithDescription("Get detailed information about a specific activity"),
+			mcp.WithString("activity_id",
+				mcp.Required(),
+				mcp.Description("The activity ID"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			idStr, err := request.RequireString("activity_id")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			id, err := strconv.ParseInt(idStr, 10, 64)
+			if err != nil {
+				return errorResult(fmt.Errorf("invalid activity_id: %w", err)), nil
+			}
+			data, err := client.Activities.Get(ctx, id)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Activity - Get Splits
+	s.AddTool(
+		mcp.NewTool("get_activity_splits",
+			mcp.WithDescription("Get splits/laps for an activity"),
+			mcp.WithString("activity_id",
+				mcp.Required(),
+				mcp.Description("The activity ID"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			idStr, err := request.RequireString("activity_id")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			id, err := strconv.ParseInt(idStr, 10, 64)
+			if err != nil {
+				return errorResult(fmt.Errorf("invalid activity_id: %w", err)), nil
+			}
+			data, err := client.Activities.GetSplits(ctx, id)
 			if err != nil {
 				return errorResult(err), nil
 			}
