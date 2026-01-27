@@ -538,4 +538,32 @@ func registerTools(s *server.MCPServer, client *garmin.Client) {
 			return jsonResult(data), nil
 		},
 	)
+
+	// Biometric - Heart Rate Zones
+	s.AddTool(
+		mcp.NewTool("get_heart_rate_zones",
+			mcp.WithDescription("Get heart rate zone definitions"),
+		),
+		func(ctx context.Context, _ mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			data, err := client.Biometric.GetHeartRateZones(ctx)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Biometric - FTP
+	s.AddTool(
+		mcp.NewTool("get_ftp",
+			mcp.WithDescription("Get functional threshold power (FTP) for cycling"),
+		),
+		func(ctx context.Context, _ mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			data, err := client.Biometric.GetCyclingFTP(ctx)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
 }
