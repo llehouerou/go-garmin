@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
@@ -256,6 +257,94 @@ func registerTools(s *server.MCPServer, client *garmin.Client) {
 				return errorResult(fmt.Errorf("invalid activity_id: %w", err)), nil
 			}
 			data, err := client.Activities.GetSplits(ctx, id)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Weight
+	s.AddTool(
+		mcp.NewTool("get_weight",
+			mcp.WithDescription("Get weight data for a date or date range"),
+			mcp.WithString("date",
+				mcp.Description("Single date in YYYY-MM-DD format (defaults to today)"),
+			),
+			mcp.WithString("start",
+				mcp.Description("Start date for range query"),
+			),
+			mcp.WithString("end",
+				mcp.Description("End date for range query"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			start, _ := request.RequireString("start")
+			end, _ := request.RequireString("end")
+			if start != "" && end != "" {
+				startDate, err := time.Parse("2006-01-02", start)
+				if err != nil {
+					return errorResult(fmt.Errorf("invalid start date: %w", err)), nil
+				}
+				endDate, err := time.Parse("2006-01-02", end)
+				if err != nil {
+					return errorResult(fmt.Errorf("invalid end date: %w", err)), nil
+				}
+				data, err := client.Weight.GetRange(ctx, startDate, endDate)
+				if err != nil {
+					return errorResult(err), nil
+				}
+				return jsonResult(data), nil
+			}
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Weight.GetDaily(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// HRV
+	s.AddTool(
+		mcp.NewTool("get_hrv",
+			mcp.WithDescription("Get heart rate variability data for a date or date range"),
+			mcp.WithString("date",
+				mcp.Description("Single date in YYYY-MM-DD format (defaults to today)"),
+			),
+			mcp.WithString("start",
+				mcp.Description("Start date for range query"),
+			),
+			mcp.WithString("end",
+				mcp.Description("End date for range query"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			start, _ := request.RequireString("start")
+			end, _ := request.RequireString("end")
+			if start != "" && end != "" {
+				startDate, err := time.Parse("2006-01-02", start)
+				if err != nil {
+					return errorResult(fmt.Errorf("invalid start date: %w", err)), nil
+				}
+				endDate, err := time.Parse("2006-01-02", end)
+				if err != nil {
+					return errorResult(fmt.Errorf("invalid end date: %w", err)), nil
+				}
+				data, err := client.HRV.GetRange(ctx, startDate, endDate)
+				if err != nil {
+					return errorResult(err), nil
+				}
+				return jsonResult(data), nil
+			}
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.HRV.GetDaily(ctx, date)
 			if err != nil {
 				return errorResult(err), nil
 			}
