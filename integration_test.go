@@ -973,3 +973,162 @@ func TestIntegration_UserProfile_GetProfileSettings(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_Device_GetDevices(t *testing.T) {
+	skipIfNoCassette(t, "devices")
+
+	rec, err := testutil.NewRecorder("devices", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	devices, err := client.Devices.GetDevices(ctx)
+	if err != nil {
+		t.Fatalf("GetDevices failed: %v", err)
+	}
+
+	if len(devices) == 0 {
+		t.Fatal("expected devices, got none")
+	}
+
+	// Verify first device has expected fields
+	first := devices[0]
+	if first.DeviceID == 0 {
+		t.Error("expected DeviceID to be set")
+	}
+	if first.ProductDisplayName == "" {
+		t.Error("expected ProductDisplayName to be set")
+	}
+	if first.DeviceStatus == "" {
+		t.Error("expected DeviceStatus to be set")
+	}
+	if len(first.DeviceCategories) == 0 {
+		t.Error("expected DeviceCategories to be set")
+	}
+
+	// Verify RawJSON is available
+	if first.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Device_GetSettings(t *testing.T) {
+	skipIfNoCassette(t, "devices")
+
+	rec, err := testutil.NewRecorder("devices", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// Device ID from the recorded cassette (anonymized to 12345678)
+	deviceID := int64(12345678)
+
+	settings, err := client.Devices.GetSettings(ctx, deviceID)
+	if err != nil {
+		t.Fatalf("GetSettings failed: %v", err)
+	}
+
+	if settings == nil {
+		t.Fatal("expected device settings, got nil")
+	}
+
+	if settings.DeviceID == 0 {
+		t.Error("expected DeviceID to be set")
+	}
+	if settings.TimeFormat == "" {
+		t.Error("expected TimeFormat to be set")
+	}
+	if settings.MeasurementUnits == "" {
+		t.Error("expected MeasurementUnits to be set")
+	}
+	if settings.StartOfWeek == "" {
+		t.Error("expected StartOfWeek to be set")
+	}
+	if len(settings.SupportedLanguages) == 0 {
+		t.Error("expected SupportedLanguages to be set")
+	}
+
+	// Verify RawJSON is available
+	if settings.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Device_GetMessages(t *testing.T) {
+	skipIfNoCassette(t, "devices")
+
+	rec, err := testutil.NewRecorder("devices", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	messages, err := client.Devices.GetMessages(ctx)
+	if err != nil {
+		t.Fatalf("GetMessages failed: %v", err)
+	}
+
+	if messages == nil {
+		t.Fatal("expected device messages, got nil")
+	}
+
+	if messages.ServiceHost == "" {
+		t.Error("expected ServiceHost to be set")
+	}
+
+	// NumOfMessages can be 0, so we just check it's accessible
+	_ = messages.NumOfMessages
+
+	// Verify RawJSON is available
+	if messages.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Device_GetPrimaryTrainingDevice(t *testing.T) {
+	skipIfNoCassette(t, "devices")
+
+	rec, err := testutil.NewRecorder("devices", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	info, err := client.Devices.GetPrimaryTrainingDevice(ctx)
+	if err != nil {
+		t.Fatalf("GetPrimaryTrainingDevice failed: %v", err)
+	}
+
+	if info == nil {
+		t.Fatal("expected primary training device info, got nil")
+	}
+
+	if info.PrimaryTrainingDevice.DeviceID == 0 {
+		t.Error("expected PrimaryTrainingDevice.DeviceID to be set")
+	}
+	if len(info.WearableDevices.DeviceWeights) == 0 {
+		t.Error("expected WearableDevices to have at least one device")
+	}
+	if len(info.PrimaryTrainingDevices.DeviceWeights) == 0 {
+		t.Error("expected PrimaryTrainingDevices to have at least one device")
+	}
+
+	// Verify RawJSON is available
+	if info.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}

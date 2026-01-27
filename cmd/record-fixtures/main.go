@@ -103,6 +103,10 @@ func recordFixtures(email, password string, date time.Time) error {
 		return fmt.Errorf("userprofile: %w", err)
 	}
 
+	if err := recordDevices(ctx, session); err != nil {
+		return fmt.Errorf("devices: %w", err)
+	}
+
 	return nil
 }
 
@@ -536,6 +540,67 @@ func recordUserProfile(ctx context.Context, session []byte) error {
 	_, err = doAPIRequest(ctx, httpClient, profileSettingsURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: profile settings: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordDevices(ctx context.Context, session []byte) error {
+	rec, err := testutil.NewRecordingRecorder("devices")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+
+	// List devices
+	fmt.Println("  Getting device list...")
+	devicesURL := fmt.Sprintf("https://connectapi.%s/device-service/deviceregistration/devices",
+		authState.Domain)
+	devices, err := doAPIRequest(ctx, httpClient, devicesURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: device list: %v\n", err)
+	}
+
+	// Get settings for first device if available
+	if len(devices) > 0 {
+		if deviceID, ok := devices[0]["deviceId"].(float64); ok {
+			fmt.Printf("  Getting device settings for %d...\n", int64(deviceID))
+			settingsURL := fmt.Sprintf("https://connectapi.%s/device-service/deviceservice/device-info/settings/%d",
+				authState.Domain, int64(deviceID))
+			_, err = doAPIRequest(ctx, httpClient, settingsURL, authState.OAuth2AccessToken)
+			if err != nil {
+				fmt.Printf("  Warning: device settings: %v\n", err)
+			}
+		}
+	}
+
+	// Device messages
+	fmt.Println("  Getting device messages...")
+	messagesURL := fmt.Sprintf("https://connectapi.%s/device-service/devicemessage/messages",
+		authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, messagesURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: device messages: %v\n", err)
+	}
+
+	// Primary training device
+	fmt.Println("  Getting primary training device...")
+	primaryURL := fmt.Sprintf("https://connectapi.%s/web-gateway/device-info/primary-training-device",
+		authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, primaryURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: primary training device: %v\n", err)
 	}
 
 	return nil

@@ -158,9 +158,9 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/device-service/deviceregistration/devices` | List devices |
-| [ ] | GET | `/device-service/deviceservice/device-info/settings/{deviceId}` | Device settings |
-| [ ] | GET | `/device-service/devicemessage/messages` | Device messages |
+| [x] | GET | `/device-service/deviceregistration/devices` | List devices |
+| [x] | GET | `/device-service/deviceservice/device-info/settings/{deviceId}` | Device settings |
+| [x] | GET | `/device-service/devicemessage/messages` | Device messages |
 
 ---
 
@@ -168,7 +168,7 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/web-gateway/device-info/primary-training-device` | Primary training device |
+| [x] | GET | `/web-gateway/device-info/primary-training-device` | Primary training device |
 | [ ] | GET | `/web-gateway/solar/{deviceId}?startDate={start}&endDate={end}` | Solar panel data |
 
 ---

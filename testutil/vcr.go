@@ -35,6 +35,14 @@ var (
 	birthDatePattern       = regexp.MustCompile(`"birthDate"\s*:\s*"[^"]*"`)
 	locationPattern        = regexp.MustCompile(`"location"\s*:\s*"[^"]*"`)
 
+	// Device-related patterns
+	deviceIDPattern     = regexp.MustCompile(`"deviceId"\s*:\s*\d+`)
+	unitIDPattern       = regexp.MustCompile(`"unitId"\s*:\s*\d+`)
+	serialNumberPattern = regexp.MustCompile(`"serialNumber"\s*:\s*"[^"]*"`)
+
+	// URL path patterns (for anonymizing IDs in request URLs)
+	deviceSettingsURLPattern = regexp.MustCompile(`/device-info/settings/\d+`)
+
 	// Profile image URLs
 	profileImageURLPattern = regexp.MustCompile(`"(ownerProfileImageUrl[^"]*|profileImageUrl[^"]*)"\s*:\s*"https://s3\.amazonaws\.com/garmin-connect-prod/profile_images/[^"]*"`)
 
@@ -135,6 +143,9 @@ func sanitizeHook(i *cassette.Interaction) error {
 		i.Request.URL = redactQueryParam(i.Request.URL, "ticket")
 	}
 
+	// Anonymize device IDs in URL paths
+	i.Request.URL = deviceSettingsURLPattern.ReplaceAllString(i.Request.URL, "/device-info/settings/12345678")
+
 	// Sanitize request body (for login requests)
 	if strings.Contains(i.Request.Body, "password") {
 		i.Request.Body = "[REDACTED]"
@@ -189,6 +200,11 @@ func anonymizeBody(body string) string {
 	// Personal info
 	body = birthDatePattern.ReplaceAllString(body, `"birthDate":"1990-01-01"`)
 	body = locationPattern.ReplaceAllString(body, `"location":"Anonymous City"`)
+
+	// Device info
+	body = deviceIDPattern.ReplaceAllString(body, `"deviceId":12345678`)
+	body = unitIDPattern.ReplaceAllString(body, `"unitId":12345678`)
+	body = serialNumberPattern.ReplaceAllString(body, `"serialNumber":"ABC123456"`)
 
 	// Profile image URLs
 	body = profileImageURLPattern.ReplaceAllString(body, `"$1":"https://example.com/profile.png"`)

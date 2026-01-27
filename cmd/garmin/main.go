@@ -16,6 +16,7 @@ Commands:
     weight      Weight data (daily, range)
     metrics     Metrics data (training readiness, VO2 max, scores)
     activities  Activities data (list, details, weather, splits)
+    devices     Device data (list, settings, messages)
     profile     User profile data (social, settings)
 
 Run 'garmin <command> -h' for command-specific help.
@@ -38,6 +39,8 @@ func main() {
 		wellnessCmd(os.Args[2:])
 	case "activities":
 		activitiesCmd(os.Args[2:])
+	case "devices":
+		devicesCmd(os.Args[2:])
 	case "hrv":
 		hrvCmd(os.Args[2:])
 	case "weight":
