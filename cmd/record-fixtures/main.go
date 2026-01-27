@@ -11,8 +11,11 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 	"time"
 
@@ -74,6 +77,10 @@ func recordFixtures(email, password string, date time.Time) error {
 
 	if err := recordBodyBattery(ctx, session, date); err != nil {
 		return fmt.Errorf("body_battery: %w", err)
+	}
+
+	if err := recordActivities(ctx, session); err != nil {
+		return fmt.Errorf("activities: %w", err)
 	}
 
 	return nil
@@ -183,4 +190,83 @@ func recordBodyBattery(ctx context.Context, session []byte, date time.Time) erro
 	}
 
 	return nil
+}
+
+func recordActivities(ctx context.Context, session []byte) error {
+	rec, err := testutil.NewRecordingRecorder("activities")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+
+	// Record activities list (get last 5 activities)
+	fmt.Println("  Getting activities list...")
+	activitiesURL := fmt.Sprintf("https://connectapi.%s/activitylist-service/activities/search/activities?start=0&limit=5", authState.Domain)
+	activities, err := doAPIRequest(ctx, httpClient, activitiesURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: activities list: %v\n", err)
+	}
+
+	// If we got activities, record details for the first one
+	if len(activities) > 0 {
+		if activityID, ok := activities[0]["activityId"].(float64); ok {
+			fmt.Printf("  Getting activity details for %d...\n", int64(activityID))
+			activityURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d", authState.Domain, int64(activityID))
+			_, err := doAPIRequest(ctx, httpClient, activityURL, authState.OAuth2AccessToken)
+			if err != nil {
+				fmt.Printf("  Warning: activity details: %v\n", err)
+			}
+		}
+	}
+
+	return nil
+}
+
+func doAPIRequest(ctx context.Context, client *http.Client, url, token string) ([]map[string]any, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("User-Agent", "GCM-iOS-5.19.1.2")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("status %d: %s", resp.StatusCode, string(body))
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []map[string]any
+	if err := json.Unmarshal(body, &result); err != nil {
+		// Try single object
+		var single map[string]any
+		if err := json.Unmarshal(body, &single); err != nil {
+			return nil, fmt.Errorf("failed to parse response: %w", err)
+		}
+		return []map[string]any{single}, nil
+	}
+
+	return result, nil
 }

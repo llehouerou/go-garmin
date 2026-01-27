@@ -12,6 +12,7 @@ Commands:
     logout      Remove saved session
     sleep       Sleep data
     wellness    Wellness data (stress, body battery)
+    activities  Activities data (list, details)
 
 Run 'garmin <command> -h' for command-specific help.
 `
@@ -31,6 +32,8 @@ func main() {
 		sleepCmd(os.Args[2:])
 	case "wellness":
 		wellnessCmd(os.Args[2:])
+	case "activities":
+		activitiesCmd(os.Args[2:])
 	case "-h", "--help", "help":
 		fmt.Print(usage)
 	default:

@@ -96,7 +96,7 @@ func (c *Client) LoadSession(r io.Reader) error {
 
 // doAPI performs an authenticated API request to Garmin Connect.
 //
-//nolint:unused // Will be used by service implementations
+//nolint:unparam // method will be used for POST/PUT/DELETE in future service implementations
 func (c *Client) doAPI(ctx context.Context, method, path string, body io.Reader) (*http.Response, error) {
 	if !c.auth.isAuthenticated() {
 		return nil, ErrNotAuthenticated

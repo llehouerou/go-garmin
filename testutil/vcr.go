@@ -15,12 +15,22 @@ import (
 // Patterns for anonymizing response bodies.
 var (
 	userProfilePKPattern = regexp.MustCompile(`"userProfilePK"\s*:\s*\d+`)
+	userProfilePkPattern = regexp.MustCompile(`"userProfilePk"\s*:\s*\d+`)
+	userProfileIDPattern = regexp.MustCompile(`"userProfileId"\s*:\s*\d+`)
+	ownerIDPattern       = regexp.MustCompile(`"ownerId"\s*:\s*\d+`)
 	displayNamePattern   = regexp.MustCompile(`"displayName"\s*:\s*"[^"]*"`)
+	displaynamePattern   = regexp.MustCompile(`"displayname"\s*:\s*"[^"]*"`)
+	ownerDisplayPattern  = regexp.MustCompile(`"ownerDisplayName"\s*:\s*"[^"]*"`)
 	fullNamePattern      = regexp.MustCompile(`"fullName"\s*:\s*"[^"]*"`)
+	fullnamePattern      = regexp.MustCompile(`"fullname"\s*:\s*"[^"]*"`)
+	ownerFullNamePattern = regexp.MustCompile(`"ownerFullName"\s*:\s*"[^"]*"`)
 	firstNamePattern     = regexp.MustCompile(`"firstName"\s*:\s*"[^"]*"`)
 	lastNamePattern      = regexp.MustCompile(`"lastName"\s*:\s*"[^"]*"`)
 	emailPattern         = regexp.MustCompile(`"email"\s*:\s*"[^"]*"`)
 	userNamePattern      = regexp.MustCompile(`"userName"\s*:\s*"[^"]*"`)
+
+	// Profile image URLs
+	profileImageURLPattern = regexp.MustCompile(`"(ownerProfileImageUrl[^"]*|profileImageUrl[^"]*)"\s*:\s*"https://s3\.amazonaws\.com/garmin-connect-prod/profile_images/[^"]*"`)
 
 	// Auth-related patterns
 	ticketPattern       = regexp.MustCompile(`ticket=ST-[^&"\\]+`)
@@ -144,14 +154,29 @@ func sanitizeFormData(form map[string][]string) {
 
 // anonymizeBody replaces personal information in JSON response bodies.
 func anonymizeBody(body string) string {
-	// User profile fields
+	// User profile IDs
 	body = userProfilePKPattern.ReplaceAllString(body, `"userProfilePK":12345678`)
-	body = displayNamePattern.ReplaceAllString(body, `"displayName":"Anonymous User"`)
+	body = userProfilePkPattern.ReplaceAllString(body, `"userProfilePk":12345678`)
+	body = userProfileIDPattern.ReplaceAllString(body, `"userProfileId":12345678`)
+	body = ownerIDPattern.ReplaceAllString(body, `"ownerId":12345678`)
+
+	// Display names
+	body = displayNamePattern.ReplaceAllString(body, `"displayName":"anonymous"`)
+	body = displaynamePattern.ReplaceAllString(body, `"displayname":"anonymous"`)
+	body = ownerDisplayPattern.ReplaceAllString(body, `"ownerDisplayName":"anonymous"`)
+
+	// Full names
 	body = fullNamePattern.ReplaceAllString(body, `"fullName":"Anonymous User"`)
+	body = fullnamePattern.ReplaceAllString(body, `"fullname":"Anonymous User"`)
+	body = ownerFullNamePattern.ReplaceAllString(body, `"ownerFullName":"Anonymous User"`)
+
 	body = firstNamePattern.ReplaceAllString(body, `"firstName":"Anonymous"`)
 	body = lastNamePattern.ReplaceAllString(body, `"lastName":"User"`)
 	body = emailPattern.ReplaceAllString(body, `"email":"anonymous@example.com"`)
 	body = userNamePattern.ReplaceAllString(body, `"userName":"anonymous"`)
+
+	// Profile image URLs
+	body = profileImageURLPattern.ReplaceAllString(body, `"$1":"https://example.com/profile.png"`)
 
 	// Auth tokens and tickets
 	body = ticketPattern.ReplaceAllString(body, `ticket=[REDACTED]`)
