@@ -29,9 +29,9 @@ This document lists all known API endpoints from the reference projects and web 
 | [x] | GET | `/wellness-service/wellness/dailyStress/{date}` | Daily stress and body battery data |
 | [x] | GET | `/wellness-service/wellness/bodyBattery/events/{date}` | Body battery events |
 | [x] | GET | `/wellness-service/wellness/dailyHeartRate/?date={date}` | Daily heart rate data |
-| [ ] | GET | `/wellness-service/wellness/daily/spo2/{date}` | Daily SpO2 data |
-| [ ] | GET | `/wellness-service/wellness/daily/respiration/{date}` | Daily respiration data |
-| [ ] | GET | `/wellness-service/wellness/daily/im/{date}` | Daily intensity minutes |
+| [x] | GET | `/wellness-service/wellness/daily/spo2/{date}` | Daily SpO2 data |
+| [x] | GET | `/wellness-service/wellness/daily/respiration/{date}` | Daily respiration data |
+| [x] | GET | `/wellness-service/wellness/daily/im/{date}` | Daily intensity minutes |
 | [ ] | GET | `/wellness-service/wellness/dailyEvents/{date}` | Daily events |
 | [ ] | GET | `/wellness-service/wellness/dailySummaryChart/{displayName}?date={date}` | Daily summary chart |
 | [ ] | GET | `/wellness-service/wellness/floorsChartData/daily/{date}` | Floor climbing data |

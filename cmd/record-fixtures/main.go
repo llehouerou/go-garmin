@@ -107,6 +107,10 @@ func recordFixtures(email, password string, date time.Time) error {
 		return fmt.Errorf("devices: %w", err)
 	}
 
+	if err := recordWellnessExtended(ctx, session, date); err != nil {
+		return fmt.Errorf("wellness_extended: %w", err)
+	}
+
 	return nil
 }
 
@@ -601,6 +605,55 @@ func recordDevices(ctx context.Context, session []byte) error {
 	_, err = doAPIRequest(ctx, httpClient, primaryURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: primary training device: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordWellnessExtended(ctx context.Context, session []byte, date time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("wellness_extended")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+	dateStr := date.Format("2006-01-02")
+
+	// SpO2 (blood oxygen)
+	fmt.Printf("  Getting SpO2 data for %s...\n", dateStr)
+	spo2URL := fmt.Sprintf("https://connectapi.%s/wellness-service/wellness/daily/spo2/%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, spo2URL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: SpO2: %v\n", err)
+	}
+
+	// Respiration
+	fmt.Printf("  Getting respiration data for %s...\n", dateStr)
+	respirationURL := fmt.Sprintf("https://connectapi.%s/wellness-service/wellness/daily/respiration/%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, respirationURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: respiration: %v\n", err)
+	}
+
+	// Intensity minutes
+	fmt.Printf("  Getting intensity minutes for %s...\n", dateStr)
+	imURL := fmt.Sprintf("https://connectapi.%s/wellness-service/wellness/daily/im/%s",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, imURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: intensity minutes: %v\n", err)
 	}
 
 	return nil

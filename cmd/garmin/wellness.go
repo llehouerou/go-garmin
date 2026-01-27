@@ -12,9 +12,12 @@ import (
 const wellnessUsage = `Usage: garmin wellness <command> [date]
 
 Commands:
-    stress        Get stress data
-    body-battery  Get body battery data
-    heart-rate    Get heart rate data
+    stress           Get stress data
+    body-battery     Get body battery data
+    heart-rate       Get heart rate data
+    spo2             Get blood oxygen (SpO2) data
+    respiration      Get respiration data
+    intensity        Get intensity minutes data
 
 Date format: YYYY-MM-DD (defaults to today)
 `
@@ -62,6 +65,30 @@ func wellnessCmd(args []string) {
 
 	case "heart-rate":
 		data, err := client.Wellness.GetDailyHeartRate(ctx, date)
+		if err != nil {
+			printError(err)
+			os.Exit(1)
+		}
+		_ = json.NewEncoder(os.Stdout).Encode(data)
+
+	case "spo2":
+		data, err := client.Wellness.GetDailySpO2(ctx, date)
+		if err != nil {
+			printError(err)
+			os.Exit(1)
+		}
+		_ = json.NewEncoder(os.Stdout).Encode(data)
+
+	case "respiration":
+		data, err := client.Wellness.GetDailyRespiration(ctx, date)
+		if err != nil {
+			printError(err)
+			os.Exit(1)
+		}
+		_ = json.NewEncoder(os.Stdout).Encode(data)
+
+	case "intensity":
+		data, err := client.Wellness.GetDailyIntensityMinutes(ctx, date)
 		if err != nil {
 			printError(err)
 			os.Exit(1)

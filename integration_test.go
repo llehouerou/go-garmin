@@ -1132,3 +1132,121 @@ func TestIntegration_Device_GetPrimaryTrainingDevice(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_Wellness_GetDailySpO2(t *testing.T) {
+	skipIfNoCassette(t, "wellness_extended")
+
+	rec, err := testutil.NewRecorder("wellness_extended", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	spo2, err := client.Wellness.GetDailySpO2(ctx, date)
+	if err != nil {
+		t.Fatalf("GetDailySpO2 failed: %v", err)
+	}
+
+	if spo2 == nil {
+		t.Fatal("expected SpO2 data, got nil")
+	}
+
+	if spo2.CalendarDate == "" {
+		t.Error("expected CalendarDate to be set")
+	}
+	if spo2.AverageSpO2 == 0 {
+		t.Error("expected AverageSpO2 to be set")
+	}
+	if spo2.LowestSpO2 == 0 {
+		t.Error("expected LowestSpO2 to be set")
+	}
+	if spo2.LatestSpO2 == 0 {
+		t.Error("expected LatestSpO2 to be set")
+	}
+
+	if spo2.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Wellness_GetDailyRespiration(t *testing.T) {
+	skipIfNoCassette(t, "wellness_extended")
+
+	rec, err := testutil.NewRecorder("wellness_extended", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	resp, err := client.Wellness.GetDailyRespiration(ctx, date)
+	if err != nil {
+		t.Fatalf("GetDailyRespiration failed: %v", err)
+	}
+
+	if resp == nil {
+		t.Fatal("expected respiration data, got nil")
+	}
+
+	if resp.CalendarDate == "" {
+		t.Error("expected CalendarDate to be set")
+	}
+	if resp.LowestRespirationValue == 0 {
+		t.Error("expected LowestRespirationValue to be set")
+	}
+	if resp.HighestRespirationValue == 0 {
+		t.Error("expected HighestRespirationValue to be set")
+	}
+	if len(resp.RespirationValuesArray) == 0 {
+		t.Error("expected RespirationValuesArray to have data")
+	}
+
+	if resp.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Wellness_GetDailyIntensityMinutes(t *testing.T) {
+	skipIfNoCassette(t, "wellness_extended")
+
+	rec, err := testutil.NewRecorder("wellness_extended", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	im, err := client.Wellness.GetDailyIntensityMinutes(ctx, date)
+	if err != nil {
+		t.Fatalf("GetDailyIntensityMinutes failed: %v", err)
+	}
+
+	if im == nil {
+		t.Fatal("expected intensity minutes data, got nil")
+	}
+
+	if im.CalendarDate == "" {
+		t.Error("expected CalendarDate to be set")
+	}
+	if im.WeekGoal == 0 {
+		t.Error("expected WeekGoal to be set")
+	}
+	// WeeklyTotal and minutes can be 0, so just check they're accessible
+	_ = im.WeeklyTotal
+	_ = im.ModerateMinutes
+	_ = im.VigorousMinutes
+
+	if im.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
