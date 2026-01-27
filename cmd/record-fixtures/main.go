@@ -91,6 +91,10 @@ func recordFixtures(email, password string, date time.Time) error {
 		return fmt.Errorf("hrv: %w", err)
 	}
 
+	if err := recordWeight(ctx, session, date); err != nil {
+		return fmt.Errorf("weight: %w", err)
+	}
+
 	return nil
 }
 
@@ -260,6 +264,46 @@ func recordHRV(ctx context.Context, session []byte, date time.Time) error {
 	startDate := date.AddDate(0, 0, -7)
 	fmt.Printf("  Getting HRV range from %s to %s...\n", startDate.Format("2006-01-02"), date.Format("2006-01-02"))
 	rangeURL := fmt.Sprintf("https://connectapi.%s/hrv-service/hrv/daily/%s/%s",
+		authState.Domain, startDate.Format("2006-01-02"), date.Format("2006-01-02"))
+	_, err = doAPIRequest(ctx, httpClient, rangeURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordWeight(ctx context.Context, session []byte, date time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("weight")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+
+	// Record daily weight
+	fmt.Printf("  Getting weight data for %s...\n", date.Format("2006-01-02"))
+	dailyURL := fmt.Sprintf("https://connectapi.%s/weight-service/weight/dayview/%s",
+		authState.Domain, date.Format("2006-01-02"))
+	_, err = doAPIRequest(ctx, httpClient, dailyURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: %v\n", err)
+	}
+
+	// Record weight range (last 30 days)
+	startDate := date.AddDate(0, 0, -30)
+	fmt.Printf("  Getting weight range from %s to %s...\n", startDate.Format("2006-01-02"), date.Format("2006-01-02"))
+	rangeURL := fmt.Sprintf("https://connectapi.%s/weight-service/weight/range/%s/%s?includeAll=true",
 		authState.Domain, startDate.Format("2006-01-02"), date.Format("2006-01-02"))
 	_, err = doAPIRequest(ctx, httpClient, rangeURL, authState.OAuth2AccessToken)
 	if err != nil {

@@ -95,8 +95,8 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/weight-service/weight/dayview/{date}` | Daily weight data |
-| [ ] | GET | `/weight-service/weight/range/{start}/{end}?includeAll=true` | Weight range |
+| [x] | GET | `/weight-service/weight/dayview/{date}` | Daily weight data |
+| [x] | GET | `/weight-service/weight/range/{start}/{end}?includeAll=true` | Weight range |
 | [ ] | GET | `/weight-service/weight/dateRange?startDate={start}&endDate={end}` | Weight date range |
 | [ ] | GET | `/weight-service/weight/daterangesnapshot` | Body composition snapshot |
 | [ ] | DELETE | `/weight-service/weight/{date}/{weightPK}` | Delete weigh-in |

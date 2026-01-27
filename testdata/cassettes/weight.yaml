@@ -1,0 +1,100 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/weight-service/weight/dayview/2026-01-27
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"startDate":"2026-01-27","endDate":"2026-01-27","dateWeightList":[{"samplePk":1769494024116,"date":1769508416496,"calendarDate":"2026-01-27","weight":74200.0,"bmi":null,"bodyFat":null,"bodyWater":null,"boneMass":null,"muscleMass":null,"physiqueRating":null,"visceralFat":null,"metabolicAge":null,"sourceType":"MANUAL","timestampGMT":1769494016496,"weightDelta":null}],"totalAverage":{"from":1769472000000,"until":1769558399999,"weight":74200.0,"bmi":null,"bodyFat":null,"bodyWater":null,"boneMass":null,"muscleMass":null,"physiqueRating":null,"visceralFat":null,"metabolicAge":null}}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c4627187f19bc14-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 06:21:56 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=YPreg3Mc3%2FbX5yVe%2F7grNGyo8HSbwudYVIaV6VxeFc9Rd2YFR8yHFAaybltS9pj%2F7w4H%2BY3MeOM3Im7%2BJEx5BwMUylmKaiJwqSJeyFz63y28ffLgyd5NGDzfjm2Psl%2FlfyzqWziAz2ppcBN0E1ehvHuiJA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 374.114627ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            includeAll:
+                - "true"
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/weight-service/weight/range/2025-12-28/2026-01-27?includeAll=true
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"dailyWeightSummaries":[{"summaryDate":"2026-01-27","numOfWeightEntries":1,"minWeight":74200.0,"maxWeight":74200.0,"latestWeight":{"samplePk":1769494024116,"date":1769508416496,"calendarDate":"2026-01-27","weight":74200.0,"bmi":null,"bodyFat":null,"bodyWater":null,"boneMass":null,"muscleMass":null,"physiqueRating":null,"visceralFat":null,"metabolicAge":null,"sourceType":"MANUAL","timestampGMT":1769494016496,"weightDelta":-1000.0},"allWeightMetrics":[{"samplePk":1769494024116,"date":1769508416496,"calendarDate":"2026-01-27","weight":74200.0,"bmi":null,"bodyFat":null,"bodyWater":null,"boneMass":null,"muscleMass":null,"physiqueRating":null,"visceralFat":null,"metabolicAge":null,"sourceType":"MANUAL","timestampGMT":1769494016496,"weightDelta":-1000.0}]}],"totalAverage":{"from":1766880000000,"until":1769558399999,"weight":74200.0,"bmi":null,"bodyFat":null,"bodyWater":null,"boneMass":null,"muscleMass":null,"physiqueRating":null,"visceralFat":null,"metabolicAge":null},"previousDateWeight":{"samplePk":1764645477134,"date":1764659867436,"calendarDate":"2025-12-02","weight":75200.0,"bmi":null,"bodyFat":null,"bodyWater":null,"boneMass":null,"muscleMass":null,"physiqueRating":null,"visceralFat":null,"metabolicAge":null,"sourceType":"MANUAL","timestampGMT":1764645467436,"weightDelta":null},"nextDateWeight":{"samplePk":null,"date":null,"calendarDate":null,"weight":null,"bmi":null,"bodyFat":null,"bodyWater":null,"boneMass":null,"muscleMass":null,"physiqueRating":null,"visceralFat":null,"metabolicAge":null,"sourceType":null,"timestampGMT":null,"weightDelta":null}}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c46271acf61bc14-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 06:21:56 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=LB10bKtEQD%2BWHMiAfKSXzq5tMaUkc%2FX4Z5b%2FC1bybIn47%2B56Hno7lao3%2FvUYANrp2uJCLarsy014MiO3p2%2FyTt3I%2B%2BeYkn5%2FvhhoMjxoOAqOelBjRqDrvTojP1b5YfwJ1t59mzHV0SrwoiimjEMoR%2Fpdzw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 344.235634ms

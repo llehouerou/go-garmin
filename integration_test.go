@@ -448,3 +448,105 @@ func TestIntegration_HRV_GetRange(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_Weight_GetDaily(t *testing.T) {
+	skipIfNoCassette(t, "weight")
+
+	rec, err := testutil.NewRecorder("weight", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+
+	weight, err := client.Weight.GetDaily(ctx, date)
+	if err != nil {
+		t.Fatalf("GetDaily failed: %v", err)
+	}
+
+	if weight == nil {
+		t.Fatal("expected weight data, got nil")
+	}
+
+	if weight.StartDate == "" {
+		t.Error("expected StartDate to be set")
+	}
+	if weight.EndDate == "" {
+		t.Error("expected EndDate to be set")
+	}
+
+	// Verify we have weight entries
+	if len(weight.DateWeightList) == 0 {
+		t.Error("expected DateWeightList to have data")
+	}
+
+	// Verify first entry has expected fields
+	if len(weight.DateWeightList) > 0 {
+		entry := weight.DateWeightList[0]
+		if entry.CalendarDate == "" {
+			t.Error("expected entry CalendarDate to be set")
+		}
+		if entry.Weight == nil {
+			t.Error("expected entry Weight to be set")
+		}
+
+		// Verify conversion methods work
+		kg := entry.WeightKg()
+		if kg <= 0 {
+			t.Errorf("WeightKg() = %v, expected positive", kg)
+		}
+	}
+
+	// Verify RawJSON is available
+	if weight.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Weight_GetRange(t *testing.T) {
+	skipIfNoCassette(t, "weight")
+
+	rec, err := testutil.NewRecorder("weight", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+	endDate := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	startDate := endDate.AddDate(0, 0, -30)
+
+	weightRange, err := client.Weight.GetRange(ctx, startDate, endDate)
+	if err != nil {
+		t.Fatalf("GetRange failed: %v", err)
+	}
+
+	if weightRange == nil {
+		t.Fatal("expected weight range data, got nil")
+	}
+
+	// Verify we have summaries
+	if len(weightRange.DailyWeightSummaries) == 0 {
+		t.Error("expected DailyWeightSummaries to have data")
+	}
+
+	// Verify first summary has expected fields
+	if len(weightRange.DailyWeightSummaries) > 0 {
+		summary := weightRange.DailyWeightSummaries[0]
+		if summary.SummaryDate == "" {
+			t.Error("expected summary SummaryDate to be set")
+		}
+		if summary.MinWeight == 0 {
+			t.Error("expected summary MinWeight to be set")
+		}
+	}
+
+	// Verify RawJSON is available
+	if weightRange.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}

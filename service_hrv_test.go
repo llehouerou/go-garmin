@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 
+const testDateHRV = "2026-01-27"
+
 func TestDailyHRVJSONUnmarshal(t *testing.T) {
 	rawJSON := `{
 		"userProfilePk": 12345678,
@@ -46,8 +48,8 @@ func TestDailyHRVJSONUnmarshal(t *testing.T) {
 	if hrv.UserProfilePK != 12345678 {
 		t.Errorf("UserProfilePK = %d, want 12345678", hrv.UserProfilePK)
 	}
-	if hrv.HRVSummary.CalendarDate != "2026-01-27" {
-		t.Errorf("HRVSummary.CalendarDate = %s, want 2026-01-27", hrv.HRVSummary.CalendarDate)
+	if hrv.HRVSummary.CalendarDate != testDateHRV {
+		t.Errorf("HRVSummary.CalendarDate = %s, want %s", hrv.HRVSummary.CalendarDate, testDateHRV)
 	}
 	if hrv.HRVSummary.WeeklyAvg != 53 {
 		t.Errorf("HRVSummary.WeeklyAvg = %d, want 53", hrv.HRVSummary.WeeklyAvg)
