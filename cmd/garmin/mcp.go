@@ -391,4 +391,151 @@ func registerTools(s *server.MCPServer, client *garmin.Client) {
 			return jsonResult(data), nil
 		},
 	)
+
+	// Metrics - Training Readiness
+	s.AddTool(
+		mcp.NewTool("get_training_readiness",
+			mcp.WithDescription("Get daily training readiness score"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Metrics.GetTrainingReadiness(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Metrics - Training Status
+	s.AddTool(
+		mcp.NewTool("get_training_status",
+			mcp.WithDescription("Get current training status"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Metrics.GetTrainingStatusAggregated(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Metrics - VO2 Max
+	s.AddTool(
+		mcp.NewTool("get_vo2max",
+			mcp.WithDescription("Get VO2 max estimates for running and cycling"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Metrics.GetMaxMetLatest(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Metrics - Endurance Score
+	s.AddTool(
+		mcp.NewTool("get_endurance_score",
+			mcp.WithDescription("Get endurance score"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Metrics.GetEnduranceScore(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Metrics - Hill Score
+	s.AddTool(
+		mcp.NewTool("get_hill_score",
+			mcp.WithDescription("Get hill/climb performance score"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Metrics.GetHillScore(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Metrics - Training Load Balance
+	s.AddTool(
+		mcp.NewTool("get_training_load",
+			mcp.WithDescription("Get training load balance (acute vs chronic load)"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Metrics.GetTrainingLoadBalance(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Metrics - Heat/Altitude Acclimation
+	s.AddTool(
+		mcp.NewTool("get_acclimation",
+			mcp.WithDescription("Get heat and altitude acclimation status"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Metrics.GetHeatAltitudeAcclimation(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
 }
