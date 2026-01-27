@@ -639,4 +639,18 @@ func registerTools(s *server.MCPServer, client *garmin.Client) {
 			return mcp.NewToolResultText("Workout deleted successfully"), nil
 		},
 	)
+
+	// User Profile
+	s.AddTool(
+		mcp.NewTool("get_profile",
+			mcp.WithDescription("Get user profile information"),
+		),
+		func(ctx context.Context, _ mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			data, err := client.UserProfile.GetSocialProfile(ctx)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
 }
