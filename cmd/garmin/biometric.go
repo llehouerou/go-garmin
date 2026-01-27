@@ -9,7 +9,7 @@ import (
 
 var biometricCmd = &cobra.Command{
 	Use:   "biometric",
-	Short: "Biometric data (lactate threshold, FTP, power-to-weight)",
+	Short: "Biometric data (lactate threshold, FTP, power-to-weight, HR zones)",
 }
 
 var biometricLactateCmd = &cobra.Command{
@@ -54,6 +54,13 @@ var biometricFTPRangeCmd = &cobra.Command{
 	RunE:  runBiometricFTPRange,
 }
 
+var biometricHRZonesCmd = &cobra.Command{
+	Use:   "hr-zones",
+	Short: "Get heart rate zones for all sports",
+	Args:  cobra.NoArgs,
+	RunE:  runBiometricHRZones,
+}
+
 func init() {
 	biometricCmd.AddCommand(biometricLactateCmd)
 	biometricCmd.AddCommand(biometricFTPCmd)
@@ -61,6 +68,7 @@ func init() {
 	biometricCmd.AddCommand(biometricLactateSpeedRangeCmd)
 	biometricCmd.AddCommand(biometricLactateHRRangeCmd)
 	biometricCmd.AddCommand(biometricFTPRangeCmd)
+	biometricCmd.AddCommand(biometricHRZonesCmd)
 }
 
 func runBiometricLactate(cmd *cobra.Command, _ []string) error {
@@ -175,6 +183,20 @@ func runBiometricFTPRange(cmd *cobra.Command, args []string) error {
 	}
 
 	data, err := client.Biometric.GetFTPRange(cmd.Context(), startDate, endDate)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(data)
+}
+
+func runBiometricHRZones(cmd *cobra.Command, _ []string) error {
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	data, err := client.Biometric.GetHeartRateZones(cmd.Context())
 	if err != nil {
 		return err
 	}

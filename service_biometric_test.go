@@ -175,3 +175,49 @@ func TestBiometricStatsRawJSON(t *testing.T) {
 		t.Error("RawJSON should return original JSON")
 	}
 }
+
+func TestHeartRateZoneJSONUnmarshal(t *testing.T) {
+	rawJSON := `{"trainingMethod":"HR_RESERVE","restingHeartRateUsed":54,"lactateThresholdHeartRateUsed":166,"zone1Floor":121,"zone2Floor":134,"zone3Floor":148,"zone4Floor":161,"zone5Floor":175,"maxHeartRateUsed":188,"restingHrAutoUpdateUsed":true,"sport":"DEFAULT","changeState":"UNCHANGED"}`
+
+	var zone HeartRateZone
+	if err := json.Unmarshal([]byte(rawJSON), &zone); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+
+	if zone.TrainingMethod != "HR_RESERVE" {
+		t.Errorf("TrainingMethod = %s, want HR_RESERVE", zone.TrainingMethod)
+	}
+	if zone.RestingHeartRateUsed != 54 {
+		t.Errorf("RestingHeartRateUsed = %d, want 54", zone.RestingHeartRateUsed)
+	}
+	if zone.LactateThresholdHeartRateUsed != 166 {
+		t.Errorf("LactateThresholdHeartRateUsed = %d, want 166", zone.LactateThresholdHeartRateUsed)
+	}
+	if zone.Zone1Floor != 121 {
+		t.Errorf("Zone1Floor = %d, want 121", zone.Zone1Floor)
+	}
+	if zone.Zone5Floor != 175 {
+		t.Errorf("Zone5Floor = %d, want 175", zone.Zone5Floor)
+	}
+	if zone.MaxHeartRateUsed != 188 {
+		t.Errorf("MaxHeartRateUsed = %d, want 188", zone.MaxHeartRateUsed)
+	}
+	if !zone.RestingHrAutoUpdateUsed {
+		t.Error("RestingHrAutoUpdateUsed = false, want true")
+	}
+	if zone.Sport != "DEFAULT" {
+		t.Errorf("Sport = %s, want DEFAULT", zone.Sport)
+	}
+	if zone.ChangeState != "UNCHANGED" {
+		t.Errorf("ChangeState = %s, want UNCHANGED", zone.ChangeState)
+	}
+}
+
+func TestHeartRateZonesRawJSON(t *testing.T) {
+	rawJSON := `[{"trainingMethod":"HR_RESERVE","sport":"DEFAULT"}]`
+	hrz := &HeartRateZones{raw: json.RawMessage(rawJSON)}
+
+	if string(hrz.RawJSON()) != rawJSON {
+		t.Error("RawJSON should return original JSON")
+	}
+}

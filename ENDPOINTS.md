@@ -277,6 +277,7 @@ Note: Gear activities are fetched via `/activitylist-service/activities/{gearUUI
 | [x] | GET | `/biometric-service/stats/lactateThresholdSpeed/range/{start}/{end}?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST` | LT speed range |
 | [x] | GET | `/biometric-service/stats/lactateThresholdHeartRate/range/{start}/{end}?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST` | LT heart rate range |
 | [x] | GET | `/biometric-service/stats/functionalThresholdPower/range/{start}/{end}?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST` | FTP range |
+| [x] | GET | `/biometric-service/heartRateZones/` | Heart rate zones for all sports |
 
 ---
 

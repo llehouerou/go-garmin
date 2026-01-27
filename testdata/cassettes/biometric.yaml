@@ -30,24 +30,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c47416638e6739c-JNB
+                - 9c475fea9e2c4eca-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 09:34:39 GMT
+                - Tue, 27 Jan 2026 09:55:29 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=Vzm3LHcOgHU2dGStBb1nQOKxMe5jScGoftpi2LiYxZaSCrsT%2FmF4ci7NfzR2XKCE3ZsS3ElVYXiHGS5%2FUiNpLR9TbWjNGhUMkOWS9S49Ov3DgXGlm4y57QE5OMCB3FCSakVG2Puups1TjBWsB0JmzhuN4g%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=uk%2BFR%2BWrTzaFCBMVn7CFB33aonHp%2BoID%2FvFsUEoqORWW9FXLt2hK4bfGHdSKoUIlgmTSxeQBTnCXFCAIE0%2BlH7aMY29WWiA4y9iBpz%2F0rQeFOHC6I1yn2itHfIiXXoqJ4TIc55rwdIzkevSno0Demrrweg%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 312.123ms
+        duration: 314.542435ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -77,24 +77,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c4741683b1b739c-JNB
+                - 9c475fec88ef4eca-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 09:34:39 GMT
+                - Tue, 27 Jan 2026 09:55:29 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=vJKS%2Bc9vSAGD4Oz2P1eGGmrS03KbsDLbNIHAXq3G4H4j92v14Wmrj19QVXLjym18JX%2FD708ZURAJS30Y1vIXyPokvgf0qheYrcGpJulgcLtRmiUQtTTVSSnAckZC3ezwn9aRD9Jtw6Wm9SZERAYec3q09g%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=4JaXWiX%2BOS381eCAyGj9xaftYEdJIpmoWPYuXSlTpH2tkx6ObZKR6ZlU3iwv0dkbStEp%2BNytRklaXTHwhpmqZwxrLqlUmIjuHq23bzF5bzy1QUzn8fHRGDGwaBwDIe6RcgcX8yspSMNFCBaw0oqTrd8ZeA%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 314.329124ms
+        duration: 309.105575ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -127,24 +127,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c47416a2d81739c-JNB
+                - 9c475fee7b0e4eca-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 09:34:40 GMT
+                - Tue, 27 Jan 2026 09:55:30 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=sgP0haBHs28rCjITPU6psX0ZOhOTVW%2B4cxQRBxzeNOlEy1T98vA08W8G3%2FkQq328JDZeG6H4gBk1mDbscj2y5jP1yKkgMuRmx7jVVfaoY995sDryQExoXoxwCRYuePFg%2Bu8lt6WZg04KwCGoJTKjpIy%2B0g%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=Y0NXncxsg4zX4Vr7dy3%2B%2BEat3yOiHfqSIlGeTd1XJjT9QC1U%2Bel2mlrt2ZwoynPSHYvAfyy5ErSmdEwPut1VUHO86UmBoSE2vKuSSTG06kdch34G2Eu4dzHqrYarzgS0FB5KLmdD7M6Emd%2BOtnNIOtOsYA%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 347.298863ms
+        duration: 898.578436ms
     - id: 3
       request:
         proto: HTTP/1.1
@@ -181,24 +181,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c47416c5ffd739c-JNB
+                - 9c475ff419954eca-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 09:34:40 GMT
+                - Tue, 27 Jan 2026 09:55:30 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=TGnIaLUx6mE1j373HdV%2BxzPex5vg1zhLNC%2FEK3FgWqhHxfUsk1hfBoirLVPUuNByr3CcEjFO53kZCXjRjQzfZTU%2B2jvqOwKqyKaEPpiop%2FMwgtAZpu1u3YZ0qt%2FxMoEv3UDU7KhE4k2Kl%2FHeYm%2FWKQInzQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=9RTaehKBo7oqtghoBZWzDA%2BXHC2TXHeILO6GGszpHN6FhystADV7k6j4xAG4YdUtiCnBJt4PEyb3nyBtXXb1kfKAFEff5UeZpX%2B9q%2FUn%2BpPlFuvVHMDAx1jdSauBZOHjg8%2BKJqqd7SoO4bERahtHRe%2FbbQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 315.14092ms
+        duration: 317.666831ms
     - id: 4
       request:
         proto: HTTP/1.1
@@ -235,24 +235,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c47416e4a4e739c-JNB
+                - 9c475ff61bab4eca-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 09:34:40 GMT
+                - Tue, 27 Jan 2026 09:55:31 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=Vs9E9G7BYHakcF%2BTy25mWH%2BPg3PhoF0hqt774Zb%2Fg9jUex7N%2FXKUCLD7UkdubLmcsNWQW0cSpRBXWjZxaiKmKs03KiKg6YLVf9TSfKc4bdWZf3uVaLFsWKRY91b4RwXVGHmqDn29CasLxMWi9L8W9PzZUg%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=z1LXKUW2MqNjO4Mt03j0KPBopT5EtPoa3H91FtUrunQz6%2FrzF0LDEK%2BL5wZfKWahSRB5%2FAajDjwCm5fOb%2FjzuvHLoADVkK1Nd%2Bt30JsrZaNcj4zfdyDH64bl8O0HR6se8ClqLsl6tLTOGe%2BfKzh3edYG6w%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 315.602356ms
+        duration: 327.961291ms
     - id: 5
       request:
         proto: HTTP/1.1
@@ -289,21 +289,68 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c4741704c4b739c-JNB
+                - 9c475ff82de84eca-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 09:34:41 GMT
+                - Tue, 27 Jan 2026 09:55:31 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=2cF0WoHFZ%2B3ZoENlQIHfzwiA%2FB5L71OifBeBxeuzqE4N6O4ZKuZU6gF62%2B0cqyoiNFiSgSK4aGb%2FGxqtspGJbiAmN66V30Qadiu7R%2BmXGelXzGnLguOWo%2BFCxSzUMzOpX%2Bgtu2qTp3XcldkUG6FGQZTXwg%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=SOcP7cMliK0hHPEI5mM3CCcA182vYAxiw2rnU3%2BKb9QembuYFl1xczqynLDY2LC1XGF3FoH654IUsMC1FnzMyixhgYnWKSTiq71rApx1pnaEfMoHX4bDXSqwhj9pkY4Bd5OW8pE3Ljnt6SMc2VuNDNOHhA%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 359.094166ms
+        duration: 367.608362ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/biometric-service/heartRateZones/
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"trainingMethod":"HR_RESERVE","restingHeartRateUsed":54,"lactateThresholdHeartRateUsed":166,"zone1Floor":121,"zone2Floor":134,"zone3Floor":148,"zone4Floor":161,"zone5Floor":175,"maxHeartRateUsed":188,"restingHrAutoUpdateUsed":true,"sport":"DEFAULT","changeState":"UNCHANGED"},{"trainingMethod":"HR_MAX","restingHeartRateUsed":54,"lactateThresholdHeartRateUsed":166,"zone1Floor":94,"zone2Floor":113,"zone3Floor":132,"zone4Floor":150,"zone5Floor":169,"maxHeartRateUsed":188,"restingHrAutoUpdateUsed":false,"sport":"RUNNING","changeState":"UNCHANGED"}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c475ffa687a4eca-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 09:55:31 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=QyN7djXfNQbxkyEcXGL2IDwpxt1G40GQ4AB7m6v8S8jmHSJPztU6sp3LPJiDHUu79uX2V9BwfzkQcIWjefn5Ie7l8rGTKDliMweXM4QjYcQoO%2BR1X5PDngvpy%2BJKAA41O85Mo%2BgWdM0dKYKckxZURMoWmg%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 318.900046ms

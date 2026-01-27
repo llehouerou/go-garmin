@@ -771,6 +771,15 @@ func recordBiometric(ctx context.Context, session []byte, date time.Time) error 
 		fmt.Printf("  Warning: FTP range: %v\n", err)
 	}
 
+	// Heart Rate Zones
+	fmt.Println("  Getting heart rate zones...")
+	hrZonesURL := fmt.Sprintf("https://connectapi.%s/biometric-service/heartRateZones/",
+		authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, hrZonesURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: heart rate zones: %v\n", err)
+	}
+
 	return nil
 }
 

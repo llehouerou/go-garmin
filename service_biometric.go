@@ -93,6 +93,33 @@ func (ptw *PowerToWeight) RawJSON() json.RawMessage {
 	return ptw.raw
 }
 
+// HeartRateZone represents heart rate zone configuration for a sport.
+type HeartRateZone struct {
+	TrainingMethod                string `json:"trainingMethod"` // HR_RESERVE, HR_MAX, etc.
+	RestingHeartRateUsed          int    `json:"restingHeartRateUsed"`
+	LactateThresholdHeartRateUsed int    `json:"lactateThresholdHeartRateUsed"`
+	Zone1Floor                    int    `json:"zone1Floor"`
+	Zone2Floor                    int    `json:"zone2Floor"`
+	Zone3Floor                    int    `json:"zone3Floor"`
+	Zone4Floor                    int    `json:"zone4Floor"`
+	Zone5Floor                    int    `json:"zone5Floor"`
+	MaxHeartRateUsed              int    `json:"maxHeartRateUsed"`
+	RestingHrAutoUpdateUsed       bool   `json:"restingHrAutoUpdateUsed"`
+	Sport                         string `json:"sport"` // DEFAULT, RUNNING, CYCLING, etc.
+	ChangeState                   string `json:"changeState"`
+}
+
+// HeartRateZones represents a collection of heart rate zone configurations.
+type HeartRateZones struct {
+	Zones []HeartRateZone
+	raw   json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (hrz *HeartRateZones) RawJSON() json.RawMessage {
+	return hrz.raw
+}
+
 // BiometricStat represents a single biometric statistic entry.
 type BiometricStat struct {
 	From        string  `json:"from"`
@@ -197,6 +224,34 @@ func (s *BiometricService) GetPowerToWeight(ctx context.Context, date time.Time)
 
 	results[0].raw = body
 	return &results[0], nil
+}
+
+// GetHeartRateZones retrieves heart rate zone configurations for all sports.
+func (s *BiometricService) GetHeartRateZones(ctx context.Context) (*HeartRateZones, error) {
+	resp, err := s.client.doAPI(ctx, http.MethodGet, "/biometric-service/heartRateZones/", http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var zones []HeartRateZone
+	if err := json.Unmarshal(body, &zones); err != nil {
+		return nil, err
+	}
+
+	return &HeartRateZones{
+		Zones: zones,
+		raw:   body,
+	}, nil
 }
 
 // GetLactateThresholdSpeedRange retrieves lactate threshold speed stats for a date range.

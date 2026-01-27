@@ -1636,6 +1636,50 @@ func TestIntegration_Biometric_GetFTPRange(t *testing.T) {
 	}
 }
 
+func TestIntegration_Biometric_GetHeartRateZones(t *testing.T) {
+	skipIfNoCassette(t, "biometric")
+
+	rec, err := testutil.NewRecorder("biometric", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	zones, err := client.Biometric.GetHeartRateZones(ctx)
+	if err != nil {
+		t.Fatalf("GetHeartRateZones failed: %v", err)
+	}
+
+	if zones == nil {
+		t.Fatal("expected zones, got nil")
+	}
+
+	if len(zones.Zones) == 0 {
+		t.Error("expected Zones to have data")
+	}
+
+	// Verify first zone has expected fields
+	if len(zones.Zones) > 0 {
+		zone := zones.Zones[0]
+		if zone.TrainingMethod == "" {
+			t.Error("expected TrainingMethod to be set")
+		}
+		if zone.Sport == "" {
+			t.Error("expected Sport to be set")
+		}
+		if zone.MaxHeartRateUsed == 0 {
+			t.Error("expected MaxHeartRateUsed to be set")
+		}
+	}
+
+	if zones.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
 func TestIntegration_Workout_List(t *testing.T) {
 	skipIfNoCassette(t, "workouts")
 
