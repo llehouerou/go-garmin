@@ -10,7 +10,7 @@ import (
 // parseOptionalDate parses a date string from request arguments.
 // Returns today if the argument is missing or empty.
 //
-//nolint:unused // Helper for MCP tool handlers to be implemented
+//nolint:unused,unparam // Helper for MCP tool handlers to be implemented
 func parseOptionalDate(request mcp.CallToolRequest, key string) (time.Time, error) {
 	dateStr, _ := request.RequireString(key) // Ignore error - missing key means use default
 	if dateStr == "" {

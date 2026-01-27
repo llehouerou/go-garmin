@@ -55,4 +55,130 @@ func registerTools(s *server.MCPServer, client *garmin.Client) {
 			return jsonResult(data), nil
 		},
 	)
+
+	// Wellness - Stress
+	s.AddTool(
+		mcp.NewTool("get_stress",
+			mcp.WithDescription("Get stress levels throughout the day"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Wellness.GetDailyStress(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Wellness - Body Battery
+	s.AddTool(
+		mcp.NewTool("get_body_battery",
+			mcp.WithDescription("Get body battery drain and charge events throughout the day"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Wellness.GetBodyBatteryEvents(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Wellness - Heart Rate
+	s.AddTool(
+		mcp.NewTool("get_heart_rate",
+			mcp.WithDescription("Get heart rate data for a day including resting HR and time in zones"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Wellness.GetDailyHeartRate(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Wellness - SpO2
+	s.AddTool(
+		mcp.NewTool("get_spo2",
+			mcp.WithDescription("Get blood oxygen (SpO2) readings for a day"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Wellness.GetDailySpO2(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Wellness - Respiration
+	s.AddTool(
+		mcp.NewTool("get_respiration",
+			mcp.WithDescription("Get respiration rate data for a day"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Wellness.GetDailyRespiration(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Wellness - Intensity Minutes
+	s.AddTool(
+		mcp.NewTool("get_intensity_minutes",
+			mcp.WithDescription("Get weekly intensity minutes (moderate and vigorous activity)"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Wellness.GetDailyIntensityMinutes(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
 }
