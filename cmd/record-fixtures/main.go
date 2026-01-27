@@ -392,6 +392,35 @@ func recordActivityDetails(ctx context.Context, client *http.Client, domain, tok
 	if err != nil {
 		fmt.Printf("  Warning: activity weather: %v\n", err)
 	}
+
+	// Activity extension endpoints
+	fmt.Printf("  Getting activity extended details for %d...\n", id)
+	detailsURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d/details", domain, id)
+	_, err = doAPIRequest(ctx, client, detailsURL, token)
+	if err != nil {
+		fmt.Printf("  Warning: activity extended details: %v\n", err)
+	}
+
+	fmt.Printf("  Getting activity HR time in zones for %d...\n", id)
+	hrZonesURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d/hrTimeInZones", domain, id)
+	_, err = doAPIRequest(ctx, client, hrZonesURL, token)
+	if err != nil {
+		fmt.Printf("  Warning: activity HR zones: %v\n", err)
+	}
+
+	fmt.Printf("  Getting activity power time in zones for %d...\n", id)
+	powerZonesURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d/powerTimeInZones", domain, id)
+	_, err = doAPIRequest(ctx, client, powerZonesURL, token)
+	if err != nil {
+		fmt.Printf("  Warning: activity power zones: %v\n", err)
+	}
+
+	fmt.Printf("  Getting activity exercise sets for %d...\n", id)
+	exerciseSetsURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d/exerciseSets", domain, id)
+	_, err = doAPIRequest(ctx, client, exerciseSetsURL, token)
+	if err != nil {
+		fmt.Printf("  Warning: activity exercise sets: %v\n", err)
+	}
 }
 
 func recordMetrics(ctx context.Context, session []byte, date time.Time) error {

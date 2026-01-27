@@ -12,7 +12,7 @@ import (
 
 var activitiesCmd = &cobra.Command{
 	Use:   "activities",
-	Short: "Activities data (list, details, weather, splits, download)",
+	Short: "Activities data (list, details, weather, splits, zones, download)",
 }
 
 var activitiesListCmd = &cobra.Command{
@@ -53,12 +53,44 @@ var activitiesDownloadCmd = &cobra.Command{
 	RunE:      runActivitiesDownload,
 }
 
+var activitiesDetailsCmd = &cobra.Command{
+	Use:   "details <activity-id>",
+	Short: "Get extended details with time-series metrics",
+	Args:  cobra.ExactArgs(1),
+	RunE:  runActivitiesDetails,
+}
+
+var activitiesHRZonesCmd = &cobra.Command{
+	Use:   "hr-zones <activity-id>",
+	Short: "Get heart rate time in zones",
+	Args:  cobra.ExactArgs(1),
+	RunE:  runActivitiesHRZones,
+}
+
+var activitiesPowerZonesCmd = &cobra.Command{
+	Use:   "power-zones <activity-id>",
+	Short: "Get power time in zones",
+	Args:  cobra.ExactArgs(1),
+	RunE:  runActivitiesPowerZones,
+}
+
+var activitiesExerciseSetsCmd = &cobra.Command{
+	Use:   "exercise-sets <activity-id>",
+	Short: "Get exercise sets for strength workouts",
+	Args:  cobra.ExactArgs(1),
+	RunE:  runActivitiesExerciseSets,
+}
+
 func init() {
 	activitiesCmd.AddCommand(activitiesListCmd)
 	activitiesCmd.AddCommand(activitiesGetCmd)
 	activitiesCmd.AddCommand(activitiesWeatherCmd)
 	activitiesCmd.AddCommand(activitiesSplitsCmd)
 	activitiesCmd.AddCommand(activitiesDownloadCmd)
+	activitiesCmd.AddCommand(activitiesDetailsCmd)
+	activitiesCmd.AddCommand(activitiesHRZonesCmd)
+	activitiesCmd.AddCommand(activitiesPowerZonesCmd)
+	activitiesCmd.AddCommand(activitiesExerciseSetsCmd)
 }
 
 func runActivitiesList(cmd *cobra.Command, args []string) error {
@@ -183,4 +215,80 @@ func runActivitiesDownload(cmd *cobra.Command, args []string) error {
 
 	fmt.Printf("Downloaded %s (%d bytes)\n", filename, len(data))
 	return nil
+}
+
+func runActivitiesDetails(cmd *cobra.Command, args []string) error {
+	activityID, err := strconv.ParseInt(args[0], 10, 64)
+	if err != nil {
+		return fmt.Errorf("invalid activity ID: %s", args[0])
+	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	details, err := client.Activities.GetDetails(cmd.Context(), activityID)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(details)
+}
+
+func runActivitiesHRZones(cmd *cobra.Command, args []string) error {
+	activityID, err := strconv.ParseInt(args[0], 10, 64)
+	if err != nil {
+		return fmt.Errorf("invalid activity ID: %s", args[0])
+	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	zones, err := client.Activities.GetHRTimeInZones(cmd.Context(), activityID)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(zones)
+}
+
+func runActivitiesPowerZones(cmd *cobra.Command, args []string) error {
+	activityID, err := strconv.ParseInt(args[0], 10, 64)
+	if err != nil {
+		return fmt.Errorf("invalid activity ID: %s", args[0])
+	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	zones, err := client.Activities.GetPowerTimeInZones(cmd.Context(), activityID)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(zones)
+}
+
+func runActivitiesExerciseSets(cmd *cobra.Command, args []string) error {
+	activityID, err := strconv.ParseInt(args[0], 10, 64)
+	if err != nil {
+		return fmt.Errorf("invalid activity ID: %s", args[0])
+	}
+
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+
+	sets, err := client.Activities.GetExerciseSets(cmd.Context(), activityID)
+	if err != nil {
+		return err
+	}
+
+	return printJSON(sets)
 }

@@ -56,14 +56,14 @@ This document lists all known API endpoints from the reference projects and web 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
 | [x] | GET | `/activity-service/activity/{activityId}` | Get single activity |
-| [ ] | GET | `/activity-service/activity/{activityId}/details` | Activity details |
+| [x] | GET | `/activity-service/activity/{activityId}/details` | Activity details (time-series metrics) |
 | [x] | GET | `/activity-service/activity/{activityId}/splits` | Activity splits |
 | [ ] | GET | `/activity-service/activity/{activityId}/typedSplits` | Activity typed splits |
 | [ ] | GET | `/activity-service/activity/{activityId}/split_summaries` | Activity split summaries |
 | [x] | GET | `/activity-service/activity/{activityId}/weather` | Activity weather |
-| [ ] | GET | `/activity-service/activity/{activityId}/hrTimeInZones` | HR time in zones |
-| [ ] | GET | `/activity-service/activity/{activityId}/powerTimeInZones` | Power time in zones |
-| [ ] | GET | `/activity-service/activity/{activityId}/exerciseSets` | Exercise sets |
+| [x] | GET | `/activity-service/activity/{activityId}/hrTimeInZones` | HR time in zones |
+| [x] | GET | `/activity-service/activity/{activityId}/powerTimeInZones` | Power time in zones |
+| [x] | GET | `/activity-service/activity/{activityId}/exerciseSets` | Exercise sets |
 | [ ] | GET | `/activity-service/activity/{activityId}/gear` | Activity gear |
 | [ ] | GET | `/activity-service/activity/activityTypes` | Activity types |
 | [ ] | GET | `/activity-service/activity/forDate/{date}` | Activities for date |

@@ -864,3 +864,228 @@ func (s *ActivityService) DownloadCSV(ctx context.Context, activityID int64) ([]
 
 	return io.ReadAll(resp.Body)
 }
+
+// TimeInZone represents time spent in a specific heart rate or power zone.
+type TimeInZone struct {
+	ZoneNumber      int     `json:"zoneNumber"`
+	SecsInZone      float64 `json:"secsInZone"`
+	ZoneLowBoundary int     `json:"zoneLowBoundary"`
+}
+
+// DurationInZone returns the time spent in this zone as a time.Duration.
+func (z *TimeInZone) DurationInZone() time.Duration {
+	return time.Duration(z.SecsInZone * float64(time.Second))
+}
+
+// HRTimeInZones represents heart rate time in zones for an activity.
+type HRTimeInZones struct {
+	Zones []TimeInZone
+	raw   json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (h *HRTimeInZones) RawJSON() json.RawMessage {
+	return h.raw
+}
+
+// PowerTimeInZones represents power time in zones for an activity.
+type PowerTimeInZones struct {
+	Zones []TimeInZone
+	raw   json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (p *PowerTimeInZones) RawJSON() json.RawMessage {
+	return p.raw
+}
+
+// MetricDescriptorUnit represents the unit of a metric.
+type MetricDescriptorUnit struct {
+	ID     int64   `json:"id"`
+	Key    string  `json:"key"`
+	Factor float64 `json:"factor"`
+}
+
+// MetricDescriptor describes a metric in activity details.
+type MetricDescriptor struct {
+	MetricsIndex int                  `json:"metricsIndex"`
+	Key          string               `json:"key"`
+	Unit         MetricDescriptorUnit `json:"unit"`
+}
+
+// ActivityDetailMetrics represents a single data point with metric values.
+type ActivityDetailMetrics struct {
+	Metrics []any `json:"metrics"`
+}
+
+// ActivityDetails represents extended details for an activity including time-series metrics.
+type ActivityDetails struct {
+	ActivityID            int64                   `json:"activityId"`
+	MeasurementCount      int                     `json:"measurementCount"`
+	MetricsCount          int                     `json:"metricsCount"`
+	TotalMetricsCount     int                     `json:"totalMetricsCount"`
+	MetricDescriptors     []MetricDescriptor      `json:"metricDescriptors"`
+	ActivityDetailMetrics []ActivityDetailMetrics `json:"activityDetailMetrics"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (a *ActivityDetails) RawJSON() json.RawMessage {
+	return a.raw
+}
+
+// GetMetricIndex returns the index for a metric key, or -1 if not found.
+func (a *ActivityDetails) GetMetricIndex(key string) int {
+	for _, desc := range a.MetricDescriptors {
+		if desc.Key == key {
+			return desc.MetricsIndex
+		}
+	}
+	return -1
+}
+
+// ExerciseSet represents a single exercise set in a strength workout.
+type ExerciseSet struct {
+	SetType                   string   `json:"setType"`
+	Category                  string   `json:"category"`
+	ExerciseName              string   `json:"exerciseName"`
+	Weight                    *float64 `json:"weight"`
+	RepetitionCount           *int     `json:"repetitionCount"`
+	Duration                  *float64 `json:"duration"`
+	StartTime                 string   `json:"startTime"`
+	MessageIndex              int      `json:"messageIndex"`
+	WktStepIndex              *int     `json:"wktStepIndex"`
+	WeightDisplayUnit         *int     `json:"weightDisplayUnit"`
+	Exercises                 []any    `json:"exercises"`
+	TargetRepetitionCount     *int     `json:"targetRepetitionCount"`
+	TargetWeight              *float64 `json:"targetWeight"`
+	TargetWeightDisplayUnit   *int     `json:"targetWeightDisplayUnit"`
+	TargetDuration            *float64 `json:"targetDuration"`
+	WorkoutTargetRangeMin     *float64 `json:"workoutTargetRangeMin"`
+	WorkoutTargetRangeMax     *float64 `json:"workoutTargetRangeMax"`
+	WorkoutTargetRangeMinUnit *int     `json:"workoutTargetRangeMinUnit"`
+}
+
+// ExerciseSets represents exercise sets for an activity.
+type ExerciseSets struct {
+	ActivityID   int64         `json:"activityId"`
+	ExerciseSets []ExerciseSet `json:"exerciseSets"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (e *ExerciseSets) RawJSON() json.RawMessage {
+	return e.raw
+}
+
+// GetDetails retrieves extended details with time-series metrics for an activity.
+func (s *ActivityService) GetDetails(ctx context.Context, activityID int64) (*ActivityDetails, error) {
+	path := fmt.Sprintf("/activity-service/activity/%d/details", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var details ActivityDetails
+	if err := json.Unmarshal(raw, &details); err != nil {
+		return nil, err
+	}
+	details.raw = raw
+
+	return &details, nil
+}
+
+// GetHRTimeInZones retrieves heart rate time in zones for an activity.
+func (s *ActivityService) GetHRTimeInZones(ctx context.Context, activityID int64) (*HRTimeInZones, error) {
+	path := fmt.Sprintf("/activity-service/activity/%d/hrTimeInZones", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var zones []TimeInZone
+	if err := json.Unmarshal(raw, &zones); err != nil {
+		return nil, err
+	}
+
+	return &HRTimeInZones{Zones: zones, raw: raw}, nil
+}
+
+// GetPowerTimeInZones retrieves power time in zones for an activity.
+func (s *ActivityService) GetPowerTimeInZones(ctx context.Context, activityID int64) (*PowerTimeInZones, error) {
+	path := fmt.Sprintf("/activity-service/activity/%d/powerTimeInZones", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var zones []TimeInZone
+	if err := json.Unmarshal(raw, &zones); err != nil {
+		return nil, err
+	}
+
+	return &PowerTimeInZones{Zones: zones, raw: raw}, nil
+}
+
+// GetExerciseSets retrieves exercise sets for a strength workout activity.
+func (s *ActivityService) GetExerciseSets(ctx context.Context, activityID int64) (*ExerciseSets, error) {
+	path := fmt.Sprintf("/activity-service/activity/%d/exerciseSets", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var sets ExerciseSets
+	if err := json.Unmarshal(raw, &sets); err != nil {
+		return nil, err
+	}
+	sets.raw = raw
+
+	return &sets, nil
+}

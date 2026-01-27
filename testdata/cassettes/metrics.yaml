@@ -21,7 +21,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '[{"userProfilePK":12345678,"calendarDate":"2026-01-27","timestamp":"2026-01-27T02:40:15.0","timestampLocal":"2026-01-27T06:40:15.0","deviceId":3490854130,"level":"HIGH","feedbackLong":"HIGH_RT_AVAILABLE_SS_HIGHEST","feedbackShort":"RESTED_AND_READY","score":91,"sleepScore":96,"sleepScoreFactorPercent":96,"sleepScoreFactorFeedback":"VERY_GOOD","recoveryTime":0,"recoveryTimeFactorPercent":100,"recoveryTimeFactorFeedback":"VERY_GOOD","acwrFactorPercent":85,"acwrFactorFeedback":"GOOD","acuteLoad":249,"stressHistoryFactorPercent":87,"stressHistoryFactorFeedback":"GOOD","hrvFactorPercent":96,"hrvFactorFeedback":"GOOD","hrvWeeklyAverage":53,"sleepHistoryFactorPercent":69,"sleepHistoryFactorFeedback":"MODERATE","validSleep":true,"inputContext":"AFTER_WAKEUP_RESET","primaryActivityTracker":true,"recoveryTimeChangePhrase":"REACHED_ZERO","sleepHistoryFactorFeedbackPhrase":null,"hrvFactorFeedbackPhrase":null,"stressHistoryFactorFeedbackPhrase":null,"acwrFactorFeedbackPhrase":null,"recoveryTimeFactorFeedbackPhrase":null,"sleepScoreFactorFeedbackPhrase":null},{"userProfilePK":12345678,"calendarDate":"2026-01-27","timestamp":"2026-01-26T23:59:37.0","timestampLocal":"2026-01-27T03:59:37.0","deviceId":3490854130,"level":"MODERATE","feedbackLong":"UNKNOWN","feedbackShort":"UNKNOWN","score":64,"sleepScore":null,"sleepScoreFactorPercent":0,"sleepScoreFactorFeedback":"NONE","recoveryTime":70,"recoveryTimeFactorPercent":98,"recoveryTimeFactorFeedback":"GOOD","acwrFactorPercent":85,"acwrFactorFeedback":"GOOD","acuteLoad":298,"stressHistoryFactorPercent":77,"stressHistoryFactorFeedback":"GOOD","hrvFactorPercent":100,"hrvFactorFeedback":"VERY_GOOD","hrvWeeklyAverage":51,"sleepHistoryFactorPercent":69,"sleepHistoryFactorFeedback":"MODERATE","validSleep":false,"inputContext":"UPDATE_REALTIME_VARIABLES","primaryActivityTracker":true,"recoveryTimeChangePhrase":null,"sleepHistoryFactorFeedbackPhrase":null,"hrvFactorFeedbackPhrase":null,"stressHistoryFactorFeedbackPhrase":null,"acwrFactorFeedbackPhrase":null,"recoveryTimeFactorFeedbackPhrase":null,"sleepScoreFactorFeedbackPhrase":null},{"userProfilePK":12345678,"calendarDate":"2026-01-27","timestamp":"2026-01-26T20:59:37.0","timestampLocal":"2026-01-27T00:59:37.0","deviceId":3490854130,"level":"HIGH","feedbackLong":"HIGH_RT_AVAILABLE_SS_UNKNOWN","feedbackShort":"WELL_RECOVERED","score":75,"sleepScore":null,"sleepScoreFactorPercent":0,"sleepScoreFactorFeedback":"NONE","recoveryTime":250,"recoveryTimeFactorPercent":93,"recoveryTimeFactorFeedback":"GOOD","acwrFactorPercent":85,"acwrFactorFeedback":"GOOD","acuteLoad":298,"stressHistoryFactorPercent":77,"stressHistoryFactorFeedback":"GOOD","hrvFactorPercent":100,"hrvFactorFeedback":"VERY_GOOD","hrvWeeklyAverage":51,"sleepHistoryFactorPercent":69,"sleepHistoryFactorFeedback":"MODERATE","validSleep":false,"inputContext":"UPDATE_REALTIME_VARIABLES","primaryActivityTracker":true,"recoveryTimeChangePhrase":null,"sleepHistoryFactorFeedbackPhrase":null,"hrvFactorFeedbackPhrase":null,"stressHistoryFactorFeedbackPhrase":null,"acwrFactorFeedbackPhrase":null,"recoveryTimeFactorFeedbackPhrase":null,"sleepScoreFactorFeedbackPhrase":null}]'
+        body: '[{"userProfilePK":12345678,"calendarDate":"2026-01-27","timestamp":"2026-01-27T02:40:15.0","timestampLocal":"2026-01-27T06:40:15.0","deviceId":12345678,"level":"HIGH","feedbackLong":"HIGH_RT_AVAILABLE_SS_HIGHEST","feedbackShort":"RESTED_AND_READY","score":91,"sleepScore":96,"sleepScoreFactorPercent":96,"sleepScoreFactorFeedback":"VERY_GOOD","recoveryTime":0,"recoveryTimeFactorPercent":100,"recoveryTimeFactorFeedback":"VERY_GOOD","acwrFactorPercent":85,"acwrFactorFeedback":"GOOD","acuteLoad":249,"stressHistoryFactorPercent":87,"stressHistoryFactorFeedback":"GOOD","hrvFactorPercent":96,"hrvFactorFeedback":"GOOD","hrvWeeklyAverage":53,"sleepHistoryFactorPercent":69,"sleepHistoryFactorFeedback":"MODERATE","validSleep":true,"inputContext":"AFTER_WAKEUP_RESET","primaryActivityTracker":true,"recoveryTimeChangePhrase":"REACHED_ZERO","sleepHistoryFactorFeedbackPhrase":null,"hrvFactorFeedbackPhrase":null,"stressHistoryFactorFeedbackPhrase":null,"acwrFactorFeedbackPhrase":null,"recoveryTimeFactorFeedbackPhrase":null,"sleepScoreFactorFeedbackPhrase":null},{"userProfilePK":12345678,"calendarDate":"2026-01-27","timestamp":"2026-01-26T23:59:37.0","timestampLocal":"2026-01-27T03:59:37.0","deviceId":12345678,"level":"MODERATE","feedbackLong":"UNKNOWN","feedbackShort":"UNKNOWN","score":64,"sleepScore":null,"sleepScoreFactorPercent":0,"sleepScoreFactorFeedback":"NONE","recoveryTime":70,"recoveryTimeFactorPercent":98,"recoveryTimeFactorFeedback":"GOOD","acwrFactorPercent":85,"acwrFactorFeedback":"GOOD","acuteLoad":298,"stressHistoryFactorPercent":77,"stressHistoryFactorFeedback":"GOOD","hrvFactorPercent":100,"hrvFactorFeedback":"VERY_GOOD","hrvWeeklyAverage":51,"sleepHistoryFactorPercent":69,"sleepHistoryFactorFeedback":"MODERATE","validSleep":false,"inputContext":"UPDATE_REALTIME_VARIABLES","primaryActivityTracker":true,"recoveryTimeChangePhrase":null,"sleepHistoryFactorFeedbackPhrase":null,"hrvFactorFeedbackPhrase":null,"stressHistoryFactorFeedbackPhrase":null,"acwrFactorFeedbackPhrase":null,"recoveryTimeFactorFeedbackPhrase":null,"sleepScoreFactorFeedbackPhrase":null},{"userProfilePK":12345678,"calendarDate":"2026-01-27","timestamp":"2026-01-26T20:59:37.0","timestampLocal":"2026-01-27T00:59:37.0","deviceId":12345678,"level":"HIGH","feedbackLong":"HIGH_RT_AVAILABLE_SS_UNKNOWN","feedbackShort":"WELL_RECOVERED","score":75,"sleepScore":null,"sleepScoreFactorPercent":0,"sleepScoreFactorFeedback":"NONE","recoveryTime":250,"recoveryTimeFactorPercent":93,"recoveryTimeFactorFeedback":"GOOD","acwrFactorPercent":85,"acwrFactorFeedback":"GOOD","acuteLoad":298,"stressHistoryFactorPercent":77,"stressHistoryFactorFeedback":"GOOD","hrvFactorPercent":100,"hrvFactorFeedback":"VERY_GOOD","hrvWeeklyAverage":51,"sleepHistoryFactorPercent":69,"sleepHistoryFactorFeedback":"MODERATE","validSleep":false,"inputContext":"UPDATE_REALTIME_VARIABLES","primaryActivityTracker":true,"recoveryTimeChangePhrase":null,"sleepHistoryFactorFeedbackPhrase":null,"hrvFactorFeedbackPhrase":null,"stressHistoryFactorFeedbackPhrase":null,"acwrFactorFeedbackPhrase":null,"recoveryTimeFactorFeedbackPhrase":null,"sleepScoreFactorFeedbackPhrase":null}]'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=86400
@@ -30,24 +30,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465ad4aeb373b4-JNB
+                - 9c46a62e3b67739f-JNB
             Content-Type:
                 - application/json;charset=UTF-8
             Date:
-                - Tue, 27 Jan 2026 06:57:15 GMT
+                - Tue, 27 Jan 2026 07:48:41 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=giSWq0Mcg2blqfP%2FLdL7qAhd%2BkUUJvlYc5pNuhhXLbWp8xvEaLwpmJPTEf9u%2FE1DP%2FIpQo%2FbFbaNlGOUMJt5MVMzYAXr3cAzT4xBe3GXwjYV1E9ic%2BtO95i6BuuMoT8yGtAt82D0z4E2hObqGCUGcOEfcQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=KPffr99lqBohZbogENeyMkjt3qWG2gCLbcjJETbrHay5b6YnjW5gyMO4cjacTQNg1uvfqnEn7Dagl5HpInleGLWOQ8oj18AT0O11R2ptX%2BDpe7q%2BvRbfrJlYZelByRmW%2BC0dF%2BuFFV8YsatOvovVzdEV3A%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 315.008765ms
+        duration: 337.180056ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -71,7 +71,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"userProfilePK":12345678,"deviceId":3490854130,"calendarDate":"2026-01-27","overallScore":5549,"classification":2,"feedbackPhrase":30,"primaryTrainingDevice":true,"gaugeLowerLimit":3570,"classificationLowerLimitIntermediate":5100,"classificationLowerLimitTrained":5800,"classificationLowerLimitWellTrained":6500,"classificationLowerLimitExpert":7200,"classificationLowerLimitSuperior":7900,"classificationLowerLimitElite":8600,"gaugeUpperLimit":10320,"contributors":[{"activityTypeId":null,"group":0,"contribution":94.29},{"activityTypeId":3,"group":null,"contribution":5.71},{"activityTypeId":null,"group":8,"contribution":0.0}]}'
+        body: '{"userProfilePK":12345678,"deviceId":12345678,"calendarDate":"2026-01-27","overallScore":5549,"classification":2,"feedbackPhrase":30,"primaryTrainingDevice":true,"gaugeLowerLimit":3570,"classificationLowerLimitIntermediate":5100,"classificationLowerLimitTrained":5800,"classificationLowerLimitWellTrained":6500,"classificationLowerLimitExpert":7200,"classificationLowerLimitSuperior":7900,"classificationLowerLimitElite":8600,"gaugeUpperLimit":10320,"contributors":[{"activityTypeId":null,"group":0,"contribution":94.29},{"activityTypeId":3,"group":null,"contribution":5.71},{"activityTypeId":null,"group":8,"contribution":0.0}]}'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=86400
@@ -80,24 +80,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465ad6995a73b4-JNB
+                - 9c46a6305d42739f-JNB
             Content-Type:
                 - application/json;charset=UTF-8
             Date:
-                - Tue, 27 Jan 2026 06:57:15 GMT
+                - Tue, 27 Jan 2026 07:48:41 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=4cr6zudndaa%2FcpaWWILBYn8rAMAIf4X88n9iQhCEoMF9B7a2SCaQw41N%2F%2B0dORccICXObaMBfmuTFIr5ptfZomGTWjWVwu%2FFLU2JEzmBy5axX5w%2BBvHOpK3UsZH84KrQqCLSh9JObJSQ8E5OcGcvcC07uw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=Te7xLK6oFhuiO%2Bq2dzh5zliwee04K5VwzYfAVi%2FJIwSRJtUaKnUN4P2lm2BJ0%2BmawqKWS6KWtyS%2FyEO7YcONHLdZmJz9VMc%2BA4KJBKb1lXKmQVYhxypgK2kunCGtQxQ7IblN2iuXDJrXKKGETTZzHDzzYw%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 316.476112ms
+        duration: 317.11312ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -121,7 +121,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"userProfilePK":12345678,"deviceId":3490854130,"calendarDate":"2026-01-27","strengthScore":7,"enduranceScore":11,"hillScoreClassificationId":2,"overallScore":32,"hillScoreFeedbackPhraseId":4,"vo2Max":50.0,"vo2MaxPreciseValue":50.1,"primaryTrainingDevice":true}'
+        body: '{"userProfilePK":12345678,"deviceId":12345678,"calendarDate":"2026-01-27","strengthScore":7,"enduranceScore":11,"hillScoreClassificationId":2,"overallScore":32,"hillScoreFeedbackPhraseId":4,"vo2Max":50.0,"vo2MaxPreciseValue":50.1,"primaryTrainingDevice":true}'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=86400
@@ -130,24 +130,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465ad89c7173b4-JNB
+                - 9c46a6325ee6739f-JNB
             Content-Type:
                 - application/json;charset=UTF-8
             Date:
-                - Tue, 27 Jan 2026 06:57:15 GMT
+                - Tue, 27 Jan 2026 07:48:42 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=A61WJiQLfLxTzbUZXoK4Ffo4ncZU8XyTV8l%2BcOMLhi0G9avaFk2OOr0%2BVs3OfHsly8dSWWqzp46A%2FlHVD4cCs4ZrBv5LEb1n8YVzZgMc6v%2F%2F%2BZKzbjRDSQK7Cjvze8SmVyQaF1Ks8A%2B%2FPBHC4H%2B3b8MgpQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=6nTu0GN1Hqm9b6Mddt%2F0FWeeKEpUzaJuecAk2Zxt5wdormbQD1UMIn%2BwoEkxBu%2F%2BUC7zRW68afJeTgh7nL1AYrmk%2F4u0YaNibpj%2BoqKMxqmj21JiKNIH%2BE9yyS76qr1%2Fi5OEEn80IJ7aoAxlUy0JW12hoA%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 369.577175ms
+        duration: 351.352927ms
     - id: 3
       request:
         proto: HTTP/1.1
@@ -177,24 +177,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465adaefb973b4-JNB
+                - 9c46a63488b2739f-JNB
             Content-Type:
                 - application/json;charset=UTF-8
             Date:
-                - Tue, 27 Jan 2026 06:57:16 GMT
+                - Tue, 27 Jan 2026 07:48:42 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=7TRtXLqKEv44hX03i%2FYZhlz%2FxTqOv1K9TbIYqosQEBKTPXgbNh0V0mGunlxduBLM0pgRGK2%2BwoJ0jwRvvBsl0B8Bbl8XWrSGPa7QbczOLTSco3CS0kY%2BAHZf0ZINZKToBnpMDx2bo5fnojrUprekiYmYSQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=iUyrfGTYsqrjBlZa4bL%2BNbE47R7Hp85dymByOs50D75IP2W8MviZCbyWGuQgPrQTZQFBuhTpknZZ6m1RcTzxP25qQADjXJJz8dgCE1%2BuZmGKugWTjeY2QPg1RxngtrCqzi%2BHvPEl0hqBNOYDNTlzmxm6dw%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 368.508257ms
+        duration: 353.943173ms
     - id: 4
       request:
         proto: HTTP/1.1
@@ -224,24 +224,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465add3add73b4-JNB
+                - 9c46a636ca7c739f-JNB
             Content-Type:
                 - application/json;charset=UTF-8
             Date:
-                - Tue, 27 Jan 2026 06:57:16 GMT
+                - Tue, 27 Jan 2026 07:48:43 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=Q4y2wlLDSYp1NwJ%2FiJabOHmqYMBMsceLohSl4gOGLzMxxbaGpB0%2BhItkEX0yRjF%2FZc9ERTmJN3xlfh2FIJRxGQDBB1RkBuXzv2bkv71O%2Fp1CDGR8lvG71katlDNoAxKBOCCUUhqZ37uLOc1Vqdiky8abmA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=jz6q1ULxpxKjMfRgOuxAXNTCZOrxxbTYZAE4oMrn6sdK8duEi0lXGfZanIQbuefLvZKR7kI5cnPdazMd3YHo3lfFP1TrQ0z3nvbt0dRnRVLFGR6BEY2k9H1nK322xICx0woAVYrhykkNHykR2AsAbyoxfw%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 354.187471ms
+        duration: 366.39554ms
     - id: 5
       request:
         proto: HTTP/1.1
@@ -262,7 +262,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"userId":12345678,"mostRecentVO2Max":{"userId":12345678,"generic":{"calendarDate":"2026-01-25","vo2MaxPreciseValue":50.1,"vo2MaxValue":50.0,"fitnessAge":null,"fitnessAgeDescription":null,"maxMetCategory":0},"cycling":null,"heatAltitudeAcclimation":{"calendarDate":"2026-01-27","altitudeAcclimationDate":"2026-01-26","previousAltitudeAcclimationDate":"2026-01-26","heatAcclimationDate":"2026-01-26","previousHeatAcclimationDate":"2026-01-25","altitudeAcclimation":0,"previousAltitudeAcclimation":0,"heatAcclimationPercentage":100,"previousHeatAcclimationPercentage":100,"heatTrend":"ACCLIMATIZED","altitudeTrend":null,"currentAltitude":0,"previousAltitude":0,"acclimationPercentage":0,"previousAcclimationPercentage":0,"altitudeAcclimationLocalTimestamp":"2026-01-27T00:05:37.0"}},"mostRecentTrainingLoadBalance":{"userId":12345678,"metricsTrainingLoadBalanceDTOMap":{"3490854130":{"calendarDate":"2026-01-27","deviceId":3490854130,"monthlyLoadAerobicLow":187.12384,"monthlyLoadAerobicHigh":209.70392,"monthlyLoadAnaerobic":0.0,"monthlyLoadAerobicLowTargetMin":186,"monthlyLoadAerobicLowTargetMax":449,"monthlyLoadAerobicHighTargetMin":295,"monthlyLoadAerobicHighTargetMax":558,"monthlyLoadAnaerobicTargetMin":0,"monthlyLoadAnaerobicTargetMax":262,"trainingBalanceFeedbackPhrase":"AEROBIC_HIGH_SHORTAGE","primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":3490854130,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}]},"mostRecentTrainingStatus":{"userId":12345678,"latestTrainingStatusData":{"3490854130":{"calendarDate":"2026-01-27","sinceDate":"2026-01-25","weeklyTrainingLoad":null,"trainingStatus":7,"timestamp":1769481615000,"deviceId":3490854130,"loadTunnelMin":null,"loadTunnelMax":null,"loadLevelTrend":null,"sport":null,"subSport":null,"fitnessTrendSport":"NONE","fitnessTrend":0,"trainingStatusFeedbackPhrase":"PRODUCTIVE_1","trainingPaused":false,"acuteTrainingLoadDTO":{"acwrPercent":47,"acwrStatus":"OPTIMAL","acwrStatusFeedback":"FEEDBACK_2","dailyTrainingLoadAcute":249,"maxTrainingLoadChronic":328.5,"minTrainingLoadChronic":175.20000000000002,"dailyTrainingLoadChronic":219,"dailyAcuteChronicWorkloadRatio":1.1},"primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":3490854130,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}],"showSelector":false,"lastPrimarySyncDate":"2026-01-27"},"heatAltitudeAcclimationDTO":null}'
+        body: '{"userId":12345678,"mostRecentVO2Max":{"userId":12345678,"generic":{"calendarDate":"2026-01-25","vo2MaxPreciseValue":50.1,"vo2MaxValue":50.0,"fitnessAge":null,"fitnessAgeDescription":null,"maxMetCategory":0},"cycling":null,"heatAltitudeAcclimation":{"calendarDate":"2026-01-27","altitudeAcclimationDate":"2026-01-26","previousAltitudeAcclimationDate":"2026-01-26","heatAcclimationDate":"2026-01-26","previousHeatAcclimationDate":"2026-01-25","altitudeAcclimation":0,"previousAltitudeAcclimation":0,"heatAcclimationPercentage":100,"previousHeatAcclimationPercentage":100,"heatTrend":"ACCLIMATIZED","altitudeTrend":null,"currentAltitude":0,"previousAltitude":0,"acclimationPercentage":0,"previousAcclimationPercentage":0,"altitudeAcclimationLocalTimestamp":"2026-01-27T00:05:37.0"}},"mostRecentTrainingLoadBalance":{"userId":12345678,"metricsTrainingLoadBalanceDTOMap":{"3490854130":{"calendarDate":"2026-01-27","deviceId":12345678,"monthlyLoadAerobicLow":187.12384,"monthlyLoadAerobicHigh":209.70392,"monthlyLoadAnaerobic":0.0,"monthlyLoadAerobicLowTargetMin":186,"monthlyLoadAerobicLowTargetMax":449,"monthlyLoadAerobicHighTargetMin":295,"monthlyLoadAerobicHighTargetMax":558,"monthlyLoadAnaerobicTargetMin":0,"monthlyLoadAnaerobicTargetMax":262,"trainingBalanceFeedbackPhrase":"AEROBIC_HIGH_SHORTAGE","primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":12345678,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}]},"mostRecentTrainingStatus":{"userId":12345678,"latestTrainingStatusData":{"3490854130":{"calendarDate":"2026-01-27","sinceDate":"2026-01-25","weeklyTrainingLoad":null,"trainingStatus":7,"timestamp":1769481615000,"deviceId":12345678,"loadTunnelMin":null,"loadTunnelMax":null,"loadLevelTrend":null,"sport":null,"subSport":null,"fitnessTrendSport":"NONE","fitnessTrend":0,"trainingStatusFeedbackPhrase":"PRODUCTIVE_1","trainingPaused":false,"acuteTrainingLoadDTO":{"acwrPercent":47,"acwrStatus":"OPTIMAL","acwrStatusFeedback":"FEEDBACK_2","dailyTrainingLoadAcute":249,"maxTrainingLoadChronic":328.5,"minTrainingLoadChronic":175.20000000000002,"dailyTrainingLoadChronic":219,"dailyAcuteChronicWorkloadRatio":1.1},"primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":12345678,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}],"showSelector":false,"lastPrimarySyncDate":"2026-01-27"},"heatAltitudeAcclimationDTO":null}'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=86400
@@ -271,24 +271,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465adf6e4973b4-JNB
+                - 9c46a6390c5c739f-JNB
             Content-Type:
                 - application/json;charset=UTF-8
             Date:
-                - Tue, 27 Jan 2026 06:57:17 GMT
+                - Tue, 27 Jan 2026 07:48:43 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=VW5v21aZcbz09FS4UvVaStgEI9DpyDWjsOtCMdA63uc0js8BR5PMd0gouvHqkdzYyAxVXmZnZ3dt7rq7Rx%2FE0LQGwcLtJslIIoP2f55CljZN1jWrbb%2FnNY%2F%2BAj5ml97rEFsw5mkYlhZG1kN1pkUbU4qBhg%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=5jEhJlsg9LElbPIlIIeYdgH%2BGOKIMMpDOKSyBvdpuVpeNcEDy3enrIZsWgtbJneTKrD1n8aT2ZYiwnJ9kFNGTf6TCGI4X5%2F4PUnV63M3u1JQzn0e0qyiG86FiaO%2BzhlfeTraEamFZkTVmlHOEeoh6e%2FK3w%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 390.078092ms
+        duration: 406.876645ms
     - id: 6
       request:
         proto: HTTP/1.1
@@ -309,7 +309,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"userId":12345678,"latestTrainingStatusData":{"3490854130":{"calendarDate":"2026-01-27","sinceDate":"2026-01-25","weeklyTrainingLoad":null,"trainingStatus":7,"timestamp":1769481615000,"deviceId":3490854130,"loadTunnelMin":null,"loadTunnelMax":null,"loadLevelTrend":null,"sport":null,"subSport":null,"fitnessTrendSport":"NONE","fitnessTrend":0,"trainingStatusFeedbackPhrase":"PRODUCTIVE_1","trainingPaused":false,"acuteTrainingLoadDTO":{"acwrPercent":47,"acwrStatus":"OPTIMAL","acwrStatusFeedback":"FEEDBACK_2","dailyTrainingLoadAcute":249,"maxTrainingLoadChronic":328.5,"minTrainingLoadChronic":175.20000000000002,"dailyTrainingLoadChronic":219,"dailyAcuteChronicWorkloadRatio":1.1},"primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":3490854130,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}],"showSelector":false,"lastPrimarySyncDate":"2026-01-27"}'
+        body: '{"userId":12345678,"latestTrainingStatusData":{"3490854130":{"calendarDate":"2026-01-27","sinceDate":"2026-01-25","weeklyTrainingLoad":null,"trainingStatus":7,"timestamp":1769481615000,"deviceId":12345678,"loadTunnelMin":null,"loadTunnelMax":null,"loadLevelTrend":null,"sport":null,"subSport":null,"fitnessTrendSport":"NONE","fitnessTrend":0,"trainingStatusFeedbackPhrase":"PRODUCTIVE_1","trainingPaused":false,"acuteTrainingLoadDTO":{"acwrPercent":47,"acwrStatus":"OPTIMAL","acwrStatusFeedback":"FEEDBACK_2","dailyTrainingLoadAcute":249,"maxTrainingLoadChronic":328.5,"minTrainingLoadChronic":175.20000000000002,"dailyTrainingLoadChronic":219,"dailyAcuteChronicWorkloadRatio":1.1},"primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":12345678,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}],"showSelector":false,"lastPrimarySyncDate":"2026-01-27"}'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=86400
@@ -318,24 +318,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465ae1e9ef73b4-JNB
+                - 9c46a63b9edb739f-JNB
             Content-Type:
                 - application/json;charset=UTF-8
             Date:
-                - Tue, 27 Jan 2026 06:57:17 GMT
+                - Tue, 27 Jan 2026 07:48:43 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=%2BEXxCpn9RTS0WtLICsidLwpAq8wInqXWLdAGg9mn1WBb9mX4SQb3XJvnvA%2FcFwM8%2BrMSesdtVoHT2lVv24fIcYbDjpffQecq9IRt8v%2Fj43U8CEefTCAlcvMgcHWkwDICbzD9qcDrTYoozwhJ3Zy%2BcrpTdQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=s7xNPayt6V74Q%2B4oB89oBAHVAbiGuRs%2B%2FNnrWQ04Q3GpnhUObR4jqvor6Ls%2FYURDFvIjxf19zo4GEgLdRDVFkDc7A5NcFTbzRVW7qMQJVCF5jHCUbgCNi1OYSKe%2BfzAT88Czkdz5DzuVrVfIyS%2BdhGge2Q%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 331.106618ms
+        duration: 341.930672ms
     - id: 7
       request:
         proto: HTTP/1.1
@@ -356,7 +356,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"userId":12345678,"metricsTrainingLoadBalanceDTOMap":{"3490854130":{"calendarDate":"2026-01-27","deviceId":3490854130,"monthlyLoadAerobicLow":187.12384,"monthlyLoadAerobicHigh":209.70392,"monthlyLoadAnaerobic":0.0,"monthlyLoadAerobicLowTargetMin":186,"monthlyLoadAerobicLowTargetMax":449,"monthlyLoadAerobicHighTargetMin":295,"monthlyLoadAerobicHighTargetMax":558,"monthlyLoadAnaerobicTargetMin":0,"monthlyLoadAnaerobicTargetMax":262,"trainingBalanceFeedbackPhrase":"AEROBIC_HIGH_SHORTAGE","primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":3490854130,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}]}'
+        body: '{"userId":12345678,"metricsTrainingLoadBalanceDTOMap":{"3490854130":{"calendarDate":"2026-01-27","deviceId":12345678,"monthlyLoadAerobicLow":187.12384,"monthlyLoadAerobicHigh":209.70392,"monthlyLoadAnaerobic":0.0,"monthlyLoadAerobicLowTargetMin":186,"monthlyLoadAerobicLowTargetMax":449,"monthlyLoadAerobicHighTargetMin":295,"monthlyLoadAerobicHighTargetMax":558,"monthlyLoadAnaerobicTargetMin":0,"monthlyLoadAnaerobicTargetMax":262,"trainingBalanceFeedbackPhrase":"AEROBIC_HIGH_SHORTAGE","primaryTrainingDevice":true}},"recordedDevices":[{"deviceId":12345678,"imageURL":"https://res.garmin.com/en/products/010-02809-10/v/c1_01_md.png","deviceName":"Forerunner 965","category":0}]}'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=86400
@@ -365,24 +365,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465ae3fce473b4-JNB
+                - 9c46a63db8a0739f-JNB
             Content-Type:
                 - application/json;charset=UTF-8
             Date:
-                - Tue, 27 Jan 2026 06:57:17 GMT
+                - Tue, 27 Jan 2026 07:48:44 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=AcuyNomeLJvyUkihGKQbqfVrDy3E7JsHMLelNNQ1NeUIpUF%2F1mrnfKltWgSYIgZP4zCxswfvCohDQS%2BIiOE6EuS7r3hYPYbunkZiZh%2FiGJymRzY0E27xQYyMRiyEUVRs6l6PXBcQ4ywHKlQbk8hogDQMNw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=74vk8in0Qk2O%2FzrmOJGebuzBTBDdS%2Fe5h8AzOcs0njkQxXr0E4MqbWNLkjQCy3wLaDG0Ibv0ITqTGHwTD8R0uKlfzlpsjwpsk8JnXzlVjaprqlRsXTflkyHVmUWclLqLpkVdHtoTBJPCUSg2NYoasObzLg%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 329.539557ms
+        duration: 341.992516ms
     - id: 8
       request:
         proto: HTTP/1.1
@@ -412,21 +412,21 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465ae60fea73b4-JNB
+                - 9c46a63feaa7739f-JNB
             Content-Type:
                 - application/json;charset=UTF-8
             Date:
-                - Tue, 27 Jan 2026 06:57:18 GMT
+                - Tue, 27 Jan 2026 07:48:44 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=x6XlvpHqMApP%2Babg9CQj9PcQrAkzjPMpZEieQVhsKhS9ooo%2FF971MXIzX9rj7M1EepMpmGD3UPDRNW2jystduVSGYUf9638G0Yws%2BDQ4aoEx9UbDlP5aqgIlZiRk8uuWyMkyWP%2Fyl7tyLeu%2FeTVmuQE0cQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=u2DdUdA1UdoFKz%2Bq8REkR%2BMfw5QPj%2FWlLewpRirXw40h9c0Dk4x1k7JqHXogSiVhF8eS6yb4PpVlZTgnGn38D%2FBfGqZTeBcJOPpbCnGo%2B%2Bz%2F%2FHSgJxvoZmFsWYPpBjDQBnlTYl2b8oLakGLcCYm8IyEM1g%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 344.173295ms
+        duration: 338.708376ms

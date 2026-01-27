@@ -1250,3 +1250,169 @@ func TestIntegration_Wellness_GetDailyIntensityMinutes(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_Activity_GetDetails(t *testing.T) {
+	skipIfNoCassette(t, "activities")
+
+	rec, err := testutil.NewRecorder("activities", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// Activity ID from the recorded cassette
+	activityID := int64(21661023200)
+
+	details, err := client.Activities.GetDetails(ctx, activityID)
+	if err != nil {
+		t.Fatalf("GetDetails failed: %v", err)
+	}
+
+	if details == nil {
+		t.Fatal("expected activity details, got nil")
+	}
+
+	if details.ActivityID != activityID {
+		t.Errorf("ActivityID = %d, want %d", details.ActivityID, activityID)
+	}
+	if details.MeasurementCount == 0 {
+		t.Error("expected MeasurementCount to be set")
+	}
+	if len(details.MetricDescriptors) == 0 {
+		t.Error("expected MetricDescriptors to have data")
+	}
+	if len(details.ActivityDetailMetrics) == 0 {
+		t.Error("expected ActivityDetailMetrics to have data")
+	}
+
+	// Verify GetMetricIndex works
+	timestampIdx := details.GetMetricIndex("directTimestamp")
+	if timestampIdx == -1 {
+		t.Error("expected to find directTimestamp metric")
+	}
+
+	// Verify RawJSON is available
+	if details.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Activity_GetHRTimeInZones(t *testing.T) {
+	skipIfNoCassette(t, "activities")
+
+	rec, err := testutil.NewRecorder("activities", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// Activity ID from the recorded cassette
+	activityID := int64(21661023200)
+
+	hrZones, err := client.Activities.GetHRTimeInZones(ctx, activityID)
+	if err != nil {
+		t.Fatalf("GetHRTimeInZones failed: %v", err)
+	}
+
+	if hrZones == nil {
+		t.Fatal("expected HR time in zones, got nil")
+	}
+
+	if len(hrZones.Zones) == 0 {
+		t.Error("expected Zones to have data")
+	}
+
+	// Verify first zone has expected fields
+	if len(hrZones.Zones) > 0 {
+		firstZone := hrZones.Zones[0]
+		if firstZone.ZoneNumber == 0 {
+			t.Error("expected ZoneNumber to be set")
+		}
+		if firstZone.ZoneLowBoundary == 0 {
+			t.Error("expected ZoneLowBoundary to be set")
+		}
+
+		// Verify conversion method works
+		dur := firstZone.DurationInZone()
+		if dur < 0 {
+			t.Errorf("DurationInZone() = %v, expected non-negative", dur)
+		}
+	}
+
+	// Verify RawJSON is available
+	if hrZones.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Activity_GetPowerTimeInZones(t *testing.T) {
+	skipIfNoCassette(t, "activities")
+
+	rec, err := testutil.NewRecorder("activities", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// Activity ID from the recorded cassette
+	activityID := int64(21661023200)
+
+	powerZones, err := client.Activities.GetPowerTimeInZones(ctx, activityID)
+	if err != nil {
+		t.Fatalf("GetPowerTimeInZones failed: %v", err)
+	}
+
+	if powerZones == nil {
+		t.Fatal("expected power time in zones, got nil")
+	}
+
+	// Power zones may be empty if activity doesn't have power data
+	// Just verify RawJSON is available
+	if powerZones.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Activity_GetExerciseSets(t *testing.T) {
+	skipIfNoCassette(t, "activities")
+
+	rec, err := testutil.NewRecorder("activities", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// Activity ID from the recorded cassette
+	activityID := int64(21661023200)
+
+	sets, err := client.Activities.GetExerciseSets(ctx, activityID)
+	if err != nil {
+		t.Fatalf("GetExerciseSets failed: %v", err)
+	}
+
+	if sets == nil {
+		t.Fatal("expected exercise sets, got nil")
+	}
+
+	if sets.ActivityID != activityID {
+		t.Errorf("ActivityID = %d, want %d", sets.ActivityID, activityID)
+	}
+
+	// Exercise sets may be null/empty for cardio activities
+	// Just verify RawJSON is available
+	if sets.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}

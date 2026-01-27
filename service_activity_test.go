@@ -504,3 +504,288 @@ func TestActivitySplitsRawJSON(t *testing.T) {
 		t.Error("RawJSON should return original JSON")
 	}
 }
+
+func TestTimeInZoneDurationInZone(t *testing.T) {
+	zone := &TimeInZone{
+		ZoneNumber:      1,
+		SecsInZone:      300.5,
+		ZoneLowBoundary: 94,
+	}
+
+	dur := zone.DurationInZone()
+	expected := 300*time.Second + 500*time.Millisecond
+	if dur != expected {
+		t.Errorf("DurationInZone() = %v, want %v", dur, expected)
+	}
+}
+
+func TestHRTimeInZonesJSONUnmarshal(t *testing.T) {
+	rawJSON := `[
+		{"zoneNumber":1,"secsInZone":2.999,"zoneLowBoundary":94},
+		{"zoneNumber":2,"secsInZone":48.997,"zoneLowBoundary":113},
+		{"zoneNumber":3,"secsInZone":1161.79,"zoneLowBoundary":132},
+		{"zoneNumber":4,"secsInZone":1022.05,"zoneLowBoundary":151},
+		{"zoneNumber":5,"secsInZone":102.166,"zoneLowBoundary":170}
+	]`
+
+	var zones []TimeInZone
+	if err := json.Unmarshal([]byte(rawJSON), &zones); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+
+	hrZones := &HRTimeInZones{Zones: zones, raw: json.RawMessage(rawJSON)}
+
+	if len(hrZones.Zones) != 5 {
+		t.Errorf("Zones length = %d, want 5", len(hrZones.Zones))
+	}
+
+	// Check first zone
+	if hrZones.Zones[0].ZoneNumber != 1 {
+		t.Errorf("Zones[0].ZoneNumber = %d, want 1", hrZones.Zones[0].ZoneNumber)
+	}
+	if hrZones.Zones[0].ZoneLowBoundary != 94 {
+		t.Errorf("Zones[0].ZoneLowBoundary = %d, want 94", hrZones.Zones[0].ZoneLowBoundary)
+	}
+
+	// Check zone 3 with significant time
+	if hrZones.Zones[2].SecsInZone < 1161 || hrZones.Zones[2].SecsInZone > 1162 {
+		t.Errorf("Zones[2].SecsInZone = %f, want ~1161.79", hrZones.Zones[2].SecsInZone)
+	}
+}
+
+func TestHRTimeInZonesRawJSON(t *testing.T) {
+	rawJSON := `[{"zoneNumber":1,"secsInZone":100,"zoneLowBoundary":94}]`
+
+	var zones []TimeInZone
+	if err := json.Unmarshal([]byte(rawJSON), &zones); err != nil {
+		t.Fatal(err)
+	}
+
+	hrZones := &HRTimeInZones{Zones: zones, raw: json.RawMessage(rawJSON)}
+
+	if string(hrZones.RawJSON()) != rawJSON {
+		t.Error("RawJSON should return original JSON")
+	}
+}
+
+func TestPowerTimeInZonesJSONUnmarshal(t *testing.T) {
+	rawJSON := `[
+		{"zoneNumber":1,"secsInZone":500.0,"zoneLowBoundary":0},
+		{"zoneNumber":2,"secsInZone":300.0,"zoneLowBoundary":150},
+		{"zoneNumber":3,"secsInZone":200.0,"zoneLowBoundary":200}
+	]`
+
+	var zones []TimeInZone
+	if err := json.Unmarshal([]byte(rawJSON), &zones); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+
+	powerZones := &PowerTimeInZones{Zones: zones, raw: json.RawMessage(rawJSON)}
+
+	if len(powerZones.Zones) != 3 {
+		t.Errorf("Zones length = %d, want 3", len(powerZones.Zones))
+	}
+
+	if powerZones.Zones[1].ZoneLowBoundary != 150 {
+		t.Errorf("Zones[1].ZoneLowBoundary = %d, want 150", powerZones.Zones[1].ZoneLowBoundary)
+	}
+}
+
+func TestPowerTimeInZonesRawJSON(t *testing.T) {
+	rawJSON := `[{"zoneNumber":1,"secsInZone":100,"zoneLowBoundary":0}]`
+
+	var zones []TimeInZone
+	if err := json.Unmarshal([]byte(rawJSON), &zones); err != nil {
+		t.Fatal(err)
+	}
+
+	powerZones := &PowerTimeInZones{Zones: zones, raw: json.RawMessage(rawJSON)}
+
+	if string(powerZones.RawJSON()) != rawJSON {
+		t.Error("RawJSON should return original JSON")
+	}
+}
+
+func TestActivityDetailsJSONUnmarshal(t *testing.T) {
+	rawJSON := `{
+		"activityId": 21661023200,
+		"measurementCount": 100,
+		"metricsCount": 5,
+		"totalMetricsCount": 5,
+		"metricDescriptors": [
+			{"metricsIndex": 0, "key": "directTimestamp", "unit": {"id": 1, "key": "ms", "factor": 1.0}},
+			{"metricsIndex": 1, "key": "directHeartRate", "unit": {"id": 2, "key": "bpm", "factor": 1.0}},
+			{"metricsIndex": 2, "key": "directSpeed", "unit": {"id": 3, "key": "mps", "factor": 1.0}}
+		],
+		"activityDetailMetrics": [
+			{"metrics": [0, 120, 2.5]},
+			{"metrics": [1000, 125, 2.6]}
+		]
+	}`
+
+	var details ActivityDetails
+	if err := json.Unmarshal([]byte(rawJSON), &details); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+	details.raw = json.RawMessage(rawJSON)
+
+	if details.ActivityID != 21661023200 {
+		t.Errorf("ActivityID = %d, want 21661023200", details.ActivityID)
+	}
+	if details.MeasurementCount != 100 {
+		t.Errorf("MeasurementCount = %d, want 100", details.MeasurementCount)
+	}
+	if details.MetricsCount != 5 {
+		t.Errorf("MetricsCount = %d, want 5", details.MetricsCount)
+	}
+	if len(details.MetricDescriptors) != 3 {
+		t.Errorf("MetricDescriptors length = %d, want 3", len(details.MetricDescriptors))
+	}
+	if details.MetricDescriptors[1].Key != "directHeartRate" {
+		t.Errorf("MetricDescriptors[1].Key = %s, want directHeartRate", details.MetricDescriptors[1].Key)
+	}
+	if details.MetricDescriptors[1].Unit.Key != "bpm" {
+		t.Errorf("MetricDescriptors[1].Unit.Key = %s, want bpm", details.MetricDescriptors[1].Unit.Key)
+	}
+	if len(details.ActivityDetailMetrics) != 2 {
+		t.Errorf("ActivityDetailMetrics length = %d, want 2", len(details.ActivityDetailMetrics))
+	}
+}
+
+func TestActivityDetailsGetMetricIndex(t *testing.T) {
+	details := &ActivityDetails{
+		MetricDescriptors: []MetricDescriptor{
+			{MetricsIndex: 0, Key: "directTimestamp"},
+			{MetricsIndex: 1, Key: "directHeartRate"},
+			{MetricsIndex: 2, Key: "directSpeed"},
+		},
+	}
+
+	// Test finding existing keys
+	if idx := details.GetMetricIndex("directHeartRate"); idx != 1 {
+		t.Errorf("GetMetricIndex(directHeartRate) = %d, want 1", idx)
+	}
+	if idx := details.GetMetricIndex("directSpeed"); idx != 2 {
+		t.Errorf("GetMetricIndex(directSpeed) = %d, want 2", idx)
+	}
+
+	// Test missing key
+	if idx := details.GetMetricIndex("nonexistent"); idx != -1 {
+		t.Errorf("GetMetricIndex(nonexistent) = %d, want -1", idx)
+	}
+}
+
+func TestActivityDetailsRawJSON(t *testing.T) {
+	rawJSON := `{"activityId":123,"measurementCount":0,"metricsCount":0,"totalMetricsCount":0,"metricDescriptors":[],"activityDetailMetrics":[]}`
+
+	var details ActivityDetails
+	if err := json.Unmarshal([]byte(rawJSON), &details); err != nil {
+		t.Fatal(err)
+	}
+	details.raw = json.RawMessage(rawJSON)
+
+	if string(details.RawJSON()) != rawJSON {
+		t.Error("RawJSON should return original JSON")
+	}
+}
+
+func TestExerciseSetsJSONUnmarshal(t *testing.T) {
+	rawJSON := `{
+		"activityId": 21661023200,
+		"exerciseSets": [
+			{
+				"setType": "ACTIVE",
+				"category": "STRENGTH",
+				"exerciseName": "BENCH_PRESS",
+				"weight": 60.0,
+				"repetitionCount": 10,
+				"duration": 30.5,
+				"startTime": "2026-01-25T14:00:00",
+				"messageIndex": 0
+			},
+			{
+				"setType": "REST",
+				"category": "STRENGTH",
+				"exerciseName": "BENCH_PRESS",
+				"weight": null,
+				"repetitionCount": null,
+				"duration": 60.0,
+				"startTime": "2026-01-25T14:00:30",
+				"messageIndex": 1
+			}
+		]
+	}`
+
+	var sets ExerciseSets
+	if err := json.Unmarshal([]byte(rawJSON), &sets); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+	sets.raw = json.RawMessage(rawJSON)
+
+	if sets.ActivityID != 21661023200 {
+		t.Errorf("ActivityID = %d, want 21661023200", sets.ActivityID)
+	}
+	if len(sets.ExerciseSets) != 2 {
+		t.Fatalf("ExerciseSets length = %d, want 2", len(sets.ExerciseSets))
+	}
+
+	// Check active set
+	activeSet := sets.ExerciseSets[0]
+	if activeSet.SetType != "ACTIVE" {
+		t.Errorf("ExerciseSets[0].SetType = %s, want ACTIVE", activeSet.SetType)
+	}
+	if activeSet.Category != "STRENGTH" {
+		t.Errorf("ExerciseSets[0].Category = %s, want STRENGTH", activeSet.Category)
+	}
+	if activeSet.ExerciseName != "BENCH_PRESS" {
+		t.Errorf("ExerciseSets[0].ExerciseName = %s, want BENCH_PRESS", activeSet.ExerciseName)
+	}
+	if activeSet.Weight == nil || *activeSet.Weight != 60.0 {
+		t.Errorf("ExerciseSets[0].Weight = %v, want 60.0", activeSet.Weight)
+	}
+	if activeSet.RepetitionCount == nil || *activeSet.RepetitionCount != 10 {
+		t.Errorf("ExerciseSets[0].RepetitionCount = %v, want 10", activeSet.RepetitionCount)
+	}
+
+	// Check rest set with null values
+	restSet := sets.ExerciseSets[1]
+	if restSet.SetType != "REST" {
+		t.Errorf("ExerciseSets[1].SetType = %s, want REST", restSet.SetType)
+	}
+	if restSet.Weight != nil {
+		t.Errorf("ExerciseSets[1].Weight = %v, want nil", restSet.Weight)
+	}
+	if restSet.RepetitionCount != nil {
+		t.Errorf("ExerciseSets[1].RepetitionCount = %v, want nil", restSet.RepetitionCount)
+	}
+}
+
+func TestExerciseSetsEmptyArray(t *testing.T) {
+	rawJSON := `{"activityId":21661023200,"exerciseSets":null}`
+
+	var sets ExerciseSets
+	if err := json.Unmarshal([]byte(rawJSON), &sets); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+
+	if sets.ActivityID != 21661023200 {
+		t.Errorf("ActivityID = %d, want 21661023200", sets.ActivityID)
+	}
+	if sets.ExerciseSets != nil {
+		t.Errorf("ExerciseSets = %v, want nil", sets.ExerciseSets)
+	}
+}
+
+func TestExerciseSetsRawJSON(t *testing.T) {
+	rawJSON := `{"activityId":123,"exerciseSets":[]}`
+
+	var sets ExerciseSets
+	if err := json.Unmarshal([]byte(rawJSON), &sets); err != nil {
+		t.Fatal(err)
+	}
+	sets.raw = json.RawMessage(rawJSON)
+
+	if string(sets.RawJSON()) != rawJSON {
+		t.Error("RawJSON should return original JSON")
+	}
+}

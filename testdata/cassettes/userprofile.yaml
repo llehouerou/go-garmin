@@ -30,24 +30,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465ae83b5273b4-JNB
+                - 9c46a6420c7e739f-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 06:57:18 GMT
+                - Tue, 27 Jan 2026 07:48:44 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=QL9QxWDJAWTBdNqVL9OWsQ1yTGrFTdMaTIobofCUQerS%2FRpa4pi%2BZqzAz2Jg6sitp59%2FWMcrR8Wb3B9znsWUK%2BKLDldlIOtb6SWYxbclmFEuA5E8KuKc8CJv%2Bs5SQDee75%2FHtIn6m0OPmB0%2FHx6CpWG4sA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=QDcHhAz7KaNn2prxTEfQqNZyFlgg1tip8jZ%2FoVwqDZVg%2FLOslp%2B0evP99MvBcaYhkCVF705RUlVFEuLderN%2FxLMCKHogyC22%2FSdxltCvL57G7ANOZ8v9EomkeqW1cnnFkfM9M825UwQJ6%2Fs9rVy%2B3M7akA%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 333.074335ms
+        duration: 330.053575ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -68,7 +68,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"id":12345678,"userData":{"gender":"MALE","weight":74200.0,"height":190.0,"timeFormat":"time_twelve_hr","birthDate":"1990-01-01","measurementSystem":"metric","activityLevel":6,"handedness":"RIGHT","powerFormat":{"formatId":30,"formatKey":"watt","minFraction":0,"maxFraction":0,"groupingUsed":true,"displayFormat":null},"heartRateFormat":{"formatId":21,"formatKey":"bpm","minFraction":0,"maxFraction":0,"groupingUsed":false,"displayFormat":null},"firstDayOfWeek":{"dayId":3,"dayName":"monday","sortOrder":3,"isPossibleFirstDay":true},"vo2MaxRunning":50.0,"vo2MaxCycling":null,"lactateThresholdSpeed":0.33611017,"lactateThresholdHeartRate":166,"diveNumber":null,"intensityMinutesCalcMethod":"AUTO","moderateIntensityMinutesHrZone":3,"vigorousIntensityMinutesHrZone":4,"hydrationMeasurementUnit":"cup","hydrationContainers":[{"name":null,"volume":1,"unit":"cup"},{"name":null,"volume":2,"unit":"cup"},{"name":null,"volume":3,"unit":"cup"}],"hydrationAutoGoalEnabled":true,"firstbeatMaxStressScore":null,"firstbeatCyclingLtTimestamp":null,"firstbeatRunningLtTimestamp":1132123569,"thresholdHeartRateAutoDetected":true,"ftpAutoDetected":true,"trainingStatusPausedDate":null,"weatherLocation":{"useFixedLocation":null,"latitude":null,"longitude":null,"locationName":null,"isoCountryCode":null,"postalCode":null},"golfDistanceUnit":"statute_us","golfElevationUnit":null,"golfSpeedUnit":null,"externalBottomTime":null,"availableTrainingDays":["FRIDAY","MONDAY","SUNDAY","THURSDAY","TUESDAY"],"preferredLongTrainingDays":["SUNDAY"],"virtualCaddieDataSource":null,"numberDivesAutomatically":null},"userSleep":{"sleepTime":82800,"defaultSleepTime":false,"wakeTime":25200,"defaultWakeTime":false},"connectDate":null,"sourceType":null,"userSleepWindows":[{"sleepWindowFrequency":"SUNDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"MONDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"TUESDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"WEDNESDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"THURSDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"FRIDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"SATURDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"DAILY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200}]}'
+        body: '{"id":12345678,"userData":{"gender":"MALE","weight":74200.0,"height":190.0,"timeFormat":"time_twelve_hr","birthDate":"1990-01-01","measurementSystem":"metric","activityLevel":6,"handedness":"RIGHT","powerFormat":{"formatId":30,"formatKey":"watt","minFraction":0,"maxFraction":0,"groupingUsed":true,"displayFormat":null},"heartRateFormat":{"formatId":21,"formatKey":"bpm","minFraction":0,"maxFraction":0,"groupingUsed":false,"displayFormat":null},"firstDayOfWeek":{"dayId":3,"dayName":"monday","sortOrder":3,"isPossibleFirstDay":true},"vo2MaxRunning":50.0,"vo2MaxCycling":null,"lactateThresholdSpeed":0.33611017,"lactateThresholdHeartRate":166,"diveNumber":null,"intensityMinutesCalcMethod":"AUTO","moderateIntensityMinutesHrZone":3,"vigorousIntensityMinutesHrZone":4,"hydrationMeasurementUnit":"cup","hydrationContainers":[{"name":null,"volume":1,"unit":"cup"},{"name":null,"volume":2,"unit":"cup"},{"name":null,"volume":3,"unit":"cup"}],"hydrationAutoGoalEnabled":true,"firstbeatMaxStressScore":null,"firstbeatCyclingLtTimestamp":null,"firstbeatRunningLtTimestamp":1132123569,"thresholdHeartRateAutoDetected":true,"ftpAutoDetected":true,"trainingStatusPausedDate":null,"weatherLocation":{"useFixedLocation":null,"latitude":null,"longitude":null,"locationName":null,"isoCountryCode":null,"postalCode":null},"golfDistanceUnit":"statute_us","golfElevationUnit":null,"golfSpeedUnit":null,"externalBottomTime":null,"availableTrainingDays":["MONDAY","THURSDAY","FRIDAY","TUESDAY","SUNDAY"],"preferredLongTrainingDays":["SUNDAY"],"virtualCaddieDataSource":null,"numberDivesAutomatically":null},"userSleep":{"sleepTime":82800,"defaultSleepTime":false,"wakeTime":25200,"defaultWakeTime":false},"connectDate":null,"sourceType":null,"userSleepWindows":[{"sleepWindowFrequency":"SUNDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"MONDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"TUESDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"WEDNESDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"THURSDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"FRIDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"SATURDAY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200},{"sleepWindowFrequency":"DAILY","startSleepTimeSecondsFromMidnight":82800,"endSleepTimeSecondsFromMidnight":25200}]}'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=86400
@@ -77,24 +77,24 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465aea5e6473b4-JNB
+                - 9c46a6442e46739f-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 06:57:19 GMT
+                - Tue, 27 Jan 2026 07:48:45 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=HkqXDbOy5wINQJAkETuTVHciyt9O15%2F%2Bu%2Fa0HTioZEQZi6kpE5hb%2BC0UZLQe%2Bzty7eEUsEWiNyVmJV2VAs89u%2BbcHR8uLaRNNKNp9vTDZQgek0ATL2B8%2Br3xXcNApAhGOyEgXdFNLu2bys3hGioaQVXsVA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=VKfCI2T9%2BjNgE8%2BX4UT05ycqYY4CNuIovpZWGXE5wnR7xlVtRK1UR5nyzKA46yyU1S6hyrTAEkVWs82LEsCQRh%2FpLfP4Wyjj696lwRIKo0fj0u4d1coPvM%2FSxyomfypyB3xEmZb5DJrUiHDf4ujVXBJh4A%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 602.13385ms
+        duration: 426.122384ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -124,21 +124,21 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c465aee1b8273b4-JNB
+                - 9c46a646c8c2739f-JNB
             Content-Type:
                 - application/json
             Date:
-                - Tue, 27 Jan 2026 06:57:19 GMT
+                - Tue, 27 Jan 2026 07:48:45 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=iLr1Z1mqRo68WJ0kP019F6vfXIGbTS2WoZDxfR1egx%2Bycj3G6rZw2OGqidv%2B8Z85zuYM2qn9zo7Mt4vYJWPlOF7lN2IOLGUZsiuEw4PIEy%2BFzOxdjq4wqclqO4G%2Bb0GUmKcWCH%2F77t19l8g2EF0jMcsL%2Fw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=DfdSC2KE36V6LaPNpOnoiaZCYUxcTGemX1r%2BHjssTrvm%2BFquwJ1zBn6791vHFxFgmFqemeaKEXLfD48YOsqu9Ir%2FW9Btxec4Aj8CffjWBmj%2Fs7OHRBGYZLJ9498Zlrm%2Bfm4avj%2FB%2Bu620de8%2FhVCqzAMGw%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 348.785021ms
+        duration: 356.579589ms
