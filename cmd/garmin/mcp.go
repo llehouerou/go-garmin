@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+
 	"github.com/mark3labs/mcp-go/mcp"
 	"github.com/mark3labs/mcp-go/server"
 	"github.com/spf13/cobra"
@@ -32,9 +34,25 @@ func runMCP(_ *cobra.Command, _ []string) error {
 	return server.ServeStdio(s)
 }
 
-func registerTools(_ *server.MCPServer, _ *garmin.Client) {
-	// Tools will be registered here
+func registerTools(s *server.MCPServer, client *garmin.Client) {
+	// Sleep
+	s.AddTool(
+		mcp.NewTool("get_sleep",
+			mcp.WithDescription("Get sleep data for a specific date including duration, stages, and sleep score"),
+			mcp.WithString("date",
+				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			date, err := parseOptionalDate(request, "date")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			data, err := client.Sleep.GetDaily(ctx, date)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
 }
-
-// Blank identifier to ensure mcp package is imported (needed for types in future tools)
-var _ mcp.Tool
