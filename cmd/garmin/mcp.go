@@ -351,4 +351,44 @@ func registerTools(s *server.MCPServer, client *garmin.Client) {
 			return jsonResult(data), nil
 		},
 	)
+
+	// Devices - List
+	s.AddTool(
+		mcp.NewTool("list_devices",
+			mcp.WithDescription("List all registered Garmin devices"),
+		),
+		func(ctx context.Context, _ mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			data, err := client.Devices.GetDevices(ctx)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
+
+	// Devices - Get Settings
+	s.AddTool(
+		mcp.NewTool("get_device_settings",
+			mcp.WithDescription("Get settings for a specific device"),
+			mcp.WithString("device_id",
+				mcp.Required(),
+				mcp.Description("The device ID"),
+			),
+		),
+		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			idStr, err := request.RequireString("device_id")
+			if err != nil {
+				return errorResult(err), nil
+			}
+			id, err := strconv.ParseInt(idStr, 10, 64)
+			if err != nil {
+				return errorResult(fmt.Errorf("invalid device_id: %w", err)), nil
+			}
+			data, err := client.Devices.GetSettings(ctx, id)
+			if err != nil {
+				return errorResult(err), nil
+			}
+			return jsonResult(data), nil
+		},
+	)
 }
