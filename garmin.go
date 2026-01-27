@@ -124,7 +124,7 @@ func (c *Client) doAPI(ctx context.Context, method, path string, body io.Reader)
 //
 //nolint:unused // Will be used by service implementations
 func (c *Client) refreshOAuth2(ctx context.Context) error {
-	sso, err := newSSOClient(c.auth.Domain, c.transport.client.Timeout)
+	sso, err := newSSOClient(c.auth.Domain, c.transport.client.Timeout, c.transport.client)
 	if err != nil {
 		return err
 	}

@@ -59,25 +59,39 @@ type ssoClient struct {
 	timeout    time.Duration
 }
 
-func newSSOClient(domain string, timeout time.Duration) (*ssoClient, error) {
+// newSSOClient creates an SSO client. If baseClient is provided, its transport
+// is reused (for VCR testing), otherwise a new client is created.
+func newSSOClient(domain string, timeout time.Duration, baseClient *http.Client) (*ssoClient, error) {
 	jar, err := cookiejar.New(nil)
 	if err != nil {
 		return nil, err
 	}
 
-	return &ssoClient{
-		httpClient: &http.Client{
+	var httpClient *http.Client
+	if baseClient != nil {
+		// Reuse the base client's transport (for VCR) but add our own cookie jar
+		httpClient = &http.Client{
+			Transport: baseClient.Transport,
+			Jar:       jar,
+			Timeout:   timeout,
+		}
+	} else {
+		httpClient = &http.Client{
 			Jar:     jar,
 			Timeout: timeout,
-		},
-		domain:  domain,
-		timeout: timeout,
+		}
+	}
+
+	return &ssoClient{
+		httpClient: httpClient,
+		domain:     domain,
+		timeout:    timeout,
 	}, nil
 }
 
 // ssoLogin performs the full SSO login flow and returns OAuth1 and OAuth2 tokens
 func (c *Client) ssoLogin(ctx context.Context, email, password string) error {
-	sso, err := newSSOClient(c.opts.Domain, 30*time.Second)
+	sso, err := newSSOClient(c.opts.Domain, 30*time.Second, c.transport.client)
 	if err != nil {
 		return err
 	}

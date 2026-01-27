@@ -12,6 +12,7 @@ coverage.out
 
 # Built binaries
 /garmin
+/record-fixtures
 
 docs/
 .mcp.json
