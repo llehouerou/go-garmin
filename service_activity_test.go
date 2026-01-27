@@ -117,6 +117,7 @@ func TestActivityDetailRawJSON(t *testing.T) {
 }
 
 func TestActivityJSONUnmarshal(t *testing.T) {
+	const activityTypeRunning = "running"
 	rawJSON := `{
 		"activityId": 21661023200,
 		"activityName": "Morning Run",
@@ -171,8 +172,8 @@ func TestActivityJSONUnmarshal(t *testing.T) {
 	if activity.ActivityName != "Morning Run" {
 		t.Errorf("ActivityName = %s, want Morning Run", activity.ActivityName)
 	}
-	if activity.ActivityType.TypeKey != "running" {
-		t.Errorf("ActivityType.TypeKey = %s, want running", activity.ActivityType.TypeKey)
+	if activity.ActivityType.TypeKey != activityTypeRunning {
+		t.Errorf("ActivityType.TypeKey = %s, want %s", activity.ActivityType.TypeKey, activityTypeRunning)
 	}
 	if activity.EventType.TypeKey != "uncategorized" {
 		t.Errorf("EventType.TypeKey = %s, want uncategorized", activity.EventType.TypeKey)
@@ -195,6 +196,7 @@ func TestActivityJSONUnmarshal(t *testing.T) {
 }
 
 func TestActivityDetailJSONUnmarshal(t *testing.T) {
+	const activityTypeRunning = "running"
 	rawJSON := `{
 		"activityId": 21661023200,
 		"activityUUID": {"uuid": "e4ed3e69-d34e-477f-80d0-dddda2da652f"},
@@ -248,8 +250,8 @@ func TestActivityDetailJSONUnmarshal(t *testing.T) {
 	if detail.UserProfileID != 12345678 {
 		t.Errorf("UserProfileID = %d, want 12345678", detail.UserProfileID)
 	}
-	if detail.ActivityTypeDTO.TypeKey != "running" {
-		t.Errorf("ActivityTypeDTO.TypeKey = %s, want running", detail.ActivityTypeDTO.TypeKey)
+	if detail.ActivityTypeDTO.TypeKey != activityTypeRunning {
+		t.Errorf("ActivityTypeDTO.TypeKey = %s, want %s", detail.ActivityTypeDTO.TypeKey, activityTypeRunning)
 	}
 	if detail.TimeZoneUnitDTO.TimeZone != "Asia/Dubai" {
 		t.Errorf("TimeZoneUnitDTO.TimeZone = %s, want Asia/Dubai", detail.TimeZoneUnitDTO.TimeZone)

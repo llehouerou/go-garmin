@@ -111,6 +111,10 @@ func recordFixtures(email, password string, date time.Time) error {
 		return fmt.Errorf("wellness_extended: %w", err)
 	}
 
+	if err := recordBiometric(ctx, session, date); err != nil {
+		return fmt.Errorf("biometric: %w", err)
+	}
+
 	return nil
 }
 
@@ -683,6 +687,84 @@ func recordWellnessExtended(ctx context.Context, session []byte, date time.Time)
 	_, err = doAPIRequest(ctx, httpClient, imURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: intensity minutes: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordBiometric(ctx context.Context, session []byte, date time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("biometric")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+	dateStr := date.Format("2006-01-02")
+	startDate := date.AddDate(0, 0, -30)
+	startDateStr := startDate.Format("2006-01-02")
+
+	// Latest Lactate Threshold
+	fmt.Println("  Getting latest lactate threshold...")
+	lactateURL := fmt.Sprintf("https://connectapi.%s/biometric-service/biometric/latestLactateThreshold",
+		authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, lactateURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: lactate threshold: %v\n", err)
+	}
+
+	// Latest Cycling FTP
+	fmt.Println("  Getting latest cycling FTP...")
+	ftpURL := fmt.Sprintf("https://connectapi.%s/biometric-service/biometric/latestFunctionalThresholdPower/CYCLING",
+		authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, ftpURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: cycling FTP: %v\n", err)
+	}
+
+	// Power to Weight (Running)
+	fmt.Printf("  Getting power to weight for %s...\n", dateStr)
+	powerToWeightURL := fmt.Sprintf("https://connectapi.%s/biometric-service/biometric/powerToWeight/latest/%s?sport=Running",
+		authState.Domain, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, powerToWeightURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: power to weight: %v\n", err)
+	}
+
+	// Lactate Threshold Speed Range
+	fmt.Printf("  Getting lactate threshold speed from %s to %s...\n", startDateStr, dateStr)
+	ltSpeedURL := fmt.Sprintf("https://connectapi.%s/biometric-service/stats/lactateThresholdSpeed/range/%s/%s?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST",
+		authState.Domain, startDateStr, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, ltSpeedURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: lactate threshold speed: %v\n", err)
+	}
+
+	// Lactate Threshold Heart Rate Range
+	fmt.Printf("  Getting lactate threshold heart rate from %s to %s...\n", startDateStr, dateStr)
+	ltHrURL := fmt.Sprintf("https://connectapi.%s/biometric-service/stats/lactateThresholdHeartRate/range/%s/%s?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST",
+		authState.Domain, startDateStr, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, ltHrURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: lactate threshold heart rate: %v\n", err)
+	}
+
+	// Functional Threshold Power Range (Running)
+	fmt.Printf("  Getting FTP range from %s to %s...\n", startDateStr, dateStr)
+	ftpRangeURL := fmt.Sprintf("https://connectapi.%s/biometric-service/stats/functionalThresholdPower/range/%s/%s?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST",
+		authState.Domain, startDateStr, dateStr)
+	_, err = doAPIRequest(ctx, httpClient, ftpRangeURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: FTP range: %v\n", err)
 	}
 
 	return nil

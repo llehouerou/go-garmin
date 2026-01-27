@@ -30,5 +30,6 @@ func init() {
 	rootCmd.AddCommand(weightCmd)
 	rootCmd.AddCommand(metricsCmd)
 	rootCmd.AddCommand(profileCmd)
+	rootCmd.AddCommand(biometricCmd)
 	rootCmd.AddCommand(completionCmd)
 }

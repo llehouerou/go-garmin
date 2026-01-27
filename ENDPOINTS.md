@@ -251,11 +251,12 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/biometric-service/biometric/{displayName}?startDate={start}&endDate={end}` | Biometric data |
-| [ ] | GET | `/biometric-service/stats/{displayName}?startDate={start}&endDate={end}` | Biometric stats |
-| [ ] | GET | `/biometric-service/heartRateZones/{displayName}` | Heart rate zones |
-| [ ] | GET | `/biometric-service/biometric/ftp` | Cycling FTP |
-| [ ] | GET | `/biometric-service/biometric/lactatethreshold` | Lactate threshold |
+| [x] | GET | `/biometric-service/biometric/latestLactateThreshold` | Latest lactate threshold |
+| [x] | GET | `/biometric-service/biometric/latestFunctionalThresholdPower/CYCLING` | Latest cycling FTP |
+| [x] | GET | `/biometric-service/biometric/powerToWeight/latest/{date}?sport=Running` | Power-to-weight ratio |
+| [x] | GET | `/biometric-service/stats/lactateThresholdSpeed/range/{start}/{end}?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST` | LT speed range |
+| [x] | GET | `/biometric-service/stats/lactateThresholdHeartRate/range/{start}/{end}?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST` | LT heart rate range |
+| [x] | GET | `/biometric-service/stats/functionalThresholdPower/range/{start}/{end}?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST` | FTP range |
 
 ---
 

@@ -1416,3 +1416,222 @@ func TestIntegration_Activity_GetExerciseSets(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_Biometric_GetLatestLactateThreshold(t *testing.T) {
+	skipIfNoCassette(t, "biometric")
+
+	rec, err := testutil.NewRecorder("biometric", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	lt, err := client.Biometric.GetLatestLactateThreshold(ctx)
+	if err != nil {
+		t.Fatalf("GetLatestLactateThreshold failed: %v", err)
+	}
+
+	if lt == nil {
+		t.Fatal("expected lactate threshold data, got nil")
+	}
+
+	if len(lt.Entries) == 0 {
+		t.Error("expected Entries to have data")
+	}
+
+	// Verify helper methods work
+	if speed := lt.Speed(); speed == nil {
+		t.Error("expected Speed() to return a value")
+	}
+	if hr := lt.HeartRate(); hr == nil {
+		t.Error("expected HeartRate() to return a value")
+	}
+
+	if lt.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Biometric_GetCyclingFTP(t *testing.T) {
+	skipIfNoCassette(t, "biometric")
+
+	rec, err := testutil.NewRecorder("biometric", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	ftp, err := client.Biometric.GetCyclingFTP(ctx)
+	if err != nil {
+		t.Fatalf("GetCyclingFTP failed: %v", err)
+	}
+
+	if ftp == nil {
+		t.Fatal("expected FTP data, got nil")
+	}
+
+	// FTP value may be nil if user has no cycling FTP data
+	// Just verify the struct was populated and RawJSON works
+	if ftp.UserProfilePK == 0 {
+		t.Error("expected UserProfilePK to be set")
+	}
+
+	if ftp.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Biometric_GetPowerToWeight(t *testing.T) {
+	skipIfNoCassette(t, "biometric")
+
+	rec, err := testutil.NewRecorder("biometric", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	date := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	ptw, err := client.Biometric.GetPowerToWeight(ctx, date)
+	if err != nil {
+		t.Fatalf("GetPowerToWeight failed: %v", err)
+	}
+
+	if ptw == nil {
+		t.Fatal("expected power to weight data, got nil")
+	}
+
+	if ptw.FunctionalThresholdPower == 0 {
+		t.Error("expected FunctionalThresholdPower to be set")
+	}
+	if ptw.Weight == 0 {
+		t.Error("expected Weight to be set")
+	}
+	if ptw.PowerToWeightRatio == 0 {
+		t.Error("expected PowerToWeightRatio to be set")
+	}
+	if ptw.Sport == "" {
+		t.Error("expected Sport to be set")
+	}
+
+	if ptw.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Biometric_GetLactateThresholdSpeedRange(t *testing.T) {
+	skipIfNoCassette(t, "biometric")
+
+	rec, err := testutil.NewRecorder("biometric", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	end := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	start := end.AddDate(0, 0, -30)
+
+	stats, err := client.Biometric.GetLactateThresholdSpeedRange(ctx, start, end)
+	if err != nil {
+		t.Fatalf("GetLactateThresholdSpeedRange failed: %v", err)
+	}
+
+	if stats == nil {
+		t.Fatal("expected stats, got nil")
+	}
+
+	if len(stats.Stats) == 0 {
+		t.Error("expected Stats to have data")
+	}
+
+	if len(stats.Stats) > 0 {
+		stat := stats.Stats[0]
+		if stat.Series == "" {
+			t.Error("expected Series to be set")
+		}
+		if stat.Value == 0 {
+			t.Error("expected Value to be set")
+		}
+	}
+
+	if stats.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Biometric_GetLactateThresholdHRRange(t *testing.T) {
+	skipIfNoCassette(t, "biometric")
+
+	rec, err := testutil.NewRecorder("biometric", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	end := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	start := end.AddDate(0, 0, -30)
+
+	stats, err := client.Biometric.GetLactateThresholdHRRange(ctx, start, end)
+	if err != nil {
+		t.Fatalf("GetLactateThresholdHRRange failed: %v", err)
+	}
+
+	if stats == nil {
+		t.Fatal("expected stats, got nil")
+	}
+
+	if len(stats.Stats) == 0 {
+		t.Error("expected Stats to have data")
+	}
+
+	if stats.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Biometric_GetFTPRange(t *testing.T) {
+	skipIfNoCassette(t, "biometric")
+
+	rec, err := testutil.NewRecorder("biometric", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	end := time.Date(2026, 1, 27, 0, 0, 0, 0, time.UTC)
+	start := end.AddDate(0, 0, -30)
+
+	stats, err := client.Biometric.GetFTPRange(ctx, start, end)
+	if err != nil {
+		t.Fatalf("GetFTPRange failed: %v", err)
+	}
+
+	if stats == nil {
+		t.Fatal("expected stats, got nil")
+	}
+
+	if len(stats.Stats) == 0 {
+		t.Error("expected Stats to have data")
+	}
+
+	if stats.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}

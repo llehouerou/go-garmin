@@ -1,0 +1,309 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/biometric-service/biometric/latestLactateThreshold
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"userProfilePK":12345678,"version":1769455333539,"calendarDate":"2026-01-26T23:22:13.450","sequence":1769455333539,"speed":0.33611017,"hearRate":null,"heartRateCycling":null},{"userProfilePK":12345678,"version":1769455333539,"calendarDate":"2026-01-26T23:22:13.450","sequence":1769455333539,"speed":null,"hearRate":166,"heartRateCycling":null}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c4716ebf8a8b72b-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 09:05:39 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=FRClAyGATJdkvtWXAkTa7S%2B%2F%2F9lHU%2BRt5Lz2E8%2FYlZmRFpo4qIXYsSw7bERF5%2B6fEFwyEB%2BIknGdjjn9cLRTpINmhYhPFjvxl1IpoVbD0CtxqzcHS95nigCjUpoaDW8beQrT808Cfi9OQgZpEdFb8jkxIA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 329.537648ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/biometric-service/biometric/latestFunctionalThresholdPower/CYCLING
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"userProfilePK":12345678,"version":null,"calendarDate":null,"isStale":null,"sequence":null,"sport":null,"functionalThresholdPower":null,"biometricSourceType":null}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c4716ee0fabb72b-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 09:05:39 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=fcTXWD5XDglJzh2OiOYRenkKAjqfJ4Yj3AavohmCzVonKez6aI7xY2v2jhEuAko4iKalx6LKUsU20SSbJn3sJHN5bchfhuEIU0vly1DDqlc%2FyCluG%2BcdNdsR8xfNmaHVHJpbHIuUkGNqTaAWPBycIbpIMQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 353.498099ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            sport:
+                - Running
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/biometric-service/biometric/powerToWeight/latest/2026-01-27?sport=Running
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"userProfilePk":12345678,"calendarDate":"2026-01-27T10:06:56.496","origin":"weight","sport":"RUNNING","functionalThresholdPower":347,"weight":74.2,"powerToWeight":4.67654986522911,"ftpCreateTime":"2025-11-15T10:54:08.91","weightCreateTime":"2026-01-27T10:06:56.496","isStale":false}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c4716f04ee4b72b-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 09:05:40 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=sFtG41WxPTZA4uS%2BF%2BK8pUfd3ojGMkfno8rIWr%2Fntb1THTktYSXPLCyXpcSkvPKlUdDNysKMIwbULmYtZBjQqB70IwKFX9y6MEZNrI5ejPjZkBU0rXn9Ai5ajyHvQ3k2%2F8QjhqJJ%2BIy9L2W3n1NKNlNYBg%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 346.893928ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            aggregation:
+                - daily
+            aggregationStrategy:
+                - LATEST
+            sport:
+                - RUNNING
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/biometric-service/stats/lactateThresholdSpeed/range/2025-12-28/2026-01-27?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"from":"2026-01-26","until":"2026-01-26","series":"running","value":0.33611017,"updatedDate":"2026-01-26"}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c4716f27ec1b72b-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 09:05:40 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=vu16Eag7xLLTxBLAUAooxCLKIvXJoiECdDgVJU6BAobdkMpGKqpwNmYTRm%2F%2FLFzwxQxYOchuW7nTuBTv3igqKLVwcZu7UogsuIXFpNkMvUdvs72d16KrPu8rU%2BykJcA%2Fb7ER5bWokRVmH7JYZSdGBmy8dA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 331.742307ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            aggregation:
+                - daily
+            aggregationStrategy:
+                - LATEST
+            sport:
+                - RUNNING
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/biometric-service/stats/lactateThresholdHeartRate/range/2025-12-28/2026-01-27?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"from":"2026-01-26","until":"2026-01-26","series":"running","value":166.0,"updatedDate":"2026-01-26"}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c4716f48d93b72b-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 09:05:40 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=SCzACOEeGpdpfWn5l2qW%2FR2EQfPFs6zdMfoj%2FpycG%2FtCbNuLOjjPxh8LxIJ%2Fus4d2b9FWfXdC084p52Wl1Qw0yBImeSjIWAyFESzXUVhy%2FsXfh7DnSWsQYpZXw5Os%2BC%2B5Sz0BJrsABv%2BDkivUbkKRfEvWQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 334.814778ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            aggregation:
+                - daily
+            aggregationStrategy:
+                - LATEST
+            sport:
+                - RUNNING
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/biometric-service/stats/functionalThresholdPower/range/2025-12-28/2026-01-27?sport=RUNNING&aggregation=daily&aggregationStrategy=LATEST
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"from":"2026-01-27","until":"2026-01-27","series":"running","value":347.0,"updatedDate":"2026-01-27"}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c4716f69c4ab72b-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Tue, 27 Jan 2026 09:05:41 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=LGVfJNGRnFzJsX%2FiyzHgCVmc5vKVtO3WnJK0hsKWPl1dl1ANYU0BZQPekQfavTi1x0sjxR%2B40ElonKH9czwfLm97zacCQIaumAoGmdoPowm3L9FzaWbW2j4pymawtkClt2%2F3GR4QWC24v27aXXHSB%2By%2B4Q%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 378.258052ms
