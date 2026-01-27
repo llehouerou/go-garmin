@@ -45,7 +45,7 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/activitylist-service/activities/search/activities?start={start}&limit={limit}` | Search activities |
+| [x] | GET | `/activitylist-service/activities/search/activities?start={start}&limit={limit}` | Search activities |
 | [ ] | GET | `/activitylist-service/activities/` | List activities |
 | [ ] | GET | `/activitylist-service/activities/count` | Activity count |
 
@@ -55,7 +55,7 @@ This document lists all known API endpoints from the reference projects and web 
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/activity-service/activity/{activityId}` | Get single activity |
+| [x] | GET | `/activity-service/activity/{activityId}` | Get single activity |
 | [ ] | GET | `/activity-service/activity/{activityId}/details` | Activity details |
 | [ ] | GET | `/activity-service/activity/{activityId}/splits` | Activity splits |
 | [ ] | GET | `/activity-service/activity/{activityId}/typedSplits` | Activity typed splits |
