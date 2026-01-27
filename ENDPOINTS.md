@@ -57,10 +57,10 @@ This document lists all known API endpoints from the reference projects and web 
 |--------|--------|----------|-------------|
 | [x] | GET | `/activity-service/activity/{activityId}` | Get single activity |
 | [ ] | GET | `/activity-service/activity/{activityId}/details` | Activity details |
-| [ ] | GET | `/activity-service/activity/{activityId}/splits` | Activity splits |
+| [x] | GET | `/activity-service/activity/{activityId}/splits` | Activity splits |
 | [ ] | GET | `/activity-service/activity/{activityId}/typedSplits` | Activity typed splits |
 | [ ] | GET | `/activity-service/activity/{activityId}/split_summaries` | Activity split summaries |
-| [ ] | GET | `/activity-service/activity/{activityId}/weather` | Activity weather |
+| [x] | GET | `/activity-service/activity/{activityId}/weather` | Activity weather |
 | [ ] | GET | `/activity-service/activity/{activityId}/hrTimeInZones` | HR time in zones |
 | [ ] | GET | `/activity-service/activity/{activityId}/powerTimeInZones` | Power time in zones |
 | [ ] | GET | `/activity-service/activity/{activityId}/exerciseSets` | Exercise sets |

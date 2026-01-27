@@ -584,3 +584,198 @@ func (s *ActivityService) Get(ctx context.Context, activityID int64) (*ActivityD
 
 	return &activity, nil
 }
+
+// WeatherStation represents the weather station that provided the data.
+type WeatherStation struct {
+	ID       string  `json:"id"`
+	Name     string  `json:"name"`
+	Timezone *string `json:"timezone"`
+}
+
+// WeatherType represents the type of weather conditions.
+type WeatherType struct {
+	WeatherTypePK *int    `json:"weatherTypePk"`
+	Desc          string  `json:"desc"`
+	Image         *string `json:"image"`
+}
+
+// ActivityWeather represents weather data for an activity.
+type ActivityWeather struct {
+	IssueDate                 string         `json:"issueDate"`
+	Temp                      int            `json:"temp"`
+	ApparentTemp              int            `json:"apparentTemp"`
+	DewPoint                  int            `json:"dewPoint"`
+	RelativeHumidity          int            `json:"relativeHumidity"`
+	WindDirection             int            `json:"windDirection"`
+	WindDirectionCompassPoint string         `json:"windDirectionCompassPoint"`
+	WindSpeed                 int            `json:"windSpeed"`
+	WindGust                  *int           `json:"windGust"`
+	Latitude                  float64        `json:"latitude"`
+	Longitude                 float64        `json:"longitude"`
+	WeatherStationDTO         WeatherStation `json:"weatherStationDTO"`
+	WeatherTypeDTO            WeatherType    `json:"weatherTypeDTO"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (w *ActivityWeather) RawJSON() json.RawMessage {
+	return w.raw
+}
+
+// TempCelsius returns the temperature in Celsius.
+func (w *ActivityWeather) TempCelsius() float64 {
+	return float64(w.Temp-32) * 5 / 9
+}
+
+// ApparentTempCelsius returns the apparent temperature in Celsius.
+func (w *ActivityWeather) ApparentTempCelsius() float64 {
+	return float64(w.ApparentTemp-32) * 5 / 9
+}
+
+// GetWeather retrieves weather data for a specific activity.
+func (s *ActivityService) GetWeather(ctx context.Context, activityID int64) (*ActivityWeather, error) {
+	path := fmt.Sprintf("/activity-service/activity/%d/weather", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var weather ActivityWeather
+	if err := json.Unmarshal(raw, &weather); err != nil {
+		return nil, err
+	}
+	weather.raw = raw
+
+	return &weather, nil
+}
+
+// SectionType represents the type of event section.
+type SectionType struct {
+	ID             int    `json:"id"`
+	Key            string `json:"key"`
+	SectionTypeKey string `json:"sectionTypeKey"`
+}
+
+// ActivityEvent represents an event that occurred during an activity.
+type ActivityEvent struct {
+	StartTimeGMT            string      `json:"startTimeGMT"`
+	StartTimeGMTDoubleValue float64     `json:"startTimeGMTDoubleValue"`
+	SectionTypeDTO          SectionType `json:"sectionTypeDTO"`
+}
+
+// Lap represents a single lap within an activity.
+type Lap struct {
+	StartTimeGMT                 string  `json:"startTimeGMT"`
+	StartLatitude                float64 `json:"startLatitude"`
+	StartLongitude               float64 `json:"startLongitude"`
+	Distance                     float64 `json:"distance"`
+	Duration                     float64 `json:"duration"`
+	MovingDuration               float64 `json:"movingDuration"`
+	ElapsedDuration              float64 `json:"elapsedDuration"`
+	ElevationGain                float64 `json:"elevationGain"`
+	ElevationLoss                float64 `json:"elevationLoss"`
+	MaxElevation                 float64 `json:"maxElevation"`
+	MinElevation                 float64 `json:"minElevation"`
+	AverageSpeed                 float64 `json:"averageSpeed"`
+	AverageMovingSpeed           float64 `json:"averageMovingSpeed"`
+	MaxSpeed                     float64 `json:"maxSpeed"`
+	Calories                     float64 `json:"calories"`
+	BMRCalories                  float64 `json:"bmrCalories"`
+	AverageHR                    float64 `json:"averageHR"`
+	MaxHR                        float64 `json:"maxHR"`
+	AverageRunCadence            float64 `json:"averageRunCadence"`
+	MaxRunCadence                float64 `json:"maxRunCadence"`
+	AveragePower                 float64 `json:"averagePower"`
+	MaxPower                     float64 `json:"maxPower"`
+	MinPower                     float64 `json:"minPower"`
+	NormalizedPower              float64 `json:"normalizedPower"`
+	TotalWork                    float64 `json:"totalWork"`
+	GroundContactTime            float64 `json:"groundContactTime"`
+	StrideLength                 float64 `json:"strideLength"`
+	VerticalOscillation          float64 `json:"verticalOscillation"`
+	VerticalRatio                float64 `json:"verticalRatio"`
+	EndLatitude                  float64 `json:"endLatitude"`
+	EndLongitude                 float64 `json:"endLongitude"`
+	MaxVerticalSpeed             float64 `json:"maxVerticalSpeed"`
+	MaxRespirationRate           float64 `json:"maxRespirationRate"`
+	AvgRespirationRate           float64 `json:"avgRespirationRate"`
+	DirectWorkoutComplianceScore *int    `json:"directWorkoutComplianceScore,omitempty"`
+	AvgGradeAdjustedSpeed        float64 `json:"avgGradeAdjustedSpeed"`
+	LapIndex                     int     `json:"lapIndex"`
+	WktStepIndex                 *int    `json:"wktStepIndex,omitempty"`
+	WktIndex                     *int    `json:"wktIndex,omitempty"`
+	IntensityType                string  `json:"intensityType"`
+	MessageIndex                 int     `json:"messageIndex"`
+}
+
+// DurationTime returns the lap duration as a time.Duration.
+func (l *Lap) DurationTime() time.Duration {
+	return time.Duration(l.Duration * float64(time.Second))
+}
+
+// DistanceKm returns the lap distance in kilometers.
+func (l *Lap) DistanceKm() float64 {
+	return l.Distance / 1000
+}
+
+// AveragePacePerKm returns the average pace per kilometer for this lap.
+func (l *Lap) AveragePacePerKm() time.Duration {
+	if l.Distance == 0 {
+		return 0
+	}
+	return time.Duration(l.Duration / (l.Distance / 1000) * float64(time.Second))
+}
+
+// ActivitySplits represents the splits/laps data for an activity.
+type ActivitySplits struct {
+	ActivityID int64           `json:"activityId"`
+	LapDTOs    []Lap           `json:"lapDTOs"`
+	EventDTOs  []ActivityEvent `json:"eventDTOs"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (s *ActivitySplits) RawJSON() json.RawMessage {
+	return s.raw
+}
+
+// GetSplits retrieves splits/laps data for a specific activity.
+func (s *ActivityService) GetSplits(ctx context.Context, activityID int64) (*ActivitySplits, error) {
+	path := fmt.Sprintf("/activity-service/activity/%d/splits", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var splits ActivitySplits
+	if err := json.Unmarshal(raw, &splits); err != nil {
+		return nil, err
+	}
+	splits.raw = raw
+
+	return &splits, nil
+}

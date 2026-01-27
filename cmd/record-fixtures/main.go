@@ -216,21 +216,45 @@ func recordActivities(ctx context.Context, session []byte) error {
 	activities, err := doAPIRequest(ctx, httpClient, activitiesURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: activities list: %v\n", err)
+		return nil
 	}
 
-	// If we got activities, record details for the first one
-	if len(activities) > 0 {
-		if activityID, ok := activities[0]["activityId"].(float64); ok {
-			fmt.Printf("  Getting activity details for %d...\n", int64(activityID))
-			activityURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d", authState.Domain, int64(activityID))
-			_, err := doAPIRequest(ctx, httpClient, activityURL, authState.OAuth2AccessToken)
-			if err != nil {
-				fmt.Printf("  Warning: activity details: %v\n", err)
-			}
-		}
+	if len(activities) == 0 {
+		return nil
 	}
+
+	activityID, ok := activities[0]["activityId"].(float64)
+	if !ok {
+		return nil
+	}
+
+	// Record details, splits, and weather for the first activity
+	recordActivityDetails(ctx, httpClient, authState.Domain, authState.OAuth2AccessToken, int64(activityID))
 
 	return nil
+}
+
+func recordActivityDetails(ctx context.Context, client *http.Client, domain, token string, id int64) {
+	fmt.Printf("  Getting activity details for %d...\n", id)
+	activityURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d", domain, id)
+	_, err := doAPIRequest(ctx, client, activityURL, token)
+	if err != nil {
+		fmt.Printf("  Warning: activity details: %v\n", err)
+	}
+
+	fmt.Printf("  Getting activity splits for %d...\n", id)
+	splitsURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d/splits", domain, id)
+	_, err = doAPIRequest(ctx, client, splitsURL, token)
+	if err != nil {
+		fmt.Printf("  Warning: activity splits: %v\n", err)
+	}
+
+	fmt.Printf("  Getting activity weather for %d...\n", id)
+	weatherURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d/weather", domain, id)
+	_, err = doAPIRequest(ctx, client, weatherURL, token)
+	if err != nil {
+		fmt.Printf("  Warning: activity weather: %v\n", err)
+	}
 }
 
 func doAPIRequest(ctx context.Context, client *http.Client, url, token string) ([]map[string]any, error) {

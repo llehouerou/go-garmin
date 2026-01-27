@@ -213,3 +213,110 @@ func TestIntegration_Activity_Get(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_Activity_GetWeather(t *testing.T) {
+	skipIfNoCassette(t, "activities")
+
+	rec, err := testutil.NewRecorder("activities", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// Activity ID from the recorded cassette
+	activityID := int64(21661023200)
+
+	weather, err := client.Activities.GetWeather(ctx, activityID)
+	if err != nil {
+		t.Fatalf("GetWeather failed: %v", err)
+	}
+
+	if weather == nil {
+		t.Fatal("expected weather data, got nil")
+	}
+
+	// Verify we got actual weather data
+	if weather.IssueDate == "" {
+		t.Error("expected IssueDate to be set")
+	}
+	if weather.WindDirectionCompassPoint == "" {
+		t.Error("expected WindDirectionCompassPoint to be set")
+	}
+	if weather.WeatherStationDTO.ID == "" {
+		t.Error("expected WeatherStationDTO.ID to be set")
+	}
+
+	// Verify conversion methods work
+	tempC := weather.TempCelsius()
+	if tempC < -50 || tempC > 60 {
+		t.Errorf("TempCelsius() = %v, seems unreasonable", tempC)
+	}
+
+	// Verify RawJSON is available
+	if weather.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
+
+func TestIntegration_Activity_GetSplits(t *testing.T) {
+	skipIfNoCassette(t, "activities")
+
+	rec, err := testutil.NewRecorder("activities", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// Activity ID from the recorded cassette
+	activityID := int64(21661023200)
+
+	splits, err := client.Activities.GetSplits(ctx, activityID)
+	if err != nil {
+		t.Fatalf("GetSplits failed: %v", err)
+	}
+
+	if splits == nil {
+		t.Fatal("expected splits data, got nil")
+	}
+
+	if splits.ActivityID != activityID {
+		t.Errorf("ActivityID = %d, want %d", splits.ActivityID, activityID)
+	}
+
+	// Verify we got lap data
+	if len(splits.LapDTOs) == 0 {
+		t.Error("expected LapDTOs to have at least one lap")
+	}
+
+	// Verify first lap has expected fields
+	if len(splits.LapDTOs) > 0 {
+		firstLap := splits.LapDTOs[0]
+		if firstLap.Duration == 0 {
+			t.Error("expected lap Duration to be set")
+		}
+		if firstLap.Distance == 0 {
+			t.Error("expected lap Distance to be set")
+		}
+
+		// Verify conversion methods work
+		dur := firstLap.DurationTime()
+		if dur <= 0 {
+			t.Errorf("DurationTime() = %v, expected positive", dur)
+		}
+		distKm := firstLap.DistanceKm()
+		if distKm <= 0 {
+			t.Errorf("DistanceKm() = %v, expected positive", distKm)
+		}
+	}
+
+	// Verify RawJSON is available
+	if splits.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}

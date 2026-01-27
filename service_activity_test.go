@@ -281,3 +281,226 @@ func TestListOptions(t *testing.T) {
 		t.Errorf("Limit = %d, want 50", opts.Limit)
 	}
 }
+
+func TestActivityWeatherJSONUnmarshal(t *testing.T) {
+	rawJSON := `{
+		"issueDate": "2026-01-25T14:00:00",
+		"temp": 82,
+		"apparentTemp": 86,
+		"dewPoint": 71,
+		"relativeHumidity": 70,
+		"windDirection": 180,
+		"windDirectionCompassPoint": "S",
+		"windSpeed": 5,
+		"windGust": null,
+		"latitude": 25.123,
+		"longitude": 55.456,
+		"weatherStationDTO": {
+			"id": "STATION123",
+			"name": "Test Weather Station",
+			"timezone": null
+		},
+		"weatherTypeDTO": {
+			"weatherTypePk": 2,
+			"desc": "Partly Cloudy",
+			"image": null
+		}
+	}`
+
+	var weather ActivityWeather
+	if err := json.Unmarshal([]byte(rawJSON), &weather); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+
+	if weather.IssueDate != "2026-01-25T14:00:00" {
+		t.Errorf("IssueDate = %s, want 2026-01-25T14:00:00", weather.IssueDate)
+	}
+	if weather.Temp != 82 {
+		t.Errorf("Temp = %d, want 82", weather.Temp)
+	}
+	if weather.ApparentTemp != 86 {
+		t.Errorf("ApparentTemp = %d, want 86", weather.ApparentTemp)
+	}
+	if weather.RelativeHumidity != 70 {
+		t.Errorf("RelativeHumidity = %d, want 70", weather.RelativeHumidity)
+	}
+	if weather.WindDirectionCompassPoint != "S" {
+		t.Errorf("WindDirectionCompassPoint = %s, want S", weather.WindDirectionCompassPoint)
+	}
+	if weather.WindSpeed != 5 {
+		t.Errorf("WindSpeed = %d, want 5", weather.WindSpeed)
+	}
+	if weather.WindGust != nil {
+		t.Errorf("WindGust = %v, want nil", weather.WindGust)
+	}
+	if weather.WeatherStationDTO.ID != "STATION123" {
+		t.Errorf("WeatherStationDTO.ID = %s, want STATION123", weather.WeatherStationDTO.ID)
+	}
+	if weather.WeatherTypeDTO.Desc != "Partly Cloudy" {
+		t.Errorf("WeatherTypeDTO.Desc = %s, want Partly Cloudy", weather.WeatherTypeDTO.Desc)
+	}
+}
+
+func TestActivityWeatherConversions(t *testing.T) {
+	weather := &ActivityWeather{
+		Temp:         82, // 82°F = ~27.78°C
+		ApparentTemp: 86, // 86°F = 30°C
+	}
+
+	// Test TempCelsius
+	tempC := weather.TempCelsius()
+	if tempC < 27.7 || tempC > 27.8 {
+		t.Errorf("TempCelsius() = %v, want ~27.78", tempC)
+	}
+
+	// Test ApparentTempCelsius
+	apparentC := weather.ApparentTempCelsius()
+	if apparentC != 30 {
+		t.Errorf("ApparentTempCelsius() = %v, want 30", apparentC)
+	}
+
+	// Test freezing point conversion (32°F = 0°C)
+	freezing := &ActivityWeather{Temp: 32, ApparentTemp: 32}
+	if freezing.TempCelsius() != 0 {
+		t.Errorf("TempCelsius(32°F) = %v, want 0", freezing.TempCelsius())
+	}
+}
+
+func TestActivityWeatherRawJSON(t *testing.T) {
+	rawJSON := `{"temp":82,"apparentTemp":86}`
+
+	var weather ActivityWeather
+	if err := json.Unmarshal([]byte(rawJSON), &weather); err != nil {
+		t.Fatal(err)
+	}
+	weather.raw = json.RawMessage(rawJSON)
+
+	if string(weather.RawJSON()) != rawJSON {
+		t.Error("RawJSON should return original JSON")
+	}
+}
+
+func TestLapConversions(t *testing.T) {
+	lap := &Lap{
+		Duration: 300,  // 5 minutes
+		Distance: 1000, // 1 km
+	}
+
+	// Test DurationTime
+	dur := lap.DurationTime()
+	if dur != 5*time.Minute {
+		t.Errorf("DurationTime() = %v, want 5m", dur)
+	}
+
+	// Test DistanceKm
+	distKm := lap.DistanceKm()
+	if distKm != 1.0 {
+		t.Errorf("DistanceKm() = %v, want 1.0", distKm)
+	}
+
+	// Test AveragePacePerKm
+	pace := lap.AveragePacePerKm()
+	if pace != 5*time.Minute {
+		t.Errorf("AveragePacePerKm() = %v, want 5m", pace)
+	}
+
+	// Test zero distance
+	zeroLap := &Lap{Duration: 1000, Distance: 0}
+	if zeroLap.AveragePacePerKm() != 0 {
+		t.Error("AveragePacePerKm() should return 0 for zero distance")
+	}
+}
+
+func TestActivitySplitsJSONUnmarshal(t *testing.T) {
+	rawJSON := `{
+		"activityId": 21661023200,
+		"lapDTOs": [
+			{
+				"startTimeGMT": "2026-01-25 13:59:36",
+				"startLatitude": 25.123,
+				"startLongitude": 55.456,
+				"distance": 1000.0,
+				"duration": 300.0,
+				"averageSpeed": 3.33,
+				"maxSpeed": 4.0,
+				"averageHR": 145.0,
+				"maxHR": 160.0,
+				"lapIndex": 0,
+				"intensityType": "ACTIVE",
+				"messageIndex": 0
+			},
+			{
+				"startTimeGMT": "2026-01-25 14:04:36",
+				"startLatitude": 25.124,
+				"startLongitude": 55.457,
+				"distance": 1000.0,
+				"duration": 295.0,
+				"averageSpeed": 3.39,
+				"maxSpeed": 4.1,
+				"averageHR": 150.0,
+				"maxHR": 165.0,
+				"lapIndex": 1,
+				"intensityType": "ACTIVE",
+				"messageIndex": 1
+			}
+		],
+		"eventDTOs": [
+			{
+				"startTimeGMT": "2026-01-25 13:59:36",
+				"startTimeGMTDoubleValue": 1737813576000.0,
+				"sectionTypeDTO": {
+					"id": 1,
+					"key": "START",
+					"sectionTypeKey": "START"
+				}
+			}
+		]
+	}`
+
+	var splits ActivitySplits
+	if err := json.Unmarshal([]byte(rawJSON), &splits); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+
+	if splits.ActivityID != 21661023200 {
+		t.Errorf("ActivityID = %d, want 21661023200", splits.ActivityID)
+	}
+	if len(splits.LapDTOs) != 2 {
+		t.Fatalf("LapDTOs length = %d, want 2", len(splits.LapDTOs))
+	}
+
+	firstLap := splits.LapDTOs[0]
+	if firstLap.Distance != 1000.0 {
+		t.Errorf("LapDTOs[0].Distance = %f, want 1000.0", firstLap.Distance)
+	}
+	if firstLap.Duration != 300.0 {
+		t.Errorf("LapDTOs[0].Duration = %f, want 300.0", firstLap.Duration)
+	}
+	if firstLap.LapIndex != 0 {
+		t.Errorf("LapDTOs[0].LapIndex = %d, want 0", firstLap.LapIndex)
+	}
+	if firstLap.IntensityType != "ACTIVE" {
+		t.Errorf("LapDTOs[0].IntensityType = %s, want ACTIVE", firstLap.IntensityType)
+	}
+
+	if len(splits.EventDTOs) != 1 {
+		t.Fatalf("EventDTOs length = %d, want 1", len(splits.EventDTOs))
+	}
+	if splits.EventDTOs[0].SectionTypeDTO.Key != "START" {
+		t.Errorf("EventDTOs[0].SectionTypeDTO.Key = %s, want START", splits.EventDTOs[0].SectionTypeDTO.Key)
+	}
+}
+
+func TestActivitySplitsRawJSON(t *testing.T) {
+	rawJSON := `{"activityId":123,"lapDTOs":[],"eventDTOs":[]}`
+
+	var splits ActivitySplits
+	if err := json.Unmarshal([]byte(rawJSON), &splits); err != nil {
+		t.Fatal(err)
+	}
+	splits.raw = json.RawMessage(rawJSON)
+
+	if string(splits.RawJSON()) != rawJSON {
+		t.Error("RawJSON should return original JSON")
+	}
+}
