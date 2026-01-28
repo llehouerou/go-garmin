@@ -29,17 +29,27 @@ WorkoutStep types:
 - "ExecutableStepDTO": A single exercise step
 - "RepeatGroupDTO": A repeat group containing nested steps
 
-Step fields:
+ExecutableStepDTO fields:
 - stepOrder (int): Order within segment (1-based)
-- stepType: warmup, interval, recovery, rest, cooldown, other
-- endCondition: time, distance, calories, heart.rate, iterations, lap.button
+- stepType: {"stepTypeId": N, "stepTypeKey": "warmup|interval|recovery|rest|cooldown|other"}
+- description (string): Optional note/description for this step
+- endCondition: {"conditionTypeId": N, "conditionTypeKey": "time|distance|calories|heart.rate|iterations|lap.button"}
 - endConditionValue: Value for the condition (seconds for time, meters for distance)
-- targetType: no.target, heart.rate.zone, cadence.zone, speed.zone, pace.zone, power.zone
+- preferredEndConditionUnit: Optional unit for distance conditions
+- targetType: {"workoutTargetTypeId": N, "workoutTargetTypeKey": "no.target|heart.rate.zone|cadence.zone|speed.zone|pace.zone|power.zone"}
 - zoneNumber: Zone number (1-5) when using zone targets
+- targetValueOne/targetValueTwo: Custom target range values (when not using zones)
 
-For repeat groups (type="RepeatGroupDTO"):
-- numberOfIterations: Number of times to repeat
-- workoutSteps: Nested array of steps to repeat`,
+Secondary target (for dual targeting, e.g., HR zone + cadence):
+- secondaryTargetType: Same structure as targetType
+- secondaryZoneNumber: Zone number for secondary target
+- secondaryTargetValueOne/secondaryTargetValueTwo: Custom secondary target range
+
+RepeatGroupDTO fields:
+- numberOfIterations: Number of times to repeat the nested steps
+- workoutSteps: Nested array of ExecutableStepDTO steps to repeat
+- smartRepeat (bool): Enable smart repeat feature
+- skipLastRestStep (bool): Skip the last recovery step in the repeat group`,
 	Example: `{
   "workoutName": "Easy 30min Run",
   "description": "Easy aerobic run in Zone 2",
