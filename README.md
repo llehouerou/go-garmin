@@ -124,7 +124,7 @@ Once configured, you can ask Claude questions like:
 - "What's my current VO2 max?"
 - "How's my stress level today?"
 
-The MCP server exposes 40 tools across these categories:
+The MCP server exposes 41 tools across these categories:
 
 | Category | Tools |
 |----------|-------|
@@ -138,6 +138,7 @@ The MCP server exposes 40 tools across these categories:
 | Biometric | `get_lactate_threshold`, `get_cycling_ftp`, `get_heart_rate_zones`, `get_power_to_weight` |
 | Workout | `list_workouts`, `get_workout`, `create_workout`, `update_workout`, `delete_workout`, `schedule_workout`, `unschedule_workout` |
 | Profile | `get_social_profile`, `get_user_settings`, `get_profile_settings` |
+| Utility | `get_current_date` |
 
 ## Library Usage
 
