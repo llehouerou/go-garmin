@@ -6,191 +6,191 @@ Always run `make check` after making changes to verify the code compiles, passes
 
 ## Adding New Endpoints
 
-Follow these steps when implementing a new Garmin API endpoint:
+The project uses a **Declarative Endpoint Registry** system. Adding a new endpoint requires updating only ONE file - the endpoint definition. CLI commands and MCP tools are automatically generated.
 
-### 1. Update Record Fixtures Tool
+### Quick Start
 
-Add the new endpoint to `cmd/record-fixtures/main.go`:
+1. Add endpoint definition to `endpoint/definitions/<service>.go`
+2. Register in `endpoint/definitions/register.go` (if new file)
+3. Run `make check` and `make validate-endpoints`
 
-1. Create a new `record<ServiceName>()` function that makes the API call
-2. Call it from `recordFixtures()`
-3. Use `testutil.NewRecordingRecorder("<cassette_name>")` for the recorder
+### Step-by-Step Guide
+
+#### 1. Create or Update Endpoint Definition
+
+Add your endpoint to the appropriate file in `endpoint/definitions/`:
 
 ```go
-func recordNewEndpoint(ctx context.Context, session []byte, date time.Time) error {
-    rec, err := testutil.NewRecordingRecorder("cassette_name")
-    if err != nil {
-        return err
-    }
-    defer func() { _ = stopRecorder(rec) }()
+// endpoint/definitions/<service>.go
+package definitions
 
-    client, err := loadSession(rec, session)
-    if err != nil {
-        return err
-    }
+import (
+    "context"
+    "fmt"
 
-    _, err = client.ServiceName.Method(ctx, date)
-    if err != nil {
-        fmt.Printf("  Warning: %v\n", err)
-    }
-    return nil
+    "github.com/llehouerou/go-garmin"
+    "github.com/llehouerou/go-garmin/endpoint"
+)
+
+var ServiceEndpoints = []endpoint.Endpoint{
+    {
+        Name:          "GetData",           // Unique identifier
+        Service:       "ServiceName",       // Service group
+        Cassette:      "cassette_name",     // VCR cassette for testing
+        Path:          "/api/path",         // API endpoint path
+        HTTPMethod:    "GET",               // HTTP method
+        Params: []endpoint.Param{
+            {Name: "date", Type: endpoint.ParamTypeDate, Required: false, Description: "Date (YYYY-MM-DD)"},
+        },
+        CLICommand:    "service",           // CLI command (garmin service ...)
+        CLISubcommand: "subcommand",        // CLI subcommand (garmin service subcommand)
+        MCPTool:       "get_data",          // MCP tool name
+        Short:         "Short description",
+        Long:          "Longer description for help text",
+        Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
+            client, ok := c.(*garmin.Client)
+            if !ok {
+                return nil, fmt.Errorf("handler received invalid client type: %T", c)
+            }
+            return client.Service.GetData(ctx, args.Date("date"))
+        },
+    },
 }
 ```
 
-### 2. Record Cassette
+#### 2. Parameter Types
 
-Run the fixture recorder to capture real API responses:
+Available parameter types:
+- `endpoint.ParamTypeString` - String parameter
+- `endpoint.ParamTypeInt` - Integer parameter
+- `endpoint.ParamTypeDate` - Date parameter (YYYY-MM-DD, defaults to today)
+- `endpoint.ParamTypeDateRange` - Date range (uses --start and --end flags)
+- `endpoint.ParamTypeBool` - Boolean parameter
 
-```bash
-go run ./cmd/record-fixtures -email=USER -password=PASS [-date=YYYY-MM-DD]
-```
+#### 3. Register Endpoints (if new file)
 
-### 3. Check Sensitive Information
-
-Review the recorded cassette in `testdata/cassettes/` for personal data:
-
-- User IDs (`ownerId`, `userProfileId`, `userProfilePk`)
-- Names (`ownerFullName`, `fullname`, `displayName`, `ownerDisplayName`)
-- Profile image URLs
-- Email addresses
-- Any other PII
-
-If new patterns are found, update `testutil/vcr.go`:
-
-1. Add new regex patterns to the `var` block
-2. Add replacement logic in `anonymizeBody()` function
-3. Re-record the cassette
-
-### 4. Create Service Implementation
-
-Create `service_<name>.go` with:
-
-1. **Type definitions** - Complete structs for all response fields
-2. **Helper methods** - Convenience methods like `StartTime()`, `Duration()`, `RawJSON()`
-3. **Service methods** - API methods that call `s.client.doAPI()`
+If you created a new definition file, add it to `endpoint/definitions/register.go`:
 
 ```go
-// Type with all fields from API response
+func RegisterAll(r *endpoint.Registry) {
+    // ... existing registrations ...
+    for i := range ServiceEndpoints {
+        r.Register(ServiceEndpoints[i])
+    }
+}
+```
+
+#### 4. Validate Completeness
+
+Run the endpoint validator to check for missing fields:
+
+```bash
+make validate-endpoints
+```
+
+This checks:
+- Handler is defined
+- Cassette exists (or is "none")
+- Short and Long descriptions are set
+- Path is specified
+- CLI command or MCP tool is defined
+- Params have descriptions
+
+#### 5. Create Service Implementation (if new service)
+
+If this is a new Garmin service, create the service file:
+
+```go
+// service_<name>.go
 type ResponseType struct {
     Field1 string `json:"field1"`
-    Field2 int    `json:"field2"`
-    // ... all fields
-
+    // ... fields
     raw json.RawMessage
 }
 
-// RawJSON returns the original JSON response (fallback for API changes)
 func (r *ResponseType) RawJSON() json.RawMessage {
     return r.raw
 }
 
-// Service method
 func (s *ServiceName) GetData(ctx context.Context, date time.Time) (*ResponseType, error) {
-    path := fmt.Sprintf("/service-path/endpoint/%s", date.Format("2006-01-02"))
-
+    path := fmt.Sprintf("/api/path/%s", date.Format("2006-01-02"))
     resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-    if err != nil {
-        return nil, err
-    }
-    defer resp.Body.Close()
-
-    raw, err := io.ReadAll(resp.Body)
-    if err != nil {
-        return nil, err
-    }
-
-    var result ResponseType
-    if err := json.Unmarshal(raw, &result); err != nil {
-        return nil, err
-    }
-    result.raw = raw
-
-    return &result, nil
+    // ... handle response
 }
 ```
 
-### 5. Add Unit Tests
+#### 6. Record Cassette (for tests)
 
-Create `service_<name>_test.go` with:
-
-- JSON unmarshaling tests
-- Helper method tests (conversions, calculations)
-- Edge case tests (nil values, empty responses)
-
-### 6. Add Integration Tests
-
-Add to `integration_test.go`:
-
-```go
-func TestIntegration_Service_Method(t *testing.T) {
-    skipIfNoCassette(t, "cassette_name")
-
-    rec, err := testutil.NewRecorder("cassette_name", recorder.ModeReplayOnly)
-    if err != nil {
-        t.Fatalf("failed to create recorder: %v", err)
-    }
-    defer func() { _ = rec.Stop() }()
-
-    client := newTestClient(t, rec)
-    ctx := context.Background()
-
-    result, err := client.ServiceName.Method(ctx, args)
-    if err != nil {
-        t.Fatalf("Method failed: %v", err)
-    }
-
-    // Verify expected fields
-    if result.Field == "" {
-        t.Error("expected Field to be set")
-    }
-}
+```bash
+go run ./cmd/record-fixtures -email=USER -password=PASS
 ```
 
-### 7. Add CLI Command
-
-Create or update `cmd/garmin/<service>.go`:
-
-1. Define usage string with commands and examples
-2. Implement command handler with subcommands
-3. Output JSON to stdout
-
-Update `cmd/garmin/main.go`:
-1. Add command to usage string
-2. Add case to switch statement
-
-### 8. Update Documentation
-
-Mark endpoints as implemented in `ENDPOINTS.md`:
-
-```markdown
-| [x] | GET | `/service/endpoint` | Description |
-```
-
-### 9. Verify and Commit
+#### 7. Verify and Commit
 
 ```bash
 make check
+make validate-endpoints
 git add -A
-git commit -m "feat: add ServiceName with endpoint methods"
+git commit -m "feat: add ServiceName.GetData endpoint"
 ```
+
+## Endpoint Definition Fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `Name` | Yes | Unique endpoint identifier |
+| `Service` | Yes | Service group name |
+| `Cassette` | Yes | VCR cassette name for testing |
+| `Path` | Yes | API endpoint path |
+| `HTTPMethod` | Yes | HTTP method (GET, POST, PUT, DELETE) |
+| `Params` | No | List of parameters |
+| `CLICommand` | No* | CLI command name |
+| `CLISubcommand` | No | CLI subcommand (for grouped commands) |
+| `MCPTool` | No* | MCP tool name |
+| `Short` | Yes | Short description |
+| `Long` | Yes | Long description |
+| `Handler` | Yes | Handler function |
+| `DependsOn` | No | Name of endpoint this depends on (for fixture recording) |
+| `ArgProvider` | No | Function to extract args from DependsOn result |
+
+*At least one of CLICommand or MCPTool should be set.
 
 ## File Structure
 
 ```
-├── service_<name>.go       # Service implementation and types
-├── service_<name>_test.go  # Unit tests
-├── integration_test.go     # Integration tests (append to existing)
-├── cmd/garmin/<name>.go    # CLI commands
-├── cmd/record-fixtures/    # Update main.go for new cassettes
-├── testdata/cassettes/     # VCR cassettes
-├── testutil/vcr.go         # Sanitization patterns
-└── ENDPOINTS.md            # Implementation status
+├── endpoint/
+│   ├── endpoint.go          # Core types and registry
+│   ├── cli.go               # CLI generator
+│   ├── mcp.go               # MCP generator
+│   ├── validator.go         # Endpoint validator
+│   ├── recorder.go          # Fixture recorder
+│   └── definitions/         # Endpoint definitions
+│       ├── register.go      # Registration of all endpoints
+│       ├── sleep.go
+│       ├── wellness.go
+│       ├── activities.go
+│       └── ...
+├── service_<name>.go        # Service implementation
+├── cmd/garmin/
+│   ├── root.go              # CLI root (uses CLIGenerator)
+│   ├── mcp.go               # MCP server (uses MCPGenerator)
+│   └── registry.go          # Global endpoint registry
+└── testdata/cassettes/      # VCR cassettes
 ```
 
 ## Code Style
 
 - Use pointers for optional fields (`*int`, `*float64`, `*string`)
-- Always include `raw json.RawMessage` and `RawJSON()` method for API change fallback
+- Always include `raw json.RawMessage` and `RawJSON()` method
 - Use `time.Time` helpers for timestamp conversions
-- Follow existing naming conventions (e.g., `GetDaily`, `List`, `Get`)
-- Keep CLI output as JSON for easy piping/parsing
+- Follow naming conventions: `GetDaily`, `List`, `Get`, `GetRange`
+- For handlers that don't use args, use `_ *endpoint.HandlerArgs`
+
+## Makefile Commands
+
+```bash
+make check              # Run imports, lint, and tests
+make validate-endpoints # Validate endpoint completeness
+make lint               # Run linter only
+make test               # Run tests only
+```

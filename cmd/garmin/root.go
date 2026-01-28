@@ -4,13 +4,19 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/llehouerou/go-garmin/endpoint"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "garmin",
-	Short: "Garmin Connect CLI",
-	Long:  "A command-line interface for interacting with Garmin Connect API.",
-}
+var (
+	rootCmd = &cobra.Command{
+		Use:   "garmin",
+		Short: "Garmin Connect CLI",
+		Long:  "A command-line interface for interacting with Garmin Connect API.",
+	}
+
+	cliGenerator *endpoint.CLIGenerator
+)
 
 // Execute runs the root command.
 func Execute() {
@@ -20,18 +26,27 @@ func Execute() {
 }
 
 func init() {
+	// Administrative commands (no client needed for help)
 	rootCmd.AddCommand(loginCmd)
 	rootCmd.AddCommand(logoutCmd)
-	rootCmd.AddCommand(sleepCmd)
-	rootCmd.AddCommand(wellnessCmd)
-	rootCmd.AddCommand(activitiesCmd)
-	rootCmd.AddCommand(devicesCmd)
-	rootCmd.AddCommand(hrvCmd)
-	rootCmd.AddCommand(weightCmd)
-	rootCmd.AddCommand(metricsCmd)
-	rootCmd.AddCommand(profileCmd)
-	rootCmd.AddCommand(biometricCmd)
-	rootCmd.AddCommand(workoutsCmd)
 	rootCmd.AddCommand(completionCmd)
 	rootCmd.AddCommand(mcpCmd)
+
+	// Generate data commands from endpoint registry
+	cliGenerator = endpoint.NewCLIGenerator(endpointRegistry)
+	for _, cmd := range cliGenerator.GenerateCommands() {
+		// Add PersistentPreRunE to load client before running data commands
+		cmd.PersistentPreRunE = loadClientForCLI
+		rootCmd.AddCommand(cmd)
+	}
+}
+
+// loadClientForCLI loads the Garmin client and sets it on the CLI generator.
+func loadClientForCLI(_ *cobra.Command, _ []string) error {
+	client, err := loadClient()
+	if err != nil {
+		return err
+	}
+	cliGenerator.SetClient(client)
+	return nil
 }
