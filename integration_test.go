@@ -1818,3 +1818,59 @@ func TestIntegration_Workout_Get(t *testing.T) {
 		t.Error("expected RawJSON to be available")
 	}
 }
+
+func TestIntegration_Calendar_Get(t *testing.T) {
+	skipIfNoCassette(t, "calendar")
+
+	rec, err := testutil.NewRecorder("calendar", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// Get calendar for January 2026, week containing day 28
+	month := 0
+	day := 28
+	start := 1
+	calendar, err := client.Calendar.Get(ctx, 2026, &CalendarOptions{
+		Month: &month,
+		Day:   &day,
+		Start: &start,
+	})
+	if err != nil {
+		t.Fatalf("Get failed: %v", err)
+	}
+
+	if calendar == nil {
+		t.Fatal("expected calendar, got nil")
+	}
+
+	if calendar.StartDate == "" {
+		t.Error("expected StartDate to be set")
+	}
+	if calendar.EndDate == "" {
+		t.Error("expected EndDate to be set")
+	}
+	if calendar.NumOfDaysInMonth == 0 {
+		t.Error("expected NumOfDaysInMonth to be set")
+	}
+	if len(calendar.CalendarItems) == 0 {
+		t.Error("expected CalendarItems to have data")
+	}
+
+	// Verify we have different item types
+	itemTypes := make(map[string]bool)
+	for _, item := range calendar.CalendarItems {
+		itemTypes[item.ItemType] = true
+	}
+	if len(itemTypes) < 2 {
+		t.Errorf("expected multiple item types, got %v", itemTypes)
+	}
+
+	if calendar.RawJSON() == nil {
+		t.Error("expected RawJSON to be available")
+	}
+}
