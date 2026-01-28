@@ -119,7 +119,7 @@ Once configured, you can ask Claude questions like:
 - "What's my current VO2 max?"
 - "How's my stress level today?"
 
-The MCP server exposes 43 tools across these categories:
+The MCP server exposes 46 tools across these categories:
 
 | Category | Tools |
 |----------|-------|
@@ -131,7 +131,7 @@ The MCP server exposes 43 tools across these categories:
 | Device | `list_devices`, `get_device_settings` |
 | Metrics | `get_training_readiness`, `get_training_status`, `get_vo2max`, `get_endurance_score`, `get_hill_score`, `get_training_load_balance`, `get_heat_altitude_acclimation` |
 | Biometric | `get_lactate_threshold`, `get_cycling_ftp`, `get_heart_rate_zones`, `get_power_to_weight` |
-| Workout | `list_workouts`, `get_workout`, `schedule_workout`, `unschedule_workout` |
+| Workout | `list_workouts`, `get_workout`, `create_workout`, `update_workout`, `delete_workout`, `schedule_workout`, `unschedule_workout` |
 | Profile | `get_social_profile`, `get_user_settings`, `get_profile_settings` |
 
 ## Library Usage
