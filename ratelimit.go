@@ -42,12 +42,16 @@ func (r *rateLimiter) Wait(ctx context.Context) error {
 		r.mu.Lock()
 		now := time.Now()
 		elapsed := now.Sub(r.lastTime)
-		r.lastTime = now
 
 		newTokens := int(elapsed / r.interval)
-		r.tokens += newTokens
-		if r.tokens > r.burst {
-			r.tokens = r.burst
+		if newTokens > 0 {
+			// Only advance lastTime by the time that produced tokens,
+			// preserving fractional remainder for the next check.
+			r.lastTime = r.lastTime.Add(time.Duration(newTokens) * r.interval)
+			r.tokens += newTokens
+			if r.tokens > r.burst {
+				r.tokens = r.burst
+			}
 		}
 
 		if r.tokens > 0 {
@@ -56,12 +60,17 @@ func (r *rateLimiter) Wait(ctx context.Context) error {
 			return nil
 		}
 
-		waitTime := r.interval - (elapsed % r.interval)
+		// Wait until the next token is due
+		nextToken := r.lastTime.Add(r.interval)
+		waitTime := nextToken.Sub(now)
+		if waitTime <= 0 {
+			waitTime = r.interval
+		}
 		r.mu.Unlock()
 
 		select {
 		case <-time.After(waitTime):
-			continue // Loop back to try acquiring a token
+			continue
 		case <-ctx.Done():
 			return ctx.Err()
 		}
