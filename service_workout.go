@@ -370,6 +370,12 @@ func (s *WorkoutService) Update(ctx context.Context, workoutID int64, workout *W
 		return nil, fmt.Errorf("failed to update workout: status %d: %s", resp.StatusCode, string(body))
 	}
 
+	// Garmin API may return empty body on successful update
+	if len(body) == 0 {
+		// Fetch the updated workout to return it
+		return s.Get(ctx, workoutID)
+	}
+
 	var updated Workout
 	if err := json.Unmarshal(body, &updated); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal updated workout: %w", err)
