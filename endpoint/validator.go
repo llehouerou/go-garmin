@@ -9,7 +9,8 @@ import (
 
 // ValidatorConfig configures the endpoint validator.
 type ValidatorConfig struct {
-	CassetteDir string
+	CassetteDir           string
+	SkipOrphanedCassettes bool
 }
 
 // Validator checks endpoints for completeness.
@@ -31,7 +32,9 @@ func (v *Validator) Validate() []string {
 		errors = append(errors, v.validateEndpoint(ep)...)
 	}
 
-	errors = append(errors, v.checkOrphanedCassettes()...)
+	if !v.config.SkipOrphanedCassettes {
+		errors = append(errors, v.checkOrphanedCassettes()...)
+	}
 
 	return errors
 }

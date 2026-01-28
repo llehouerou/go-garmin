@@ -1,4 +1,4 @@
-.PHONY: fmt lint test coverage check build cli record-fixtures install-hooks
+.PHONY: fmt lint test coverage check build cli record-fixtures validate-endpoints install-hooks
 
 # Format all Go files (tools provided by nix devShell)
 fmt:
@@ -39,6 +39,10 @@ cli:
 # Build record-fixtures tool
 record-fixtures:
 	go build -o record-fixtures ./cmd/record-fixtures
+
+# Validate endpoint definitions
+validate-endpoints:
+	go run ./cmd/validate-endpoints
 
 # Install git hooks
 install-hooks:
