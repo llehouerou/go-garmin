@@ -188,15 +188,17 @@ var WorkoutEndpoints = []endpoint.Endpoint{
 		},
 	},
 	{
-		Name:       "CreateWorkout",
-		Service:    "Workouts",
-		Cassette:   "workouts",
-		Path:       "/workout-service/workout",
-		HTTPMethod: "POST",
-		Body:       workoutBodyConfig,
-		MCPTool:    "create_workout",
-		Short:      "Create a new workout",
-		Long:       "Create a new workout with segments and steps. The workout will be saved to your Garmin account.",
+		Name:          "CreateWorkout",
+		Service:       "Workouts",
+		Cassette:      "workouts",
+		Path:          "/workout-service/workout",
+		HTTPMethod:    "POST",
+		Body:          workoutBodyConfig,
+		CLICommand:    "workouts",
+		CLISubcommand: "create",
+		MCPTool:       "create_workout",
+		Short:         "Create a new workout",
+		Long:          "Create a new workout with segments and steps. Use --file to read from a file, --json to pass inline JSON, or pipe JSON to stdin.",
 		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
 			client, ok := c.(*garmin.Client)
 			if !ok {
@@ -218,10 +220,12 @@ var WorkoutEndpoints = []endpoint.Endpoint{
 		Params: []endpoint.Param{
 			{Name: "workout_id", Type: endpoint.ParamTypeInt, Required: true, Description: "The workout ID to update"},
 		},
-		Body:    workoutBodyConfig,
-		MCPTool: "update_workout",
-		Short:   "Update an existing workout",
-		Long:    "Update an existing workout. You must provide the complete workout structure including all segments and steps.",
+		Body:          workoutBodyConfig,
+		CLICommand:    "workouts",
+		CLISubcommand: "update",
+		MCPTool:       "update_workout",
+		Short:         "Update an existing workout",
+		Long:          "Update an existing workout. Use --file to read from a file, --json to pass inline JSON, or pipe JSON to stdin.",
 		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
 			client, ok := c.(*garmin.Client)
 			if !ok {
@@ -243,9 +247,11 @@ var WorkoutEndpoints = []endpoint.Endpoint{
 		Params: []endpoint.Param{
 			{Name: "workout_id", Type: endpoint.ParamTypeInt, Required: true, Description: "The workout ID to delete"},
 		},
-		MCPTool: "delete_workout",
-		Short:   "Delete a workout",
-		Long:    "Permanently delete a workout from your Garmin account",
+		CLICommand:    "workouts",
+		CLISubcommand: "delete",
+		MCPTool:       "delete_workout",
+		Short:         "Delete a workout",
+		Long:          "Permanently delete a workout from your Garmin account",
 		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
 			client, ok := c.(*garmin.Client)
 			if !ok {
