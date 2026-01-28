@@ -2,6 +2,7 @@
 package garmin
 
 import (
+	"bytes"
 	"context"
 	"io"
 	"math/rand"
@@ -41,6 +42,17 @@ func newHTTPTransport(client *http.Client, retry retryConfig, rl *rateLimiter) *
 }
 
 func (t *httpTransport) do(req *http.Request) (*http.Response, error) {
+	// Read and buffer request body for potential retries
+	var bodyBytes []byte
+	if req.Body != nil && req.Body != http.NoBody {
+		var err error
+		bodyBytes, err = io.ReadAll(req.Body)
+		req.Body.Close()
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	var lastErr error
 
 	for attempt := 0; attempt <= t.retry.MaxRetries; attempt++ {
@@ -48,6 +60,12 @@ func (t *httpTransport) do(req *http.Request) (*http.Response, error) {
 			if err := t.rateLimiter.Wait(req.Context()); err != nil {
 				return nil, err
 			}
+		}
+
+		// Reset body for each attempt
+		if bodyBytes != nil {
+			req.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+			req.ContentLength = int64(len(bodyBytes))
 		}
 
 		resp, err := t.client.Do(req)
