@@ -39,18 +39,68 @@ type TargetType struct {
 	DisplayOrder         int    `json:"displayOrder,omitempty"`
 }
 
+// StrokeType represents a swimming stroke type.
+type StrokeType struct {
+	StrokeTypeID  int    `json:"strokeTypeId"`
+	StrokeTypeKey string `json:"strokeTypeKey,omitempty"`
+	DisplayOrder  int    `json:"displayOrder,omitempty"`
+}
+
+// EquipmentType represents an equipment type for workout steps.
+type EquipmentType struct {
+	EquipmentTypeID  int    `json:"equipmentTypeId"`
+	EquipmentTypeKey string `json:"equipmentTypeKey,omitempty"`
+	DisplayOrder     int    `json:"displayOrder,omitempty"`
+}
+
+// UnitInfo represents unit information for distance/length measurements.
+type UnitInfo struct {
+	UnitID  *int64   `json:"unitId,omitempty"`
+	UnitKey *string  `json:"unitKey,omitempty"`
+	Factor  *float64 `json:"factor,omitempty"`
+}
+
 // WorkoutStep represents a single step in a workout.
 type WorkoutStep struct {
-	Type              string        `json:"type"` // ExecutableStepDTO or RepeatGroupDTO
-	StepID            int64         `json:"stepId,omitempty"`
-	StepOrder         int           `json:"stepOrder"`
-	StepType          *StepTypeInfo `json:"stepType,omitempty"`
-	EndCondition      *EndCondition `json:"endCondition,omitempty"`
-	EndConditionValue *float64      `json:"endConditionValue,omitempty"`
-	TargetType        *TargetType   `json:"targetType,omitempty"`
-	TargetValueOne    *float64      `json:"targetValueOne,omitempty"`
-	TargetValueTwo    *float64      `json:"targetValueTwo,omitempty"`
-	ChildStepID       *int64        `json:"childStepId,omitempty"`
+	Type        string        `json:"type"` // ExecutableStepDTO or RepeatGroupDTO
+	StepID      int64         `json:"stepId,omitempty"`
+	StepOrder   int           `json:"stepOrder"`
+	StepType    *StepTypeInfo `json:"stepType,omitempty"`
+	ChildStepID *int64        `json:"childStepId,omitempty"`
+	Description *string       `json:"description,omitempty"`
+
+	// End condition
+	EndCondition         *EndCondition `json:"endCondition,omitempty"`
+	EndConditionValue    *float64      `json:"endConditionValue,omitempty"`
+	PreferredEndCondUnit *UnitInfo     `json:"preferredEndConditionUnit,omitempty"`
+	EndConditionCompare  *float64      `json:"endConditionCompare,omitempty"`
+	EndConditionZone     *int          `json:"endConditionZone,omitempty"`
+
+	// Primary target
+	TargetType      *TargetType `json:"targetType,omitempty"`
+	TargetValueOne  *float64    `json:"targetValueOne,omitempty"`
+	TargetValueTwo  *float64    `json:"targetValueTwo,omitempty"`
+	TargetValueUnit *UnitInfo   `json:"targetValueUnit,omitempty"`
+	ZoneNumber      *int        `json:"zoneNumber,omitempty"`
+
+	// Secondary target
+	SecondaryTargetType      *TargetType `json:"secondaryTargetType,omitempty"`
+	SecondaryTargetValueOne  *float64    `json:"secondaryTargetValueOne,omitempty"`
+	SecondaryTargetValueTwo  *float64    `json:"secondaryTargetValueTwo,omitempty"`
+	SecondaryTargetValueUnit *UnitInfo   `json:"secondaryTargetValueUnit,omitempty"`
+	SecondaryZoneNumber      *int        `json:"secondaryZoneNumber,omitempty"`
+
+	// Sport-specific
+	StrokeType    *StrokeType    `json:"strokeType,omitempty"`
+	EquipmentType *EquipmentType `json:"equipmentType,omitempty"`
+
+	// Exercise info
+	Category                 *string   `json:"category,omitempty"`
+	ExerciseName             *string   `json:"exerciseName,omitempty"`
+	WorkoutProvider          *string   `json:"workoutProvider,omitempty"`
+	ProviderExerciseSourceID *int64    `json:"providerExerciseSourceId,omitempty"`
+	WeightValue              *float64  `json:"weightValue,omitempty"`
+	WeightUnit               *UnitInfo `json:"weightUnit,omitempty"`
 
 	// For repeat groups
 	NumberOfIterations *int          `json:"numberOfIterations,omitempty"`
@@ -60,39 +110,66 @@ type WorkoutStep struct {
 
 // WorkoutSegment represents a segment of a workout.
 type WorkoutSegment struct {
-	SegmentOrder int           `json:"segmentOrder"`
-	SportType    SportType     `json:"sportType"`
-	WorkoutSteps []WorkoutStep `json:"workoutSteps"`
+	SegmentOrder              int           `json:"segmentOrder"`
+	SportType                 SportType     `json:"sportType"`
+	WorkoutSteps              []WorkoutStep `json:"workoutSteps"`
+	PoolLengthUnit            *UnitInfo     `json:"poolLengthUnit,omitempty"`
+	PoolLength                *float64      `json:"poolLength,omitempty"`
+	AvgTrainingSpeed          *float64      `json:"avgTrainingSpeed,omitempty"`
+	EstimatedDurationInSecs   *int          `json:"estimatedDurationInSecs,omitempty"`
+	EstimatedDistanceInMeters *float64      `json:"estimatedDistanceInMeters,omitempty"`
+	EstimatedDistanceUnit     *UnitInfo     `json:"estimatedDistanceUnit,omitempty"`
+	EstimateType              *string       `json:"estimateType,omitempty"`
+	Description               *string       `json:"description,omitempty"`
 }
 
 // WorkoutAuthor represents the author of a workout.
 type WorkoutAuthor struct {
-	UserProfilePK *int64 `json:"userProfilePk,omitempty"`
+	UserProfilePK       *int64  `json:"userProfilePk,omitempty"`
+	DisplayName         *string `json:"displayName,omitempty"`
+	FullName            *string `json:"fullName,omitempty"`
+	ProfileImgNameLarge *string `json:"profileImgNameLarge,omitempty"`
+	ProfileImgNameMed   *string `json:"profileImgNameMedium,omitempty"`
+	ProfileImgNameSmall *string `json:"profileImgNameSmall,omitempty"`
+	UserPro             bool    `json:"userPro,omitempty"`
+	VivokidUser         bool    `json:"vivokidUser,omitempty"`
 }
 
 // Workout represents a Garmin workout.
 type Workout struct {
-	WorkoutID               int64            `json:"workoutId,omitempty"`
-	OwnerID                 int64            `json:"ownerId,omitempty"`
-	WorkoutName             string           `json:"workoutName"`
-	Description             string           `json:"description,omitempty"`
-	UpdateDate              string           `json:"updateDate,omitempty"`
-	CreatedDate             string           `json:"createdDate,omitempty"`
-	SportType               SportType        `json:"sportType"`
-	TrainingPlanID          *int64           `json:"trainingPlanId,omitempty"`
-	Author                  *WorkoutAuthor   `json:"author,omitempty"`
-	EstimatedDurationInSecs int              `json:"estimatedDurationInSecs,omitempty"`
-	EstimatedDistanceInMtrs float64          `json:"estimatedDistanceInMeters,omitempty"`
-	AvgTrainingSpeed        float64          `json:"avgTrainingSpeed,omitempty"`
-	WorkoutSegments         []WorkoutSegment `json:"workoutSegments"`
-	Locale                  string           `json:"locale,omitempty"`
-	PoolLength              float64          `json:"poolLength,omitempty"`
-	PoolLengthUnit          string           `json:"poolLengthUnit,omitempty"`
-	WorkoutProvider         string           `json:"workoutProvider,omitempty"`
-	WorkoutSourceID         string           `json:"workoutSourceId,omitempty"`
-	Consumer                string           `json:"consumer,omitempty"`
-	AtpPlanID               *int64           `json:"atpPlanId,omitempty"`
-	Shared                  bool             `json:"shared,omitempty"`
+	WorkoutID                int64            `json:"workoutId,omitempty"`
+	OwnerID                  int64            `json:"ownerId,omitempty"`
+	WorkoutName              string           `json:"workoutName"`
+	Description              string           `json:"description,omitempty"`
+	UpdatedDate              string           `json:"updatedDate,omitempty"`
+	CreatedDate              string           `json:"createdDate,omitempty"`
+	SportType                SportType        `json:"sportType"`
+	SubSportType             *SportType       `json:"subSportType,omitempty"`
+	TrainingPlanID           *int64           `json:"trainingPlanId,omitempty"`
+	Author                   *WorkoutAuthor   `json:"author,omitempty"`
+	SharedWithUsers          []WorkoutAuthor  `json:"sharedWithUsers,omitempty"`
+	EstimatedDurationInSecs  int              `json:"estimatedDurationInSecs,omitempty"`
+	EstimatedDistanceInMtrs  float64          `json:"estimatedDistanceInMeters,omitempty"`
+	EstimateType             string           `json:"estimateType,omitempty"`
+	EstimatedDistanceUnit    *UnitInfo        `json:"estimatedDistanceUnit,omitempty"`
+	AvgTrainingSpeed         float64          `json:"avgTrainingSpeed,omitempty"`
+	WorkoutSegments          []WorkoutSegment `json:"workoutSegments"`
+	Locale                   string           `json:"locale,omitempty"`
+	PoolLength               *float64         `json:"poolLength,omitempty"`
+	PoolLengthUnit           *UnitInfo        `json:"poolLengthUnit,omitempty"`
+	WorkoutProvider          *string          `json:"workoutProvider,omitempty"`
+	WorkoutSourceID          *string          `json:"workoutSourceId,omitempty"`
+	UploadTimestamp          *string          `json:"uploadTimestamp,omitempty"`
+	AtpPlanID                *int64           `json:"atpPlanId,omitempty"`
+	Consumer                 *string          `json:"consumer,omitempty"`
+	ConsumerName             *string          `json:"consumerName,omitempty"`
+	ConsumerImageURL         *string          `json:"consumerImageURL,omitempty"`
+	ConsumerWebsiteURL       *string          `json:"consumerWebsiteURL,omitempty"`
+	WorkoutNameI18nKey       *string          `json:"workoutNameI18nKey,omitempty"`
+	DescriptionI18nKey       *string          `json:"descriptionI18nKey,omitempty"`
+	WorkoutThumbnailURL      *string          `json:"workoutThumbnailUrl,omitempty"`
+	SessionTransitionEnabled *bool            `json:"isSessionTransitionEnabled,omitempty"`
+	Shared                   bool             `json:"shared,omitempty"`
 
 	raw json.RawMessage
 }
@@ -104,17 +181,30 @@ func (w *Workout) RawJSON() json.RawMessage {
 
 // WorkoutSummary represents a workout in the list response.
 type WorkoutSummary struct {
-	WorkoutID               int64     `json:"workoutId"`
-	OwnerID                 int64     `json:"ownerId"`
-	WorkoutName             string    `json:"workoutName"`
-	Description             string    `json:"description,omitempty"`
-	UpdateDate              string    `json:"updateDate,omitempty"`
-	CreatedDate             string    `json:"createdDate,omitempty"`
-	SportType               SportType `json:"sportType"`
-	EstimatedDurationInSecs int       `json:"estimatedDurationInSecs,omitempty"`
-	EstimatedDistanceInMtrs float64   `json:"estimatedDistanceInMeters,omitempty"`
-	AvgTrainingSpeed        float64   `json:"avgTrainingSpeed,omitempty"`
-	Shared                  bool      `json:"shared,omitempty"`
+	WorkoutID               int64          `json:"workoutId"`
+	OwnerID                 int64          `json:"ownerId"`
+	WorkoutName             string         `json:"workoutName"`
+	Description             string         `json:"description,omitempty"`
+	UpdateDate              string         `json:"updateDate,omitempty"`
+	CreatedDate             string         `json:"createdDate,omitempty"`
+	SportType               SportType      `json:"sportType"`
+	TrainingPlanID          *int64         `json:"trainingPlanId,omitempty"`
+	Author                  *WorkoutAuthor `json:"author,omitempty"`
+	EstimatedDurationInSecs int            `json:"estimatedDurationInSecs,omitempty"`
+	EstimatedDistanceInMtrs *float64       `json:"estimatedDistanceInMeters,omitempty"`
+	EstimateType            *string        `json:"estimateType,omitempty"`
+	EstimatedDistanceUnit   *UnitInfo      `json:"estimatedDistanceUnit,omitempty"`
+	PoolLength              *float64       `json:"poolLength,omitempty"`
+	PoolLengthUnit          *UnitInfo      `json:"poolLengthUnit,omitempty"`
+	WorkoutProvider         *string        `json:"workoutProvider,omitempty"`
+	WorkoutSourceID         *string        `json:"workoutSourceId,omitempty"`
+	Consumer                *string        `json:"consumer,omitempty"`
+	AtpPlanID               *int64         `json:"atpPlanId,omitempty"`
+	WorkoutNameI18nKey      *string        `json:"workoutNameI18nKey,omitempty"`
+	DescriptionI18nKey      *string        `json:"descriptionI18nKey,omitempty"`
+	WorkoutThumbnailURL     *string        `json:"workoutThumbnailUrl,omitempty"`
+	Shared                  bool           `json:"shared,omitempty"`
+	Estimated               bool           `json:"estimated,omitempty"`
 
 	raw json.RawMessage
 }

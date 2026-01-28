@@ -46,6 +46,11 @@ var (
 	// Profile image URLs
 	profileImageURLPattern = regexp.MustCompile(`"(ownerProfileImageUrl[^"]*|profileImageUrl[^"]*)"\s*:\s*"https://s3\.amazonaws\.com/garmin-connect-prod/profile_images/[^"]*"`)
 
+	// Profile image filenames (contain UUIDs)
+	profileImgNameLargePattern  = regexp.MustCompile(`"profileImgNameLarge"\s*:\s*"[^"]*"`)
+	profileImgNameMediumPattern = regexp.MustCompile(`"profileImgNameMedium"\s*:\s*"[^"]*"`)
+	profileImgNameSmallPattern  = regexp.MustCompile(`"profileImgNameSmall"\s*:\s*"[^"]*"`)
+
 	// Auth-related patterns
 	ticketPattern          = regexp.MustCompile(`ticket=ST-[^&"\\]+`)
 	oauth1TokenPattern     = regexp.MustCompile(`oauth_token=[^&\s]+`)
@@ -208,6 +213,11 @@ func anonymizeBody(body string) string {
 
 	// Profile image URLs
 	body = profileImageURLPattern.ReplaceAllString(body, `"$1":"https://example.com/profile.png"`)
+
+	// Profile image filenames
+	body = profileImgNameLargePattern.ReplaceAllString(body, `"profileImgNameLarge":"anonymous-profile-large.png"`)
+	body = profileImgNameMediumPattern.ReplaceAllString(body, `"profileImgNameMedium":"anonymous-profile-medium.png"`)
+	body = profileImgNameSmallPattern.ReplaceAllString(body, `"profileImgNameSmall":"anonymous-profile-small.png"`)
 
 	// Auth tokens and tickets
 	body = ticketPattern.ReplaceAllString(body, `ticket=[REDACTED]`)
