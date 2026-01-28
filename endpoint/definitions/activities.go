@@ -11,6 +11,25 @@ import (
 // ActivityEndpoints defines all activity-related endpoints.
 var ActivityEndpoints = []endpoint.Endpoint{
 	{
+		Name:          "GetActivityTypes",
+		Service:       "Activities",
+		Cassette:      "activities",
+		Path:          "/activity-service/activity/activityTypes",
+		HTTPMethod:    "GET",
+		CLICommand:    "activities",
+		CLISubcommand: "types",
+		MCPTool:       "get_activity_types",
+		Short:         "Get activity types",
+		Long:          "Get the list of all available activity types including running, cycling, swimming, etc.",
+		Handler: func(ctx context.Context, c any, _ *endpoint.HandlerArgs) (any, error) {
+			client, ok := c.(*garmin.Client)
+			if !ok {
+				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
+			}
+			return client.Activities.GetActivityTypes(ctx)
+		},
+	},
+	{
 		Name:       "ListActivities",
 		Service:    "Activities",
 		Cassette:   "activities",

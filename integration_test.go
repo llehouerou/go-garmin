@@ -181,7 +181,7 @@ func TestIntegration_Activity_Get(t *testing.T) {
 	ctx := context.Background()
 
 	// Activity ID from the recorded cassette
-	activityID := int64(21661023200)
+	activityID := int64(21680374805)
 
 	detail, err := client.Activities.Get(ctx, activityID)
 	if err != nil {
@@ -227,7 +227,7 @@ func TestIntegration_Activity_GetWeather(t *testing.T) {
 	ctx := context.Background()
 
 	// Activity ID from the recorded cassette
-	activityID := int64(21661023200)
+	activityID := int64(21680374805)
 
 	weather, err := client.Activities.GetWeather(ctx, activityID)
 	if err != nil {
@@ -274,7 +274,7 @@ func TestIntegration_Activity_GetSplits(t *testing.T) {
 	ctx := context.Background()
 
 	// Activity ID from the recorded cassette
-	activityID := int64(21661023200)
+	activityID := int64(21680374805)
 
 	splits, err := client.Activities.GetSplits(ctx, activityID)
 	if err != nil {
@@ -1308,7 +1308,7 @@ func TestIntegration_Activity_GetDetails(t *testing.T) {
 	ctx := context.Background()
 
 	// Activity ID from the recorded cassette
-	activityID := int64(21661023200)
+	activityID := int64(21680374805)
 
 	details, err := client.Activities.GetDetails(ctx, activityID)
 	if err != nil {
@@ -1357,7 +1357,7 @@ func TestIntegration_Activity_GetHRTimeInZones(t *testing.T) {
 	ctx := context.Background()
 
 	// Activity ID from the recorded cassette
-	activityID := int64(21661023200)
+	activityID := int64(21680374805)
 
 	hrZones, err := client.Activities.GetHRTimeInZones(ctx, activityID)
 	if err != nil {
@@ -1408,7 +1408,7 @@ func TestIntegration_Activity_GetPowerTimeInZones(t *testing.T) {
 	ctx := context.Background()
 
 	// Activity ID from the recorded cassette
-	activityID := int64(21661023200)
+	activityID := int64(21680374805)
 
 	powerZones, err := client.Activities.GetPowerTimeInZones(ctx, activityID)
 	if err != nil {
@@ -1439,7 +1439,7 @@ func TestIntegration_Activity_GetExerciseSets(t *testing.T) {
 	ctx := context.Background()
 
 	// Activity ID from the recorded cassette
-	activityID := int64(21661023200)
+	activityID := int64(21680374805)
 
 	sets, err := client.Activities.GetExerciseSets(ctx, activityID)
 	if err != nil {

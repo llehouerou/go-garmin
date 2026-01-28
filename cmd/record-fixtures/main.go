@@ -405,6 +405,14 @@ func recordActivities(ctx context.Context, session []byte, _ time.Time) error {
 
 	httpClient := testutil.HTTPClientWithRecorder(rec)
 
+	// Record activity types
+	fmt.Println("  Getting activity types...")
+	activityTypesURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/activityTypes", authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, activityTypesURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: activity types: %v\n", err)
+	}
+
 	// Record activities list (get last 5 activities)
 	fmt.Println("  Getting activities list...")
 	activitiesURL := fmt.Sprintf("https://connectapi.%s/activitylist-service/activities/search/activities?start=0&limit=5", authState.Domain)

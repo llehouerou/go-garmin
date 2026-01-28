@@ -69,7 +69,7 @@ Note: Some endpoints like `dailyHeartRate` can also use `/{displayName}?date={da
 | [x] | GET | `/activity-service/activity/{activityId}/powerTimeInZones` | Power time in zones |
 | [x] | GET | `/activity-service/activity/{activityId}/exerciseSets` | Exercise sets |
 | [ ] | GET | `/activity-service/activity/{activityId}/gear` | Activity gear |
-| [ ] | GET | `/activity-service/activity/activityTypes` | Activity types |
+| [x] | GET | `/activity-service/activity/activityTypes` | Activity types |
 | [ ] | POST | `/activity-service/activity` | Create manual activity |
 | [ ] | PUT | `/activity-service/activity/{activityId}` | Update activity (name, type, etc.) |
 | [ ] | DELETE | `/activity-service/activity/{activityId}` | Delete activity |

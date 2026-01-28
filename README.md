@@ -37,6 +37,7 @@ garmin wellness intensity-minutes [date]
 # Activities
 garmin activities list [--start=0] [--limit=20]
 garmin activities get <activity-id>
+garmin activities types
 garmin activities splits <activity-id>
 garmin activities weather <activity-id>
 garmin activities details <activity-id>
@@ -124,13 +125,13 @@ Once configured, you can ask Claude questions like:
 - "What's my current VO2 max?"
 - "How's my stress level today?"
 
-The MCP server exposes 41 tools across these categories:
+The MCP server exposes 42 tools across these categories:
 
 | Category | Tools |
 |----------|-------|
 | Sleep | `get_sleep` |
 | Wellness | `get_stress`, `get_body_battery`, `get_heart_rate`, `get_spo2`, `get_respiration`, `get_intensity_minutes` |
-| Activity | `list_activities`, `get_activity`, `get_activity_splits`, `get_activity_weather`, `get_activity_details`, `get_activity_hr_zones`, `get_activity_power_zones`, `get_activity_exercise_sets` |
+| Activity | `list_activities`, `get_activity`, `get_activity_types`, `get_activity_splits`, `get_activity_weather`, `get_activity_details`, `get_activity_hr_zones`, `get_activity_power_zones`, `get_activity_exercise_sets` |
 | Weight | `get_weight` |
 | HRV | `get_hrv` |
 | Device | `list_devices`, `get_device_settings` |

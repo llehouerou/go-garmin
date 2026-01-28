@@ -1089,3 +1089,26 @@ func (s *ActivityService) GetExerciseSets(ctx context.Context, activityID int64)
 
 	return &sets, nil
 }
+
+// GetActivityTypes retrieves the list of all activity types.
+func (s *ActivityService) GetActivityTypes(ctx context.Context) ([]ActivityType, error) {
+	path := "/activity-service/activity/activityTypes"
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var types []ActivityType
+	if err := json.Unmarshal(raw, &types); err != nil {
+		return nil, err
+	}
+
+	return types, nil
+}
