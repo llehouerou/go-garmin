@@ -102,10 +102,11 @@ type WorkoutStep struct {
 	WeightValue              *float64  `json:"weightValue,omitempty"`
 	WeightUnit               *UnitInfo `json:"weightUnit,omitempty"`
 
-	// For repeat groups
+	// For repeat groups (RepeatGroupDTO)
 	NumberOfIterations *int          `json:"numberOfIterations,omitempty"`
 	WorkoutSteps       []WorkoutStep `json:"workoutSteps,omitempty"`
 	SmartRepeat        bool          `json:"smartRepeat,omitempty"`
+	SkipLastRestStep   bool          `json:"skipLastRestStep,omitempty"`
 }
 
 // WorkoutSegment represents a segment of a workout.
