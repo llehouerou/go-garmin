@@ -77,6 +77,11 @@ garmin profile display
 # Workouts
 garmin workouts list [--start=0] [--limit=20]
 garmin workouts get <workout-id>
+garmin workouts create --file=workout.json
+garmin workouts create --json='{"workoutName": "..."}'
+cat workout.json | garmin workouts create
+garmin workouts update <workout-id> --file=workout.json
+garmin workouts delete <workout-id>
 garmin workouts schedule <workout-id> <date>
 garmin workouts unschedule <schedule-id>
 ```
@@ -119,7 +124,7 @@ Once configured, you can ask Claude questions like:
 - "What's my current VO2 max?"
 - "How's my stress level today?"
 
-The MCP server exposes 46 tools across these categories:
+The MCP server exposes 40 tools across these categories:
 
 | Category | Tools |
 |----------|-------|
