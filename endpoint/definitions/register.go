@@ -38,4 +38,7 @@ func RegisterAll(r *endpoint.Registry) {
 	for i := range UtilityEndpoints {
 		r.Register(UtilityEndpoints[i])
 	}
+	for i := range CalendarEndpoints {
+		r.Register(CalendarEndpoints[i])
+	}
 }

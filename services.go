@@ -53,3 +53,6 @@ type HRVService struct{ client *Client }
 
 // BiometricService provides access to biometric-related API endpoints (FTP, lactate threshold, power-to-weight).
 type BiometricService struct{ client *Client }
+
+// CalendarService provides access to calendar-related API endpoints.
+type CalendarService struct{ client *Client }

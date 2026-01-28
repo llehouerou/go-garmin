@@ -328,9 +328,9 @@ Note: Can also be accessed via `/proxy/workout-service/` prefix (garmin-workouts
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/calendar-service/year/{year}` | Calendar data by year (unverified) |
+| [x] | GET | `/calendar-service/year/{year}/month/{month}/day/{day}/start/{start}` | Calendar data with hierarchical optional params |
 
-Note: This endpoint could not be verified in any reference implementation.
+Note: Parameters are hierarchical - month requires year, day requires month, start requires day.
 
 ---
 

@@ -112,6 +112,12 @@ func (a *HandlerArgs) Bool(name string) bool {
 	return false
 }
 
+// HasParam returns true if the parameter was provided.
+func (a *HandlerArgs) HasParam(name string) bool {
+	_, ok := a.Params[name]
+	return ok
+}
+
 // Registry holds all registered endpoints.
 type Registry struct {
 	endpoints []*Endpoint

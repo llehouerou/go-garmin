@@ -1,0 +1,50 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/calendar-service/year/2026/month/0/day/28/start/1
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"startDate":"2026-01-26","endDate":"2026-02-01","numOfDaysInMonth":31,"calendarItems":[{"id":12345678,"groupId":null,"trainingPlanId":null,"itemType":"weight","activityTypeId":null,"wellnessActivityUuid":null,"title":null,"date":"2026-01-27","duration":null,"distance":null,"calories":null,"floorsClimbed":null,"avgRespirationRate":null,"unitOfPoolLength":null,"weight":74200.0,"difference":null,"courseId":null,"courseName":null,"sportTypeKey":null,"url":null,"isStart":null,"isRace":null,"recurrenceId":null,"isParent":null,"parentId":null,"userBadgeId":null,"badgeCategoryTypeId":null,"badgeCategoryTypeDesc":null,"badgeAwardedDate":null,"badgeViewed":null,"hideBadge":null,"startTimestampLocal":null,"eventTimeLocal":null,"diveNumber":null,"maxDepth":null,"avgDepth":null,"surfaceInterval":null,"elapsedDuration":null,"lapCount":null,"bottomTime":null,"atpPlanId":null,"workoutId":null,"protectedWorkoutSchedule":false,"activeSets":null,"strokes":null,"noOfSplits":null,"maxGradeValue":null,"totalAscent":null,"differenceStress":null,"climbDuration":null,"maxSpeed":null,"averageHR":null,"activeSplitSummaryDuration":null,"activeSplitSummaryDistance":null,"maxSplitDistance":null,"maxSplitSpeed":null,"location":null,"shareableEventUuid":null,"splitSummaryMode":null,"completionTarget":null,"workoutUuid":null,"napStartTimeLocal":null,"beginPackWeight":null,"hasSplits":null,"primaryEvent":null,"shareableEvent":false,"autoCalcCalories":null,"subscribed":null,"phasedTrainingPlan":null,"decoDive":null},{"id":12345678,"groupId":null,"trainingPlanId":0,"itemType":"workout","activityTypeId":null,"wellnessActivityUuid":null,"title":"Zone 2 Easy Run","date":"2026-01-29","duration":null,"distance":null,"calories":null,"floorsClimbed":null,"avgRespirationRate":null,"unitOfPoolLength":null,"weight":null,"difference":null,"courseId":null,"courseName":null,"sportTypeKey":"running","url":null,"isStart":null,"isRace":null,"recurrenceId":null,"isParent":null,"parentId":null,"userBadgeId":null,"badgeCategoryTypeId":null,"badgeCategoryTypeDesc":null,"badgeAwardedDate":null,"badgeViewed":null,"hideBadge":null,"startTimestampLocal":null,"eventTimeLocal":null,"diveNumber":null,"maxDepth":null,"avgDepth":null,"surfaceInterval":null,"elapsedDuration":null,"lapCount":null,"bottomTime":null,"atpPlanId":null,"workoutId":1456627162,"protectedWorkoutSchedule":false,"activeSets":null,"strokes":null,"noOfSplits":null,"maxGradeValue":null,"totalAscent":null,"differenceStress":null,"climbDuration":null,"maxSpeed":null,"averageHR":null,"activeSplitSummaryDuration":null,"activeSplitSummaryDistance":null,"maxSplitDistance":null,"maxSplitSpeed":null,"location":null,"shareableEventUuid":null,"splitSummaryMode":null,"completionTarget":null,"workoutUuid":null,"napStartTimeLocal":null,"beginPackWeight":null,"hasSplits":null,"primaryEvent":null,"shareableEvent":false,"autoCalcCalories":null,"subscribed":null,"phasedTrainingPlan":false,"decoDive":null},{"id":12345678,"groupId":null,"trainingPlanId":null,"itemType":"activity","activityTypeId":1,"wellnessActivityUuid":null,"title":"Saint-Pierre - Threshold Intervals 6x2min","date":"2026-01-27","duration":2771576,"distance":661518,"calories":1948,"floorsClimbed":null,"avgRespirationRate":29.889999389648438,"unitOfPoolLength":null,"weight":null,"difference":null,"courseId":null,"courseName":null,"sportTypeKey":null,"url":null,"isStart":null,"isRace":null,"recurrenceId":null,"isParent":false,"parentId":null,"userBadgeId":null,"badgeCategoryTypeId":null,"badgeCategoryTypeDesc":null,"badgeAwardedDate":null,"badgeViewed":null,"hideBadge":null,"startTimestampLocal":"2026-01-27T17:28:07.0","eventTimeLocal":null,"diveNumber":null,"maxDepth":null,"avgDepth":null,"surfaceInterval":null,"elapsedDuration":2771.576904296875,"lapCount":18,"bottomTime":null,"atpPlanId":null,"workoutId":null,"protectedWorkoutSchedule":false,"activeSets":null,"strokes":null,"noOfSplits":6,"maxGradeValue":null,"totalAscent":20.0,"differenceStress":null,"climbDuration":720.0,"maxSpeed":3.686000108718872,"averageHR":139.0,"activeSplitSummaryDuration":720.0,"activeSplitSummaryDistance":2328.52001953125,"maxSplitDistance":405,"maxSplitSpeed":3.686000108718872,"location":null,"shareableEventUuid":null,"splitSummaryMode":null,"completionTarget":null,"workoutUuid":null,"napStartTimeLocal":null,"beginPackWeight":null,"hasSplits":true,"primaryEvent":null,"shareableEvent":false,"autoCalcCalories":false,"subscribed":null,"phasedTrainingPlan":null,"decoDive":false}]}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c4f77956fd9517e-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Wed, 28 Jan 2026 09:29:44 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=NbSHaJ4Z%2FAB09Nbn%2BfOeHq9pC0XYbSsaVdt8foe42fotzWCW6BM%2Fk%2BbMM45wJfIFrLpFMjTuq7RiyntY2HwW0OLg7CC1Dhg6ys9NR2iwtLDvhXUkBZXJwFHGApGkL8PLkY%2FfKmBbsE4WUTVJbHtA7Yx73A%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 396.022295ms

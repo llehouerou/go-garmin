@@ -114,6 +114,7 @@ func getCassetteRecorders() map[string]cassetteRecorder {
 		"devices":               recordDevices,
 		"biometric":             recordBiometric,
 		"workouts":              recordWorkouts,
+		"calendar":              recordCalendar,
 	}
 }
 
@@ -890,6 +891,40 @@ func recordWorkouts(ctx context.Context, session []byte, _ time.Time) error {
 				fmt.Printf("  Warning: workout detail: %v\n", err)
 			}
 		}
+	}
+
+	return nil
+}
+
+func recordCalendar(ctx context.Context, session []byte, date time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("calendar")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+
+	// Record calendar (month is 0-indexed in Garmin API, start=1 means week starts on Monday)
+	year := date.Year()
+	month := int(date.Month()) - 1 // Convert to 0-indexed
+	day := date.Day()
+
+	fmt.Printf("  Getting calendar for %d/%d/%d...\n", year, month, day)
+	calendarURL := fmt.Sprintf("https://connectapi.%s/calendar-service/year/%d/month/%d/day/%d/start/1",
+		authState.Domain, year, month, day)
+	_, err = doAPIRequest(ctx, httpClient, calendarURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: calendar: %v\n", err)
 	}
 
 	return nil
