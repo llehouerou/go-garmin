@@ -12,6 +12,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/llehouerou/go-garmin"
+	"github.com/llehouerou/go-garmin/endpoint"
 )
 
 var mcpCmd = &cobra.Command{
@@ -33,32 +34,20 @@ func runMCP(_ *cobra.Command, _ []string) error {
 		server.WithToolCapabilities(true),
 	)
 
-	registerTools(s, client)
+	// Register tools from the endpoint registry (for migrated endpoints)
+	mcpGen := endpoint.NewMCPGenerator(endpointRegistry, client)
+	mcpGen.RegisterTools(s)
+
+	// Register manual tools (for endpoints not yet migrated to registry)
+	registerManualTools(s, client)
 
 	return server.ServeStdio(s)
 }
 
-func registerTools(s *server.MCPServer, client *garmin.Client) {
-	// Sleep
-	s.AddTool(
-		mcp.NewTool("get_sleep",
-			mcp.WithDescription("Get sleep data for a specific date including duration, stages, and sleep score"),
-			mcp.WithString("date",
-				mcp.Description("Date in YYYY-MM-DD format (defaults to today)"),
-			),
-		),
-		func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
-			date, err := parseOptionalDate(request, "date")
-			if err != nil {
-				return errorResult(err), nil
-			}
-			data, err := client.Sleep.GetDaily(ctx, date)
-			if err != nil {
-				return errorResult(err), nil
-			}
-			return jsonResult(data), nil
-		},
-	)
+// registerManualTools registers tools that haven't been migrated to the endpoint registry yet.
+// Once all endpoints are migrated, this function can be removed.
+func registerManualTools(s *server.MCPServer, client *garmin.Client) {
+	// Sleep is now registered via the endpoint registry (see endpoint/definitions/sleep.go)
 
 	// Wellness - Stress
 	s.AddTool(
