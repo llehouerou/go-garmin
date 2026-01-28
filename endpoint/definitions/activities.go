@@ -56,7 +56,15 @@ var ActivityEndpoints = []endpoint.Endpoint{
 			if opts.Limit == 0 {
 				opts.Limit = 20
 			}
-			return client.Activities.List(ctx, opts)
+			activities, err := client.Activities.List(ctx, opts)
+			if err != nil {
+				return nil, err
+			}
+			items := make([]garmin.ActivityListItem, len(activities))
+			for i := range activities {
+				items[i] = activities[i].ToListItem()
+			}
+			return items, nil
 		},
 	},
 	{
@@ -75,11 +83,11 @@ var ActivityEndpoints = []endpoint.Endpoint{
 		Long:          "Get detailed information about a specific activity including metadata, summary, and splits",
 		DependsOn:     "ListActivities",
 		ArgProvider: func(result any) map[string]any {
-			activities, ok := result.([]garmin.Activity)
-			if !ok || len(activities) == 0 {
+			items, ok := result.([]garmin.ActivityListItem)
+			if !ok || len(items) == 0 {
 				return nil
 			}
-			return map[string]any{"activity_id": activities[0].ActivityID}
+			return map[string]any{"activity_id": items[0].ActivityID}
 		},
 		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
 			client, ok := c.(*garmin.Client)
@@ -105,11 +113,11 @@ var ActivityEndpoints = []endpoint.Endpoint{
 		Long:          "Get weather data for a specific activity including temperature, humidity, and wind",
 		DependsOn:     "ListActivities",
 		ArgProvider: func(result any) map[string]any {
-			activities, ok := result.([]garmin.Activity)
-			if !ok || len(activities) == 0 {
+			items, ok := result.([]garmin.ActivityListItem)
+			if !ok || len(items) == 0 {
 				return nil
 			}
-			return map[string]any{"activity_id": activities[0].ActivityID}
+			return map[string]any{"activity_id": items[0].ActivityID}
 		},
 		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
 			client, ok := c.(*garmin.Client)
@@ -135,11 +143,11 @@ var ActivityEndpoints = []endpoint.Endpoint{
 		Long:          "Get splits/laps data for a specific activity including pace, heart rate, and elevation per lap",
 		DependsOn:     "ListActivities",
 		ArgProvider: func(result any) map[string]any {
-			activities, ok := result.([]garmin.Activity)
-			if !ok || len(activities) == 0 {
+			items, ok := result.([]garmin.ActivityListItem)
+			if !ok || len(items) == 0 {
 				return nil
 			}
-			return map[string]any{"activity_id": activities[0].ActivityID}
+			return map[string]any{"activity_id": items[0].ActivityID}
 		},
 		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
 			client, ok := c.(*garmin.Client)
@@ -165,11 +173,11 @@ var ActivityEndpoints = []endpoint.Endpoint{
 		Long:          "Get extended details with time-series metrics for an activity",
 		DependsOn:     "ListActivities",
 		ArgProvider: func(result any) map[string]any {
-			activities, ok := result.([]garmin.Activity)
-			if !ok || len(activities) == 0 {
+			items, ok := result.([]garmin.ActivityListItem)
+			if !ok || len(items) == 0 {
 				return nil
 			}
-			return map[string]any{"activity_id": activities[0].ActivityID}
+			return map[string]any{"activity_id": items[0].ActivityID}
 		},
 		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
 			client, ok := c.(*garmin.Client)
@@ -195,11 +203,11 @@ var ActivityEndpoints = []endpoint.Endpoint{
 		Long:          "Get heart rate time in zones for an activity",
 		DependsOn:     "ListActivities",
 		ArgProvider: func(result any) map[string]any {
-			activities, ok := result.([]garmin.Activity)
-			if !ok || len(activities) == 0 {
+			items, ok := result.([]garmin.ActivityListItem)
+			if !ok || len(items) == 0 {
 				return nil
 			}
-			return map[string]any{"activity_id": activities[0].ActivityID}
+			return map[string]any{"activity_id": items[0].ActivityID}
 		},
 		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
 			client, ok := c.(*garmin.Client)
@@ -225,11 +233,11 @@ var ActivityEndpoints = []endpoint.Endpoint{
 		Long:          "Get power time in zones for an activity",
 		DependsOn:     "ListActivities",
 		ArgProvider: func(result any) map[string]any {
-			activities, ok := result.([]garmin.Activity)
-			if !ok || len(activities) == 0 {
+			items, ok := result.([]garmin.ActivityListItem)
+			if !ok || len(items) == 0 {
 				return nil
 			}
-			return map[string]any{"activity_id": activities[0].ActivityID}
+			return map[string]any{"activity_id": items[0].ActivityID}
 		},
 		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
 			client, ok := c.(*garmin.Client)
@@ -255,11 +263,11 @@ var ActivityEndpoints = []endpoint.Endpoint{
 		Long:          "Get exercise sets for a strength workout activity",
 		DependsOn:     "ListActivities",
 		ArgProvider: func(result any) map[string]any {
-			activities, ok := result.([]garmin.Activity)
-			if !ok || len(activities) == 0 {
+			items, ok := result.([]garmin.ActivityListItem)
+			if !ok || len(items) == 0 {
 				return nil
 			}
-			return map[string]any{"activity_id": activities[0].ActivityID}
+			return map[string]any{"activity_id": items[0].ActivityID}
 		},
 		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
 			client, ok := c.(*garmin.Client)

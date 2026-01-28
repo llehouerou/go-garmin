@@ -244,6 +244,37 @@ func (a *Activity) RawJSON() json.RawMessage {
 	return a.raw
 }
 
+// ActivityListItem is a reduced representation of an activity for list views.
+// It contains only the essential fields to minimize context usage in LLM integrations.
+type ActivityListItem struct {
+	ActivityID    int64   `json:"activityId"`
+	ActivityName  string  `json:"activityName"`
+	StartTime     string  `json:"startTimeLocal"`
+	ActivityType  string  `json:"activityType"`
+	Distance      float64 `json:"distance"` // meters
+	Duration      float64 `json:"duration"` // seconds
+	Calories      float64 `json:"calories"`
+	AverageHR     float64 `json:"averageHR,omitempty"`
+	ElevationGain float64 `json:"elevationGain,omitempty"`
+	LocationName  string  `json:"locationName,omitempty"`
+}
+
+// ToListItem converts an Activity to a reduced ActivityListItem.
+func (a *Activity) ToListItem() ActivityListItem {
+	return ActivityListItem{
+		ActivityID:    a.ActivityID,
+		ActivityName:  a.ActivityName,
+		StartTime:     a.StartTimeLocal,
+		ActivityType:  a.ActivityType.TypeKey,
+		Distance:      a.Distance,
+		Duration:      a.Duration,
+		Calories:      a.Calories,
+		AverageHR:     a.AverageHR,
+		ElevationGain: a.ElevationGain,
+		LocationName:  a.LocationName,
+	}
+}
+
 // StartTime returns the activity start time parsed from StartTimeGMT.
 func (a *Activity) StartTime() time.Time {
 	t, _ := time.Parse("2006-01-02 15:04:05", a.StartTimeGMT)
