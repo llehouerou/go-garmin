@@ -3,9 +3,25 @@
 // Usage:
 //
 //	record-fixtures -email=user@example.com -password=secret
+//	record-fixtures -email=user@example.com -password=secret -cassette=activities
 //
 // This command authenticates with Garmin Connect and records API
 // responses to cassette files in testdata/cassettes/.
+//
+// Available cassettes:
+//   - sleep_daily
+//   - wellness_stress
+//   - wellness_body_battery
+//   - wellness_heart_rate
+//   - wellness_extended
+//   - activities
+//   - hrv
+//   - weight
+//   - metrics
+//   - userprofile
+//   - devices
+//   - biometric
+//   - workouts
 package main
 
 import (
@@ -17,6 +33,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"sort"
 	"time"
 
 	"gopkg.in/dnaeon/go-vcr.v4/pkg/recorder"
@@ -29,11 +46,31 @@ func main() {
 	email := flag.String("email", "", "Garmin Connect email")
 	password := flag.String("password", "", "Garmin Connect password")
 	date := flag.String("date", "", "Date to record (YYYY-MM-DD, defaults to today)")
+	cassette := flag.String("cassette", "", "Record only this cassette (defaults to all)")
+	listCassettes := flag.Bool("list", false, "List available cassettes and exit")
 	flag.Parse()
 
+	if *listCassettes {
+		fmt.Println("Available cassettes:")
+		names := getCassetteNames()
+		for _, name := range names {
+			fmt.Printf("  %s\n", name)
+		}
+		os.Exit(0)
+	}
+
 	if *email == "" || *password == "" {
-		fmt.Fprintln(os.Stderr, "Usage: record-fixtures -email=EMAIL -password=PASSWORD [-date=YYYY-MM-DD]")
+		fmt.Fprintln(os.Stderr, "Usage: record-fixtures -email=EMAIL -password=PASSWORD [-date=YYYY-MM-DD] [-cassette=NAME]")
+		fmt.Fprintln(os.Stderr, "       record-fixtures -list")
 		os.Exit(1)
+	}
+
+	if *cassette != "" {
+		if !isValidCassette(*cassette) {
+			fmt.Fprintf(os.Stderr, "Unknown cassette: %s\n", *cassette)
+			fmt.Fprintln(os.Stderr, "Use -list to see available cassettes")
+			os.Exit(1)
+		}
 	}
 
 	targetDate := time.Now()
@@ -46,15 +83,59 @@ func main() {
 		}
 	}
 
-	if err := recordFixtures(*email, *password, targetDate); err != nil {
+	if err := recordFixtures(*email, *password, targetDate, *cassette); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Println("Done! Cassettes recorded to testdata/cassettes/")
+	if *cassette != "" {
+		fmt.Printf("Done! Cassette '%s' recorded to testdata/cassettes/\n", *cassette)
+	} else {
+		fmt.Println("Done! All cassettes recorded to testdata/cassettes/")
+	}
 }
 
-func recordFixtures(email, password string, date time.Time) error {
+// cassetteRecorder defines a function that records a cassette.
+type cassetteRecorder func(ctx context.Context, session []byte, date time.Time) error
+
+// getCassetteRecorders returns a map of cassette names to their recorder functions.
+func getCassetteRecorders() map[string]cassetteRecorder {
+	return map[string]cassetteRecorder{
+		"sleep_daily":           recordSleep,
+		"wellness_stress":       recordStress,
+		"wellness_body_battery": recordBodyBattery,
+		"wellness_heart_rate":   recordHeartRate,
+		"wellness_extended":     recordWellnessExtended,
+		"activities":            recordActivities,
+		"hrv":                   recordHRV,
+		"weight":                recordWeight,
+		"metrics":               recordMetrics,
+		"userprofile":           recordUserProfile,
+		"devices":               recordDevices,
+		"biometric":             recordBiometric,
+		"workouts":              recordWorkouts,
+	}
+}
+
+// getCassetteNames returns a sorted list of available cassette names.
+func getCassetteNames() []string {
+	recorders := getCassetteRecorders()
+	names := make([]string, 0, len(recorders))
+	for name := range recorders {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	return names
+}
+
+// isValidCassette checks if the given name is a valid cassette.
+func isValidCassette(name string) bool {
+	recorders := getCassetteRecorders()
+	_, ok := recorders[name]
+	return ok
+}
+
+func recordFixtures(email, password string, date time.Time, cassette string) error {
 	ctx := context.Background()
 
 	// Step 1: Login once and record auth flow
@@ -65,58 +146,27 @@ func recordFixtures(email, password string, date time.Time) error {
 	}
 
 	// Step 2: Record API calls using the saved session
-	fmt.Println("Recording API calls...")
+	recorders := getCassetteRecorders()
 
-	if err := recordSleep(ctx, session, date); err != nil {
-		return fmt.Errorf("sleep: %w", err)
+	// If a specific cassette is requested, only record that one
+	if cassette != "" {
+		fmt.Printf("Recording cassette '%s'...\n", cassette)
+		recordFn := recorders[cassette]
+		if err := recordFn(ctx, session, date); err != nil {
+			return fmt.Errorf("%s: %w", cassette, err)
+		}
+		return nil
 	}
 
-	if err := recordStress(ctx, session, date); err != nil {
-		return fmt.Errorf("stress: %w", err)
-	}
-
-	if err := recordBodyBattery(ctx, session, date); err != nil {
-		return fmt.Errorf("body_battery: %w", err)
-	}
-
-	if err := recordActivities(ctx, session); err != nil {
-		return fmt.Errorf("activities: %w", err)
-	}
-
-	if err := recordHeartRate(ctx, session, date); err != nil {
-		return fmt.Errorf("heart_rate: %w", err)
-	}
-
-	if err := recordHRV(ctx, session, date); err != nil {
-		return fmt.Errorf("hrv: %w", err)
-	}
-
-	if err := recordWeight(ctx, session, date); err != nil {
-		return fmt.Errorf("weight: %w", err)
-	}
-
-	if err := recordMetrics(ctx, session, date); err != nil {
-		return fmt.Errorf("metrics: %w", err)
-	}
-
-	if err := recordUserProfile(ctx, session); err != nil {
-		return fmt.Errorf("userprofile: %w", err)
-	}
-
-	if err := recordDevices(ctx, session); err != nil {
-		return fmt.Errorf("devices: %w", err)
-	}
-
-	if err := recordWellnessExtended(ctx, session, date); err != nil {
-		return fmt.Errorf("wellness_extended: %w", err)
-	}
-
-	if err := recordBiometric(ctx, session, date); err != nil {
-		return fmt.Errorf("biometric: %w", err)
-	}
-
-	if err := recordWorkouts(ctx, session); err != nil {
-		return fmt.Errorf("workouts: %w", err)
+	// Record all cassettes
+	fmt.Println("Recording all API calls...")
+	names := getCassetteNames()
+	for _, name := range names {
+		fmt.Printf("Recording %s...\n", name)
+		recordFn := recorders[name]
+		if err := recordFn(ctx, session, date); err != nil {
+			return fmt.Errorf("%s: %w", name, err)
+		}
 	}
 
 	return nil
@@ -337,7 +387,7 @@ func recordWeight(ctx context.Context, session []byte, date time.Time) error {
 	return nil
 }
 
-func recordActivities(ctx context.Context, session []byte) error {
+func recordActivities(ctx context.Context, session []byte, _ time.Time) error {
 	rec, err := testutil.NewRecordingRecorder("activities")
 	if err != nil {
 		return err
@@ -548,7 +598,7 @@ func recordMetrics(ctx context.Context, session []byte, date time.Time) error {
 	return nil
 }
 
-func recordUserProfile(ctx context.Context, session []byte) error {
+func recordUserProfile(ctx context.Context, session []byte, _ time.Time) error {
 	rec, err := testutil.NewRecordingRecorder("userprofile")
 	if err != nil {
 		return err
@@ -596,7 +646,7 @@ func recordUserProfile(ctx context.Context, session []byte) error {
 	return nil
 }
 
-func recordDevices(ctx context.Context, session []byte) error {
+func recordDevices(ctx context.Context, session []byte, _ time.Time) error {
 	rec, err := testutil.NewRecordingRecorder("devices")
 	if err != nil {
 		return err
@@ -793,7 +843,7 @@ func recordBiometric(ctx context.Context, session []byte, date time.Time) error 
 	return nil
 }
 
-func recordWorkouts(ctx context.Context, session []byte) error {
+func recordWorkouts(ctx context.Context, session []byte, _ time.Time) error {
 	rec, err := testutil.NewRecordingRecorder("workouts")
 	if err != nil {
 		return err
