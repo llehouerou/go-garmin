@@ -13,7 +13,7 @@ interactions:
                 - '[REDACTED]'
             User-Agent:
                 - GCM-iOS-5.19.1.2
-        url: https://connectapi.garmin.com/fitnessage-service/stats/daily/2026-01-23/2026-01-29
+        url: https://connectapi.garmin.com/fitnessage-service/stats/daily/2026-01-22/2026-01-29
         method: GET
       response:
         proto: HTTP/2.0
@@ -30,21 +30,21 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9c576ed479537404-JNB
+                - 9c5ac186ca1473cd-JNB
             Content-Type:
                 - application/json
             Date:
-                - Thu, 29 Jan 2026 08:41:52 GMT
+                - Thu, 29 Jan 2026 18:22:36 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=w1ilQ1uv%2BW9fI4KctsqY5BDcLt6J5BbQ4kccF0HxXfzTLpBmNBe%2FpsY%2B6DBH7Z5c4UyPyojm5xGPcbm%2FgoIZxikfaeAmY7nZfKx3aUz3jtBAcCBiJkc2UA6qWcUK%2B3YVZ0vVrVN4PNIzsVpxN3Nb70MGDQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=fTckenEolfNb7pkxm9NSphi7XbotKOcP0WZQRNBItnjIoMITISKKwnwZcGKP%2B%2Bfu6TIrerFjc%2FU9sso%2FxXJZ9NMXLni5KBIOvV3Ii0JeqmtIFAuOVGxxqQygRkQQjukhCWdN7%2BM6mNysZHBtBPlRZJJBtg%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 348.917237ms
+        duration: 340.136067ms

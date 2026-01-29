@@ -655,13 +655,13 @@ func recordFitnessAge(ctx context.Context, session []byte, date time.Time) error
 	}
 
 	httpClient := testutil.HTTPClientWithRecorder(rec)
-	dateStr := date.Format("2006-01-02")
 
-	// Fitness age stats (last 7 days)
-	startDate := date.AddDate(0, 0, -6)
-	fmt.Printf("  Getting fitness age stats from %s to %s...\n", startDate.Format("2006-01-02"), dateStr)
+	// Fitness age stats (last 7 days - API limit is 28 days max)
+	endDate := date.Format("2006-01-02")
+	startDate := date.AddDate(0, 0, -7).Format("2006-01-02")
+	fmt.Printf("  Getting fitness age stats from %s to %s...\n", startDate, endDate)
 	fitnessAgeURL := fmt.Sprintf("https://connectapi.%s/fitnessage-service/stats/daily/%s/%s",
-		authState.Domain, startDate.Format("2006-01-02"), dateStr)
+		authState.Domain, startDate, endDate)
 	_, err = doAPIRequest(ctx, httpClient, fitnessAgeURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: fitness age stats: %v\n", err)
