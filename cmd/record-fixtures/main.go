@@ -560,8 +560,23 @@ func recordMetrics(ctx context.Context, session []byte, date time.Time) error {
 		fmt.Printf("  Warning: hill score: %v\n", err)
 	}
 
-	// Race predictions - skipped, requires display name from user profile
-	// URL: /metrics-service/metrics/racepredictions/latest/{displayName}
+	// Race predictions - requires display name from user profile
+	fmt.Println("  Getting social profile for display name...")
+	socialProfileURL := fmt.Sprintf("https://connectapi.%s/userprofile-service/socialProfile", authState.Domain)
+	profileResp, err := doAPIRequest(ctx, httpClient, socialProfileURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: social profile for race predictions: %v\n", err)
+	}
+	displayName := getDisplayName(profileResp)
+	if displayName != "" {
+		fmt.Printf("  Getting race predictions for %s...\n", displayName)
+		racePredictionsURL := fmt.Sprintf("https://connectapi.%s/metrics-service/metrics/racepredictions/latest/%s",
+			authState.Domain, displayName)
+		_, err = doAPIRequest(ctx, httpClient, racePredictionsURL, authState.OAuth2AccessToken)
+		if err != nil {
+			fmt.Printf("  Warning: race predictions: %v\n", err)
+		}
+	}
 
 	// VO2 max / MET - latest
 	fmt.Printf("  Getting latest VO2 max for %s...\n", dateStr)
@@ -980,4 +995,16 @@ func doAPIRequest(ctx context.Context, client *http.Client, url, token string) (
 	}
 
 	return result, nil
+}
+
+// getDisplayName extracts the displayName from a social profile response.
+func getDisplayName(profileResp []map[string]any) string {
+	if len(profileResp) == 0 {
+		return ""
+	}
+	displayName, ok := profileResp[0]["displayName"].(string)
+	if !ok {
+		return ""
+	}
+	return displayName
 }

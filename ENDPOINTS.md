@@ -68,7 +68,6 @@ Note: Some endpoints like `dailyHeartRate` can also use `/{displayName}?date={da
 | [x] | GET | `/activity-service/activity/{activityId}/hrTimeInZones` | HR time in zones |
 | [x] | GET | `/activity-service/activity/{activityId}/powerTimeInZones` | Power time in zones |
 | [x] | GET | `/activity-service/activity/{activityId}/exerciseSets` | Exercise sets |
-| [ ] | GET | `/activity-service/activity/{activityId}/gear` | Activity gear |
 | [x] | GET | `/activity-service/activity/activityTypes` | Activity types |
 | [ ] | POST | `/activity-service/activity` | Create manual activity |
 | [ ] | PUT | `/activity-service/activity/{activityId}` | Update activity (name, type, etc.) |
@@ -156,7 +155,7 @@ Note: `daily/{displayName}` can also be accessed as `daily/?calendarDate={date}`
 | [x] | GET | `/metrics-service/metrics/endurancescore/stats?startDate={start}&endDate={end}&aggregation={agg}` | Endurance score stats |
 | [x] | GET | `/metrics-service/metrics/hillscore?calendarDate={date}` | Hill score |
 | [ ] | GET | `/metrics-service/metrics/hillscore/stats?startDate={start}&endDate={end}&aggregation={agg}` | Hill score stats |
-| [ ] | GET | `/metrics-service/metrics/racepredictions/latest/{displayName}` | Latest race predictions (requires display name) |
+| [x] | GET | `/metrics-service/metrics/racepredictions/latest/{displayName}` | Latest race predictions (requires display name) |
 | [ ] | GET | `/metrics-service/metrics/racepredictions/daily/{displayName}?_={timestamp}` | Daily race predictions |
 | [ ] | GET | `/metrics-service/metrics/racepredictions/monthly/{displayName}?_={timestamp}` | Monthly race predictions |
 | [x] | GET | `/metrics-service/metrics/maxmet/daily/{start}/{end}` | Daily VO2 max/MET |
@@ -211,7 +210,8 @@ Note: `daily/{displayName}` can also be accessed as `daily/?calendarDate={date}`
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/gear-service/gear/filterGear?userProfilePk={pk}` | Get gear |
+| [ ] | GET | `/gear-service/gear/filterGear?userProfilePk={pk}` | Get user gear |
+| [x] | GET | `/gear-service/gear/filterGear?activityId={activityId}` | Get activity gear |
 | [ ] | GET | `/gear-service/gear/stats/{gearUUID}` | Gear stats |
 | [ ] | GET | `/gear-service/gear/user/{userProfilePk}/activityTypes` | Gear activity types |
 | [ ] | POST | `/gear-service/gear/link/{gearUUID}/activity/{activityId}` | Link gear to activity |

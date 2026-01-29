@@ -1187,3 +1187,50 @@ func (s *ActivityService) GetSplitSummaries(ctx context.Context, activityID int6
 	path := fmt.Sprintf("/activity-service/activity/%d/split_summaries", activityID)
 	return fetch[ActivitySplitSummaries](ctx, s.client, path)
 }
+
+// GearItem represents a piece of gear linked to an activity.
+type GearItem struct {
+	GearPk          int64   `json:"gearPk"`
+	UUID            string  `json:"uuid"`
+	GearMakeName    string  `json:"gearMakeName"`
+	GearModelName   string  `json:"gearModelName"`
+	GearTypeName    string  `json:"gearTypeName"`
+	DisplayName     string  `json:"displayName"`
+	CustomMakeModel *string `json:"customMakeModel"`
+	ImageNameLarge  *string `json:"imageNameLarge"`
+	ImageNameMedium *string `json:"imageNameMedium"`
+	ImageNameSmall  *string `json:"imageNameSmall"`
+	DateBegin       *string `json:"dateBegin"`
+	DateEnd         *string `json:"dateEnd"`
+	MaximumMeters   *int    `json:"maximumMeters"`
+	Notified        *bool   `json:"notified"`
+	CreateDate      string  `json:"createDate"`
+	UpdateDate      string  `json:"updateDate"`
+}
+
+// ActivityGear represents gear linked to an activity.
+type ActivityGear struct {
+	Items []GearItem
+	raw   json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (g *ActivityGear) RawJSON() json.RawMessage {
+	return g.raw
+}
+
+// SetRaw sets the raw JSON data.
+func (g *ActivityGear) SetRaw(data json.RawMessage) {
+	g.raw = data
+}
+
+// UnmarshalJSON unmarshals the array response into the Items field.
+func (g *ActivityGear) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &g.Items)
+}
+
+// GetGear retrieves gear linked to a specific activity.
+func (s *ActivityService) GetGear(ctx context.Context, activityID int64) (*ActivityGear, error) {
+	path := fmt.Sprintf("/gear-service/gear/filterGear?activityId=%d", activityID)
+	return fetch[ActivityGear](ctx, s.client, path)
+}

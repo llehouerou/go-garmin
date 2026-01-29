@@ -41,7 +41,8 @@ var (
 	serialNumberPattern = regexp.MustCompile(`"serialNumber"\s*:\s*"[^"]*"`)
 
 	// URL path patterns (for anonymizing IDs in request URLs)
-	deviceSettingsURLPattern = regexp.MustCompile(`/device-info/settings/\d+`)
+	deviceSettingsURLPattern  = regexp.MustCompile(`/device-info/settings/\d+`)
+	racePredictionsURLPattern = regexp.MustCompile(`/racepredictions/(latest|daily|monthly)/[a-zA-Z0-9-]+`)
 
 	// Profile image URLs
 	profileImageURLPattern = regexp.MustCompile(`"(ownerProfileImageUrl[^"]*|profileImageUrl[^"]*)"\s*:\s*"https://s3\.amazonaws\.com/garmin-connect-prod/profile_images/[^"]*"`)
@@ -150,6 +151,9 @@ func sanitizeHook(i *cassette.Interaction) error {
 
 	// Anonymize device IDs in URL paths
 	i.Request.URL = deviceSettingsURLPattern.ReplaceAllString(i.Request.URL, "/device-info/settings/12345678")
+
+	// Anonymize displayName/UUID in race predictions URLs
+	i.Request.URL = racePredictionsURLPattern.ReplaceAllString(i.Request.URL, "/racepredictions/$1/anonymous")
 
 	// Sanitize request body (for login requests)
 	if strings.Contains(i.Request.Body, "password") {

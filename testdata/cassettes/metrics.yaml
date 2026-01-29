@@ -484,3 +484,50 @@ interactions:
         status: 200 OK
         code: 200
         duration: 328.92203ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/metrics-service/metrics/racepredictions/latest/anonymous
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"userId":12345678,"fromCalendarDate":null,"toCalendarDate":null,"calendarDate":"2026-01-27","time5K":1492,"time10K":3222,"timeHalfMarathon":7289,"timeMarathon":16208}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c5724e9cb0673dc-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Tue, 27 Jan 2026 10:34:02 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=eMjoOZ%2B79Pg%2FoZ2JtiO6dKVmhz0qmfNLheZtMaynCUQz2hpmfELeliu03ZOZSXS9G26hudevtn7M9JtTTH2G3DGF9f3%2B297O22L1%2B84lpScsWg97S%2F6bK0Df95ZwkwdtkLPfzOopd5AiDfz98ULTKmfbow%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 331.537524ms

@@ -337,4 +337,34 @@ var ActivityEndpoints = []endpoint.Endpoint{
 			return client.Activities.GetSplitSummaries(ctx, int64(args.Int("activity_id")))
 		},
 	},
+	{
+		Name:       "GetActivityGear",
+		Service:    "Activities",
+		Cassette:   "activities",
+		Path:       "/gear-service/gear/filterGear?activityId={activityId}",
+		HTTPMethod: "GET",
+		Params: []endpoint.Param{
+			{Name: "activity_id", Type: endpoint.ParamTypeInt, Required: true, Description: "The activity ID"},
+		},
+		CLICommand:    "activities",
+		CLISubcommand: "gear",
+		MCPTool:       "get_activity_gear",
+		Short:         "Get activity gear",
+		Long:          "Get gear linked to a specific activity such as shoes, bikes, or other equipment",
+		DependsOn:     "ListActivities",
+		ArgProvider: func(result any) map[string]any {
+			items, ok := result.([]garmin.ActivityListItem)
+			if !ok || len(items) == 0 {
+				return nil
+			}
+			return map[string]any{"activity_id": items[0].ActivityID}
+		},
+		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
+			client, ok := c.(*garmin.Client)
+			if !ok {
+				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
+			}
+			return client.Activities.GetGear(ctx, int64(args.Int("activity_id")))
+		},
+	},
 }

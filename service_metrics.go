@@ -442,3 +442,53 @@ func (s *MetricsService) GetHeatAltitudeAcclimation(ctx context.Context, date ti
 	path := "/metrics-service/metrics/heataltitudeacclimation/latest/" + date.Format("2006-01-02")
 	return fetch[HeatAltitudeAcclimation](ctx, s.client, path)
 }
+
+// RacePredictions represents predicted race times based on current fitness.
+type RacePredictions struct {
+	UserID           int64   `json:"userId"`
+	FromCalendarDate *string `json:"fromCalendarDate"`
+	ToCalendarDate   *string `json:"toCalendarDate"`
+	CalendarDate     string  `json:"calendarDate"`
+	Time5K           int     `json:"time5K"`
+	Time10K          int     `json:"time10K"`
+	TimeHalfMarathon int     `json:"timeHalfMarathon"`
+	TimeMarathon     int     `json:"timeMarathon"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (r *RacePredictions) RawJSON() json.RawMessage {
+	return r.raw
+}
+
+// SetRaw sets the raw JSON response.
+func (r *RacePredictions) SetRaw(data json.RawMessage) {
+	r.raw = data
+}
+
+// Time5KDuration returns the 5K prediction as a time.Duration.
+func (r *RacePredictions) Time5KDuration() time.Duration {
+	return time.Duration(r.Time5K) * time.Second
+}
+
+// Time10KDuration returns the 10K prediction as a time.Duration.
+func (r *RacePredictions) Time10KDuration() time.Duration {
+	return time.Duration(r.Time10K) * time.Second
+}
+
+// TimeHalfMarathonDuration returns the half marathon prediction as a time.Duration.
+func (r *RacePredictions) TimeHalfMarathonDuration() time.Duration {
+	return time.Duration(r.TimeHalfMarathon) * time.Second
+}
+
+// TimeMarathonDuration returns the marathon prediction as a time.Duration.
+func (r *RacePredictions) TimeMarathonDuration() time.Duration {
+	return time.Duration(r.TimeMarathon) * time.Second
+}
+
+// GetRacePredictionsLatest retrieves the latest race predictions for the user.
+func (s *MetricsService) GetRacePredictionsLatest(ctx context.Context, displayName string) (*RacePredictions, error) {
+	path := "/metrics-service/metrics/racepredictions/latest/" + displayName
+	return fetch[RacePredictions](ctx, s.client, path)
+}

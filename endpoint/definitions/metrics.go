@@ -208,4 +208,43 @@ var MetricsEndpoints = []endpoint.Endpoint{
 			return client.Metrics.GetHeatAltitudeAcclimation(ctx, args.Date("date"))
 		},
 	},
+	{
+		Name:       "GetRacePredictions",
+		Service:    "Metrics",
+		Cassette:   "metrics",
+		Path:       "/metrics-service/metrics/racepredictions/latest/{displayName}",
+		HTTPMethod: "GET",
+		Params: []endpoint.Param{
+			{Name: "display_name", Type: endpoint.ParamTypeString, Required: false, Description: "User display name (defaults to current user)"},
+		},
+		CLICommand:    "metrics",
+		CLISubcommand: "race-predictions",
+		MCPTool:       "get_race_predictions",
+		Short:         "Get race predictions",
+		Long:          "Get predicted race times for 5K, 10K, half marathon, and marathon based on current fitness",
+		DependsOn:     "GetSocialProfile",
+		ArgProvider: func(result any) map[string]any {
+			profile, ok := result.(*garmin.SocialProfile)
+			if !ok || profile == nil {
+				return nil
+			}
+			return map[string]any{"display_name": profile.DisplayName}
+		},
+		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
+			client, ok := c.(*garmin.Client)
+			if !ok {
+				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
+			}
+			displayName := args.String("display_name")
+			if displayName == "" {
+				// Auto-fetch display name from current user's social profile
+				profile, err := client.UserProfile.GetSocialProfile(ctx)
+				if err != nil {
+					return nil, fmt.Errorf("failed to get display name: %w", err)
+				}
+				displayName = profile.DisplayName
+			}
+			return client.Metrics.GetRacePredictionsLatest(ctx, displayName)
+		},
+	},
 }
