@@ -64,6 +64,11 @@ func (d *Device) RawJSON() json.RawMessage {
 	return d.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (d *Device) SetRaw(data json.RawMessage) {
+	d.raw = data
+}
+
 // DeviceAlarm represents an alarm configuration on a device.
 type DeviceAlarm struct {
 	AlarmID      int64    `json:"alarmId"`
@@ -150,6 +155,11 @@ func (s *DeviceSettings) RawJSON() json.RawMessage {
 	return s.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (s *DeviceSettings) SetRaw(data json.RawMessage) {
+	s.raw = data
+}
+
 // DeviceMessage represents a message for a device.
 type DeviceMessage struct {
 	ID          int64  `json:"id,omitempty"`
@@ -169,6 +179,11 @@ type DeviceMessages struct {
 // RawJSON returns the original JSON response.
 func (m *DeviceMessages) RawJSON() json.RawMessage {
 	return m.raw
+}
+
+// SetRaw sets the raw JSON data.
+func (m *DeviceMessages) SetRaw(data json.RawMessage) {
+	m.raw = data
 }
 
 // DeviceWeight represents a device's weight/priority info.
@@ -207,6 +222,11 @@ func (p *PrimaryTrainingDeviceInfo) RawJSON() json.RawMessage {
 	return p.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (p *PrimaryTrainingDeviceInfo) SetRaw(data json.RawMessage) {
+	p.raw = data
+}
+
 // GetDevices retrieves the list of registered devices.
 func (s *DeviceService) GetDevices(ctx context.Context) ([]Device, error) {
 	path := "/device-service/deviceregistration/devices"
@@ -242,83 +262,17 @@ func (s *DeviceService) GetDevices(ctx context.Context) ([]Device, error) {
 // GetSettings retrieves the settings for a specific device.
 func (s *DeviceService) GetSettings(ctx context.Context, deviceID int64) (*DeviceSettings, error) {
 	path := fmt.Sprintf("/device-service/deviceservice/device-info/settings/%d", deviceID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var settings DeviceSettings
-	if err := json.Unmarshal(raw, &settings); err != nil {
-		return nil, err
-	}
-	settings.raw = raw
-
-	return &settings, nil
+	return fetch[DeviceSettings](ctx, s.client, path)
 }
 
 // GetMessages retrieves device messages.
 func (s *DeviceService) GetMessages(ctx context.Context) (*DeviceMessages, error) {
 	path := "/device-service/devicemessage/messages"
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var messages DeviceMessages
-	if err := json.Unmarshal(raw, &messages); err != nil {
-		return nil, err
-	}
-	messages.raw = raw
-
-	return &messages, nil
+	return fetch[DeviceMessages](ctx, s.client, path)
 }
 
 // GetPrimaryTrainingDevice retrieves info about the primary training device.
 func (s *DeviceService) GetPrimaryTrainingDevice(ctx context.Context) (*PrimaryTrainingDeviceInfo, error) {
 	path := "/web-gateway/device-info/primary-training-device"
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var info PrimaryTrainingDeviceInfo
-	if err := json.Unmarshal(raw, &info); err != nil {
-		return nil, err
-	}
-	info.raw = raw
-
-	return &info, nil
+	return fetch[PrimaryTrainingDeviceInfo](ctx, s.client, path)
 }

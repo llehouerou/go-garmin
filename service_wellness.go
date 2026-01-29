@@ -4,8 +4,6 @@ package garmin
 import (
 	"context"
 	"encoding/json"
-	"io"
-	"net/http"
 	"time"
 )
 
@@ -23,9 +21,10 @@ type DailyStress struct {
 }
 
 // RawJSON returns the original JSON response.
-func (d *DailyStress) RawJSON() json.RawMessage {
-	return d.raw
-}
+func (d *DailyStress) RawJSON() json.RawMessage { return d.raw }
+
+// SetRaw sets the raw JSON response.
+func (d *DailyStress) SetRaw(data json.RawMessage) { d.raw = data }
 
 // BodyBatteryEvent represents a single body battery event (sleep, activity, etc).
 type BodyBatteryEvent struct {
@@ -53,63 +52,24 @@ type BodyBatteryEvents struct {
 }
 
 // RawJSON returns the original JSON response.
-func (b *BodyBatteryEvents) RawJSON() json.RawMessage {
-	return b.raw
+func (b *BodyBatteryEvents) RawJSON() json.RawMessage { return b.raw }
+
+// SetRaw sets the raw JSON response.
+func (b *BodyBatteryEvents) SetRaw(data json.RawMessage) { b.raw = data }
+
+// UnmarshalJSON unmarshals the array response into the Events field.
+func (b *BodyBatteryEvents) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &b.Events)
 }
 
 // GetDailyStress retrieves stress data for the specified date.
 func (s *WellnessService) GetDailyStress(ctx context.Context, date time.Time) (*DailyStress, error) {
-	path := "/wellness-service/wellness/dailyStress/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var stress DailyStress
-	if err := json.Unmarshal(raw, &stress); err != nil {
-		return nil, err
-	}
-	stress.raw = raw
-
-	return &stress, nil
+	return fetch[DailyStress](ctx, s.client, "/wellness-service/wellness/dailyStress/"+date.Format("2006-01-02"))
 }
 
 // GetBodyBatteryEvents retrieves body battery events for the specified date.
 func (s *WellnessService) GetBodyBatteryEvents(ctx context.Context, date time.Time) (*BodyBatteryEvents, error) {
-	path := "/wellness-service/wellness/bodyBattery/events/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var events []BodyBatteryEvent
-	if err := json.Unmarshal(raw, &events); err != nil {
-		return nil, err
-	}
-
-	return &BodyBatteryEvents{Events: events, raw: raw}, nil
+	return fetch[BodyBatteryEvents](ctx, s.client, "/wellness-service/wellness/bodyBattery/events/"+date.Format("2006-01-02"))
 }
 
 // HeartRateValueDescriptor describes the format of heart rate values.
@@ -137,9 +97,10 @@ type DailyHeartRate struct {
 }
 
 // RawJSON returns the original JSON response.
-func (d *DailyHeartRate) RawJSON() json.RawMessage {
-	return d.raw
-}
+func (d *DailyHeartRate) RawJSON() json.RawMessage { return d.raw }
+
+// SetRaw sets the raw JSON response.
+func (d *DailyHeartRate) SetRaw(data json.RawMessage) { d.raw = data }
 
 // SpO2ValueDescriptor describes the format of SpO2 values.
 type SpO2ValueDescriptor struct {
@@ -173,9 +134,10 @@ type DailySpO2 struct {
 }
 
 // RawJSON returns the original JSON response.
-func (d *DailySpO2) RawJSON() json.RawMessage {
-	return d.raw
-}
+func (d *DailySpO2) RawJSON() json.RawMessage { return d.raw }
+
+// SetRaw sets the raw JSON response.
+func (d *DailySpO2) SetRaw(data json.RawMessage) { d.raw = data }
 
 // RespirationValueDescriptor describes the format of respiration values.
 type RespirationValueDescriptor struct {
@@ -215,9 +177,10 @@ type DailyRespiration struct {
 }
 
 // RawJSON returns the original JSON response.
-func (d *DailyRespiration) RawJSON() json.RawMessage {
-	return d.raw
-}
+func (d *DailyRespiration) RawJSON() json.RawMessage { return d.raw }
+
+// SetRaw sets the raw JSON response.
+func (d *DailyRespiration) SetRaw(data json.RawMessage) { d.raw = data }
 
 // IntensityMinutesValueDescriptor describes the format of intensity minutes values.
 type IntensityMinutesValueDescriptor struct {
@@ -249,118 +212,27 @@ type DailyIntensityMinutes struct {
 }
 
 // RawJSON returns the original JSON response.
-func (d *DailyIntensityMinutes) RawJSON() json.RawMessage {
-	return d.raw
-}
+func (d *DailyIntensityMinutes) RawJSON() json.RawMessage { return d.raw }
+
+// SetRaw sets the raw JSON response.
+func (d *DailyIntensityMinutes) SetRaw(data json.RawMessage) { d.raw = data }
 
 // GetDailyHeartRate retrieves heart rate data for the specified date.
 func (s *WellnessService) GetDailyHeartRate(ctx context.Context, date time.Time) (*DailyHeartRate, error) {
-	path := "/wellness-service/wellness/dailyHeartRate/?date=" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var hr DailyHeartRate
-	if err := json.Unmarshal(raw, &hr); err != nil {
-		return nil, err
-	}
-	hr.raw = raw
-
-	return &hr, nil
+	return fetch[DailyHeartRate](ctx, s.client, "/wellness-service/wellness/dailyHeartRate/?date="+date.Format("2006-01-02"))
 }
 
 // GetDailySpO2 retrieves blood oxygen (SpO2) data for the specified date.
 func (s *WellnessService) GetDailySpO2(ctx context.Context, date time.Time) (*DailySpO2, error) {
-	path := "/wellness-service/wellness/daily/spo2/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var spo2 DailySpO2
-	if err := json.Unmarshal(raw, &spo2); err != nil {
-		return nil, err
-	}
-	spo2.raw = raw
-
-	return &spo2, nil
+	return fetch[DailySpO2](ctx, s.client, "/wellness-service/wellness/daily/spo2/"+date.Format("2006-01-02"))
 }
 
 // GetDailyRespiration retrieves respiration data for the specified date.
 func (s *WellnessService) GetDailyRespiration(ctx context.Context, date time.Time) (*DailyRespiration, error) {
-	path := "/wellness-service/wellness/daily/respiration/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var resp2 DailyRespiration
-	if err := json.Unmarshal(raw, &resp2); err != nil {
-		return nil, err
-	}
-	resp2.raw = raw
-
-	return &resp2, nil
+	return fetch[DailyRespiration](ctx, s.client, "/wellness-service/wellness/daily/respiration/"+date.Format("2006-01-02"))
 }
 
 // GetDailyIntensityMinutes retrieves intensity minutes data for the specified date.
 func (s *WellnessService) GetDailyIntensityMinutes(ctx context.Context, date time.Time) (*DailyIntensityMinutes, error) {
-	path := "/wellness-service/wellness/daily/im/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var im DailyIntensityMinutes
-	if err := json.Unmarshal(raw, &im); err != nil {
-		return nil, err
-	}
-	im.raw = raw
-
-	return &im, nil
+	return fetch[DailyIntensityMinutes](ctx, s.client, "/wellness-service/wellness/daily/im/"+date.Format("2006-01-02"))
 }

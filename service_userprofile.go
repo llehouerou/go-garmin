@@ -4,8 +4,6 @@ package garmin
 import (
 	"context"
 	"encoding/json"
-	"io"
-	"net/http"
 )
 
 // SocialProfile represents the user's social profile information.
@@ -81,6 +79,11 @@ type SocialProfile struct {
 // RawJSON returns the original JSON response.
 func (s *SocialProfile) RawJSON() json.RawMessage {
 	return s.raw
+}
+
+// SetRaw sets the raw JSON response.
+func (s *SocialProfile) SetRaw(data json.RawMessage) {
+	s.raw = data
 }
 
 // FormatSettings represents display format settings.
@@ -191,6 +194,11 @@ func (u *UserSettings) RawJSON() json.RawMessage {
 	return u.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (u *UserSettings) SetRaw(data json.RawMessage) {
+	u.raw = data
+}
+
 // ProfileSettings represents the profile settings response.
 type ProfileSettings struct {
 	DisplayName               string               `json:"displayName"`
@@ -219,80 +227,22 @@ func (p *ProfileSettings) RawJSON() json.RawMessage {
 	return p.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (p *ProfileSettings) SetRaw(data json.RawMessage) {
+	p.raw = data
+}
+
 // GetSocialProfile retrieves the user's social profile.
 func (s *UserProfileService) GetSocialProfile(ctx context.Context) (*SocialProfile, error) {
-	resp, err := s.client.doAPI(ctx, http.MethodGet, "/userprofile-service/socialProfile", http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var profile SocialProfile
-	if err := json.Unmarshal(body, &profile); err != nil {
-		return nil, err
-	}
-	profile.raw = body
-
-	return &profile, nil
+	return fetch[SocialProfile](ctx, s.client, "/userprofile-service/socialProfile")
 }
 
 // GetUserSettings retrieves the user's settings.
 func (s *UserProfileService) GetUserSettings(ctx context.Context) (*UserSettings, error) {
-	resp, err := s.client.doAPI(ctx, http.MethodGet, "/userprofile-service/userprofile/user-settings", http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var settings UserSettings
-	if err := json.Unmarshal(body, &settings); err != nil {
-		return nil, err
-	}
-	settings.raw = body
-
-	return &settings, nil
+	return fetch[UserSettings](ctx, s.client, "/userprofile-service/userprofile/user-settings")
 }
 
 // GetProfileSettings retrieves the user's profile settings.
 func (s *UserProfileService) GetProfileSettings(ctx context.Context) (*ProfileSettings, error) {
-	resp, err := s.client.doAPI(ctx, http.MethodGet, "/userprofile-service/userprofile/settings", http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var settings ProfileSettings
-	if err := json.Unmarshal(body, &settings); err != nil {
-		return nil, err
-	}
-	settings.raw = body
-
-	return &settings, nil
+	return fetch[ProfileSettings](ctx, s.client, "/userprofile-service/userprofile/settings")
 }

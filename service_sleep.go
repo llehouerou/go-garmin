@@ -4,8 +4,6 @@ package garmin
 import (
 	"context"
 	"encoding/json"
-	"io"
-	"net/http"
 	"time"
 )
 
@@ -40,9 +38,10 @@ type DailySleep struct {
 }
 
 // RawJSON returns the original JSON response.
-func (d *DailySleep) RawJSON() json.RawMessage {
-	return d.raw
-}
+func (d *DailySleep) RawJSON() json.RawMessage { return d.raw }
+
+// SetRaw sets the raw JSON response.
+func (d *DailySleep) SetRaw(data json.RawMessage) { d.raw = data }
 
 // SleepStart returns the sleep start time.
 func (d *DailySleep) SleepStart() time.Time {
@@ -66,28 +65,5 @@ func (d *DailySleep) HasData() bool {
 
 // GetDaily retrieves sleep data for the specified date.
 func (s *SleepService) GetDaily(ctx context.Context, date time.Time) (*DailySleep, error) {
-	path := "/sleep-service/sleep/dailySleepData?date=" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var sleep DailySleep
-	if err := json.Unmarshal(raw, &sleep); err != nil {
-		return nil, err
-	}
-	sleep.raw = raw
-
-	return &sleep, nil
+	return fetch[DailySleep](ctx, s.client, "/sleep-service/sleep/dailySleepData?date="+date.Format("2006-01-02"))
 }

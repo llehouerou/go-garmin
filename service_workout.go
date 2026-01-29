@@ -180,6 +180,11 @@ func (w *Workout) RawJSON() json.RawMessage {
 	return w.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (w *Workout) SetRaw(data json.RawMessage) {
+	w.raw = data
+}
+
 // WorkoutSummary represents a workout in the list response.
 type WorkoutSummary struct {
 	WorkoutID               int64          `json:"workoutId"`
@@ -215,6 +220,11 @@ func (w *WorkoutSummary) RawJSON() json.RawMessage {
 	return w.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (w *WorkoutSummary) SetRaw(data json.RawMessage) {
+	w.raw = data
+}
+
 // WorkoutList represents a list of workouts.
 type WorkoutList struct {
 	Workouts []WorkoutSummary
@@ -224,6 +234,11 @@ type WorkoutList struct {
 // RawJSON returns the raw JSON response.
 func (w *WorkoutList) RawJSON() json.RawMessage {
 	return w.raw
+}
+
+// SetRaw sets the raw JSON data.
+func (w *WorkoutList) SetRaw(data json.RawMessage) {
+	w.raw = data
 }
 
 // ScheduledWorkout represents a scheduled workout.
@@ -240,6 +255,11 @@ type ScheduledWorkout struct {
 // RawJSON returns the raw JSON response.
 func (s *ScheduledWorkout) RawJSON() json.RawMessage {
 	return s.raw
+}
+
+// SetRaw sets the raw JSON data.
+func (s *ScheduledWorkout) SetRaw(data json.RawMessage) {
+	s.raw = data
 }
 
 // List returns a list of workouts with pagination.
@@ -280,66 +300,13 @@ func (s *WorkoutService) List(ctx context.Context, start, limit int) (*WorkoutLi
 // Get returns a workout by ID.
 func (s *WorkoutService) Get(ctx context.Context, workoutID int64) (*Workout, error) {
 	path := fmt.Sprintf("/workout-service/workout/%d", workoutID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to get workout: status %d: %s", resp.StatusCode, string(body))
-	}
-
-	var workout Workout
-	if err := json.Unmarshal(body, &workout); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal workout: %w", err)
-	}
-	workout.raw = body
-
-	return &workout, nil
+	return fetch[Workout](ctx, s.client, path)
 }
 
 // Create creates a new workout and returns the created workout.
 func (s *WorkoutService) Create(ctx context.Context, workout *Workout) (*Workout, error) {
 	path := "/workout-service/workout"
-
-	payload, err := json.Marshal(workout)
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal workout: %w", err)
-	}
-
-	resp, err := s.client.doAPIWithBody(ctx, http.MethodPost, path, bytes.NewReader(payload))
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return nil, fmt.Errorf("failed to create workout: status %d: %s", resp.StatusCode, string(body))
-	}
-
-	var created Workout
-	if err := json.Unmarshal(body, &created); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal created workout: %w", err)
-	}
-	created.raw = body
-
-	return &created, nil
+	return send[Workout](ctx, s.client, http.MethodPost, path, workout)
 }
 
 // Update updates an existing workout.
@@ -388,23 +355,7 @@ func (s *WorkoutService) Update(ctx context.Context, workoutID int64, workout *W
 // Delete deletes a workout by ID.
 func (s *WorkoutService) Delete(ctx context.Context, workoutID int64) error {
 	path := fmt.Sprintf("/workout-service/workout/%d", workoutID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodDelete, path, http.NoBody)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return ErrNotFound
-	}
-
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("failed to delete workout: status %d: %s", resp.StatusCode, string(body))
-	}
-
-	return nil
+	return sendEmpty(ctx, s.client, http.MethodDelete, path)
 }
 
 // DownloadFIT downloads a workout as a FIT file.
@@ -475,53 +426,11 @@ func (s *WorkoutService) Schedule(ctx context.Context, workoutID int64, date tim
 // GetScheduled returns a scheduled workout by ID.
 func (s *WorkoutService) GetScheduled(ctx context.Context, scheduleID int64) (*ScheduledWorkout, error) {
 	path := fmt.Sprintf("/workout-service/schedule/%d", scheduleID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to get scheduled workout: status %d: %s", resp.StatusCode, string(body))
-	}
-
-	var scheduled ScheduledWorkout
-	if err := json.Unmarshal(body, &scheduled); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal scheduled workout: %w", err)
-	}
-	scheduled.raw = body
-
-	return &scheduled, nil
+	return fetch[ScheduledWorkout](ctx, s.client, path)
 }
 
 // Unschedule removes a scheduled workout by schedule ID.
 func (s *WorkoutService) Unschedule(ctx context.Context, scheduleID int64) error {
 	path := fmt.Sprintf("/workout-service/schedule/%d", scheduleID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodDelete, path, http.NoBody)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return ErrNotFound
-	}
-
-	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("failed to unschedule workout: status %d: %s", resp.StatusCode, string(body))
-	}
-
-	return nil
+	return sendEmpty(ctx, s.client, http.MethodDelete, path)
 }

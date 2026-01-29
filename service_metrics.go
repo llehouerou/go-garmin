@@ -5,8 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 	"time"
 )
 
@@ -61,6 +59,16 @@ func (t *TrainingReadiness) RawJSON() json.RawMessage {
 	return t.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (t *TrainingReadiness) SetRaw(data json.RawMessage) {
+	t.raw = data
+}
+
+// UnmarshalJSON unmarshals the array response into the Entries field.
+func (t *TrainingReadiness) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &t.Entries)
+}
+
 // ScoreContributor represents a contributor to an endurance or hill score.
 type ScoreContributor struct {
 	ActivityTypeID *int    `json:"activityTypeId"`
@@ -95,6 +103,11 @@ func (e *EnduranceScore) RawJSON() json.RawMessage {
 	return e.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (e *EnduranceScore) SetRaw(data json.RawMessage) {
+	e.raw = data
+}
+
 // EnduranceScoreStatsGroup represents a single time period's endurance score statistics.
 type EnduranceScoreStatsGroup struct {
 	GroupAverage int                `json:"groupAverage"`
@@ -120,6 +133,11 @@ func (e *EnduranceScoreStats) RawJSON() json.RawMessage {
 	return e.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (e *EnduranceScoreStats) SetRaw(data json.RawMessage) {
+	e.raw = data
+}
+
 // HillScore represents the hill score response.
 type HillScore struct {
 	UserProfilePK             int64   `json:"userProfilePK"`
@@ -140,6 +158,11 @@ type HillScore struct {
 // RawJSON returns the original JSON response.
 func (h *HillScore) RawJSON() json.RawMessage {
 	return h.raw
+}
+
+// SetRaw sets the raw JSON response.
+func (h *HillScore) SetRaw(data json.RawMessage) {
+	h.raw = data
 }
 
 // HeatAltitudeAcclimation represents heat and altitude acclimation data.
@@ -167,6 +190,11 @@ type HeatAltitudeAcclimation struct {
 // RawJSON returns the original JSON response.
 func (h *HeatAltitudeAcclimation) RawJSON() json.RawMessage {
 	return h.raw
+}
+
+// SetRaw sets the raw JSON response.
+func (h *HeatAltitudeAcclimation) SetRaw(data json.RawMessage) {
+	h.raw = data
 }
 
 // VO2MaxGeneric represents generic VO2 max data.
@@ -199,6 +227,11 @@ func (m *MaxMetLatest) RawJSON() json.RawMessage {
 	return m.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (m *MaxMetLatest) SetRaw(data json.RawMessage) {
+	m.raw = data
+}
+
 // MaxMetDaily represents VO2 max / MET data for a date range.
 type MaxMetDaily struct {
 	Entries []MaxMetEntry
@@ -209,6 +242,16 @@ type MaxMetDaily struct {
 // RawJSON returns the original JSON response.
 func (m *MaxMetDaily) RawJSON() json.RawMessage {
 	return m.raw
+}
+
+// SetRaw sets the raw JSON response.
+func (m *MaxMetDaily) SetRaw(data json.RawMessage) {
+	m.raw = data
+}
+
+// UnmarshalJSON unmarshals the array response into the Entries field.
+func (m *MaxMetDaily) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &m.Entries)
 }
 
 // AcuteTrainingLoad represents acute training load data.
@@ -268,6 +311,11 @@ func (t *TrainingStatusDaily) RawJSON() json.RawMessage {
 	return t.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (t *TrainingStatusDaily) SetRaw(data json.RawMessage) {
+	t.raw = data
+}
+
 // TrainingLoadBalanceData represents training load balance data for a device.
 type TrainingLoadBalanceData struct {
 	CalendarDate                    string  `json:"calendarDate"`
@@ -299,6 +347,11 @@ func (t *TrainingLoadBalance) RawJSON() json.RawMessage {
 	return t.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (t *TrainingLoadBalance) SetRaw(data json.RawMessage) {
+	t.raw = data
+}
+
 // TrainingStatusAggregated represents aggregated training status.
 type TrainingStatusAggregated struct {
 	UserID                        int64                    `json:"userId"`
@@ -315,62 +368,20 @@ func (t *TrainingStatusAggregated) RawJSON() json.RawMessage {
 	return t.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (t *TrainingStatusAggregated) SetRaw(data json.RawMessage) {
+	t.raw = data
+}
+
 // GetTrainingReadiness retrieves training readiness data for the specified date.
 func (s *MetricsService) GetTrainingReadiness(ctx context.Context, date time.Time) (*TrainingReadiness, error) {
-	path := "/metrics-service/metrics/trainingreadiness/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var entries []TrainingReadinessEntry
-	if err := json.Unmarshal(raw, &entries); err != nil {
-		return nil, err
-	}
-
-	return &TrainingReadiness{
-		Entries: entries,
-		raw:     raw,
-	}, nil
+	return fetch[TrainingReadiness](ctx, s.client, "/metrics-service/metrics/trainingreadiness/"+date.Format("2006-01-02"))
 }
 
 // GetEnduranceScore retrieves endurance score data for the specified date.
 func (s *MetricsService) GetEnduranceScore(ctx context.Context, date time.Time) (*EnduranceScore, error) {
 	path := "/metrics-service/metrics/endurancescore?calendarDate=" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var score EnduranceScore
-	if err := json.Unmarshal(raw, &score); err != nil {
-		return nil, err
-	}
-	score.raw = raw
-
-	return &score, nil
+	return fetch[EnduranceScore](ctx, s.client, path)
 }
 
 // Aggregation represents the time period aggregation for stats endpoints.
@@ -385,85 +396,19 @@ const (
 func (s *MetricsService) GetEnduranceScoreStats(ctx context.Context, startDate, endDate time.Time, aggregation Aggregation) (*EnduranceScoreStats, error) {
 	path := fmt.Sprintf("/metrics-service/metrics/endurancescore/stats?startDate=%s&endDate=%s&aggregation=%s",
 		startDate.Format("2006-01-02"), endDate.Format("2006-01-02"), aggregation)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var stats EnduranceScoreStats
-	if err := json.Unmarshal(raw, &stats); err != nil {
-		return nil, err
-	}
-	stats.raw = raw
-
-	return &stats, nil
+	return fetch[EnduranceScoreStats](ctx, s.client, path)
 }
 
 // GetHillScore retrieves hill score data for the specified date.
 func (s *MetricsService) GetHillScore(ctx context.Context, date time.Time) (*HillScore, error) {
 	path := "/metrics-service/metrics/hillscore?calendarDate=" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var score HillScore
-	if err := json.Unmarshal(raw, &score); err != nil {
-		return nil, err
-	}
-	score.raw = raw
-
-	return &score, nil
+	return fetch[HillScore](ctx, s.client, path)
 }
 
 // GetMaxMetLatest retrieves the latest VO2 max / MET data.
 func (s *MetricsService) GetMaxMetLatest(ctx context.Context, date time.Time) (*MaxMetLatest, error) {
 	path := "/metrics-service/metrics/maxmet/latest/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var maxMet MaxMetLatest
-	if err := json.Unmarshal(raw, &maxMet); err != nil {
-		return nil, err
-	}
-	maxMet.raw = raw
-
-	return &maxMet, nil
+	return fetch[MaxMetLatest](ctx, s.client, path)
 }
 
 // GetMaxMetDaily retrieves VO2 max / MET data for a date range.
@@ -471,141 +416,29 @@ func (s *MetricsService) GetMaxMetDaily(ctx context.Context, startDate, endDate 
 	path := fmt.Sprintf("/metrics-service/metrics/maxmet/daily/%s/%s",
 		startDate.Format("2006-01-02"),
 		endDate.Format("2006-01-02"))
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var entries []MaxMetEntry
-	if err := json.Unmarshal(raw, &entries); err != nil {
-		return nil, err
-	}
-
-	return &MaxMetDaily{
-		Entries: entries,
-		raw:     raw,
-	}, nil
+	return fetch[MaxMetDaily](ctx, s.client, path)
 }
 
 // GetTrainingStatusAggregated retrieves aggregated training status data.
 func (s *MetricsService) GetTrainingStatusAggregated(ctx context.Context, date time.Time) (*TrainingStatusAggregated, error) {
 	path := "/metrics-service/metrics/trainingstatus/aggregated/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var status TrainingStatusAggregated
-	if err := json.Unmarshal(raw, &status); err != nil {
-		return nil, err
-	}
-	status.raw = raw
-
-	return &status, nil
+	return fetch[TrainingStatusAggregated](ctx, s.client, path)
 }
 
 // GetTrainingStatusDaily retrieves daily training status data.
 func (s *MetricsService) GetTrainingStatusDaily(ctx context.Context, date time.Time) (*TrainingStatusDaily, error) {
 	path := "/metrics-service/metrics/trainingstatus/daily/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var status TrainingStatusDaily
-	if err := json.Unmarshal(raw, &status); err != nil {
-		return nil, err
-	}
-	status.raw = raw
-
-	return &status, nil
+	return fetch[TrainingStatusDaily](ctx, s.client, path)
 }
 
 // GetTrainingLoadBalance retrieves training load balance data.
 func (s *MetricsService) GetTrainingLoadBalance(ctx context.Context, date time.Time) (*TrainingLoadBalance, error) {
 	path := "/metrics-service/metrics/trainingloadbalance/latest/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var balance TrainingLoadBalance
-	if err := json.Unmarshal(raw, &balance); err != nil {
-		return nil, err
-	}
-	balance.raw = raw
-
-	return &balance, nil
+	return fetch[TrainingLoadBalance](ctx, s.client, path)
 }
 
 // GetHeatAltitudeAcclimation retrieves heat and altitude acclimation data.
 func (s *MetricsService) GetHeatAltitudeAcclimation(ctx context.Context, date time.Time) (*HeatAltitudeAcclimation, error) {
 	path := "/metrics-service/metrics/heataltitudeacclimation/latest/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var acclimation HeatAltitudeAcclimation
-	if err := json.Unmarshal(raw, &acclimation); err != nil {
-		return nil, err
-	}
-	acclimation.raw = raw
-
-	return &acclimation, nil
+	return fetch[HeatAltitudeAcclimation](ctx, s.client, path)
 }

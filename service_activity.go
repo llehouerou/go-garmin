@@ -244,6 +244,11 @@ func (a *Activity) RawJSON() json.RawMessage {
 	return a.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (a *Activity) SetRaw(data json.RawMessage) {
+	a.raw = data
+}
+
 // ActivityListItem is a reduced representation of an activity for list views.
 // It contains only the essential fields to minimize context usage in LLM integrations.
 type ActivityListItem struct {
@@ -522,6 +527,11 @@ func (a *ActivityDetail) RawJSON() json.RawMessage {
 	return a.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (a *ActivityDetail) SetRaw(data json.RawMessage) {
+	a.raw = data
+}
+
 // StartTime returns the activity start time parsed from SummaryDTO.
 func (a *ActivityDetail) StartTime() time.Time {
 	t, _ := time.Parse("2006-01-02T15:04:05.0", a.SummaryDTO.StartTimeGMT)
@@ -591,29 +601,7 @@ func (s *ActivityService) List(ctx context.Context, opts *ListOptions) ([]Activi
 // Get retrieves detailed information about a specific activity.
 func (s *ActivityService) Get(ctx context.Context, activityID int64) (*ActivityDetail, error) {
 	path := fmt.Sprintf("/activity-service/activity/%d", activityID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var activity ActivityDetail
-	if err := json.Unmarshal(raw, &activity); err != nil {
-		return nil, err
-	}
-	activity.raw = raw
-
-	return &activity, nil
+	return fetch[ActivityDetail](ctx, s.client, path)
 }
 
 // WeatherStation represents the weather station that provided the data.
@@ -654,6 +642,11 @@ func (w *ActivityWeather) RawJSON() json.RawMessage {
 	return w.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (w *ActivityWeather) SetRaw(data json.RawMessage) {
+	w.raw = data
+}
+
 // TempCelsius returns the temperature in Celsius.
 func (w *ActivityWeather) TempCelsius() float64 {
 	return float64(w.Temp-32) * 5 / 9
@@ -667,29 +660,7 @@ func (w *ActivityWeather) ApparentTempCelsius() float64 {
 // GetWeather retrieves weather data for a specific activity.
 func (s *ActivityService) GetWeather(ctx context.Context, activityID int64) (*ActivityWeather, error) {
 	path := fmt.Sprintf("/activity-service/activity/%d/weather", activityID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var weather ActivityWeather
-	if err := json.Unmarshal(raw, &weather); err != nil {
-		return nil, err
-	}
-	weather.raw = raw
-
-	return &weather, nil
+	return fetch[ActivityWeather](ctx, s.client, path)
 }
 
 // SectionType represents the type of event section.
@@ -779,36 +750,19 @@ type ActivitySplits struct {
 }
 
 // RawJSON returns the original JSON response.
-func (s *ActivitySplits) RawJSON() json.RawMessage {
-	return s.raw
+func (a *ActivitySplits) RawJSON() json.RawMessage {
+	return a.raw
+}
+
+// SetRaw sets the raw JSON data.
+func (a *ActivitySplits) SetRaw(data json.RawMessage) {
+	a.raw = data
 }
 
 // GetSplits retrieves splits/laps data for a specific activity.
 func (s *ActivityService) GetSplits(ctx context.Context, activityID int64) (*ActivitySplits, error) {
 	path := fmt.Sprintf("/activity-service/activity/%d/splits", activityID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var splits ActivitySplits
-	if err := json.Unmarshal(raw, &splits); err != nil {
-		return nil, err
-	}
-	splits.raw = raw
-
-	return &splits, nil
+	return fetch[ActivitySplits](ctx, s.client, path)
 }
 
 // DownloadFIT downloads the original FIT file for an activity.
@@ -919,6 +873,16 @@ func (h *HRTimeInZones) RawJSON() json.RawMessage {
 	return h.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (h *HRTimeInZones) SetRaw(data json.RawMessage) {
+	h.raw = data
+}
+
+// UnmarshalJSON unmarshals the array response into the Zones field.
+func (h *HRTimeInZones) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &h.Zones)
+}
+
 // PowerTimeInZones represents power time in zones for an activity.
 type PowerTimeInZones struct {
 	Zones []TimeInZone
@@ -928,6 +892,16 @@ type PowerTimeInZones struct {
 // RawJSON returns the original JSON response.
 func (p *PowerTimeInZones) RawJSON() json.RawMessage {
 	return p.raw
+}
+
+// SetRaw sets the raw JSON data.
+func (p *PowerTimeInZones) SetRaw(data json.RawMessage) {
+	p.raw = data
+}
+
+// UnmarshalJSON unmarshals the array response into the Zones field.
+func (p *PowerTimeInZones) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &p.Zones)
 }
 
 // MetricDescriptorUnit represents the unit of a metric.
@@ -964,6 +938,11 @@ type ActivityDetails struct {
 // RawJSON returns the original JSON response.
 func (a *ActivityDetails) RawJSON() json.RawMessage {
 	return a.raw
+}
+
+// SetRaw sets the raw JSON data.
+func (a *ActivityDetails) SetRaw(data json.RawMessage) {
+	a.raw = data
 }
 
 // GetMetricIndex returns the index for a metric key, or -1 if not found.
@@ -1011,114 +990,31 @@ func (e *ExerciseSets) RawJSON() json.RawMessage {
 	return e.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (e *ExerciseSets) SetRaw(data json.RawMessage) {
+	e.raw = data
+}
+
 // GetDetails retrieves extended details with time-series metrics for an activity.
 func (s *ActivityService) GetDetails(ctx context.Context, activityID int64) (*ActivityDetails, error) {
 	path := fmt.Sprintf("/activity-service/activity/%d/details", activityID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var details ActivityDetails
-	if err := json.Unmarshal(raw, &details); err != nil {
-		return nil, err
-	}
-	details.raw = raw
-
-	return &details, nil
+	return fetch[ActivityDetails](ctx, s.client, path)
 }
 
 // GetHRTimeInZones retrieves heart rate time in zones for an activity.
 func (s *ActivityService) GetHRTimeInZones(ctx context.Context, activityID int64) (*HRTimeInZones, error) {
-	path := fmt.Sprintf("/activity-service/activity/%d/hrTimeInZones", activityID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var zones []TimeInZone
-	if err := json.Unmarshal(raw, &zones); err != nil {
-		return nil, err
-	}
-
-	return &HRTimeInZones{Zones: zones, raw: raw}, nil
+	return fetch[HRTimeInZones](ctx, s.client, fmt.Sprintf("/activity-service/activity/%d/hrTimeInZones", activityID))
 }
 
 // GetPowerTimeInZones retrieves power time in zones for an activity.
 func (s *ActivityService) GetPowerTimeInZones(ctx context.Context, activityID int64) (*PowerTimeInZones, error) {
-	path := fmt.Sprintf("/activity-service/activity/%d/powerTimeInZones", activityID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var zones []TimeInZone
-	if err := json.Unmarshal(raw, &zones); err != nil {
-		return nil, err
-	}
-
-	return &PowerTimeInZones{Zones: zones, raw: raw}, nil
+	return fetch[PowerTimeInZones](ctx, s.client, fmt.Sprintf("/activity-service/activity/%d/powerTimeInZones", activityID))
 }
 
 // GetExerciseSets retrieves exercise sets for a strength workout activity.
 func (s *ActivityService) GetExerciseSets(ctx context.Context, activityID int64) (*ExerciseSets, error) {
 	path := fmt.Sprintf("/activity-service/activity/%d/exerciseSets", activityID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var sets ExerciseSets
-	if err := json.Unmarshal(raw, &sets); err != nil {
-		return nil, err
-	}
-	sets.raw = raw
-
-	return &sets, nil
+	return fetch[ExerciseSets](ctx, s.client, path)
 }
 
 // GetActivityTypes retrieves the list of all activity types.
@@ -1210,32 +1106,15 @@ func (a *ActivityTypedSplits) RawJSON() json.RawMessage {
 	return a.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (a *ActivityTypedSplits) SetRaw(data json.RawMessage) {
+	a.raw = data
+}
+
 // GetTypedSplits retrieves typed splits data for a specific activity.
 func (s *ActivityService) GetTypedSplits(ctx context.Context, activityID int64) (*ActivityTypedSplits, error) {
 	path := fmt.Sprintf("/activity-service/activity/%d/typedsplits", activityID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var splits ActivityTypedSplits
-	if err := json.Unmarshal(raw, &splits); err != nil {
-		return nil, err
-	}
-	splits.raw = raw
-
-	return &splits, nil
+	return fetch[ActivityTypedSplits](ctx, s.client, path)
 }
 
 // SplitSummaryDetail represents a summary of splits by type within an activity.
@@ -1275,13 +1154,13 @@ type SplitSummaryDetail struct {
 }
 
 // DurationTime returns the split summary duration as a time.Duration.
-func (s *SplitSummaryDetail) DurationTime() time.Duration {
-	return time.Duration(s.Duration * float64(time.Second))
+func (d *SplitSummaryDetail) DurationTime() time.Duration {
+	return time.Duration(d.Duration * float64(time.Second))
 }
 
 // DistanceKm returns the split summary distance in kilometers.
-func (s *SplitSummaryDetail) DistanceKm() float64 {
-	return s.Distance / 1000
+func (d *SplitSummaryDetail) DistanceKm() float64 {
+	return d.Distance / 1000
 }
 
 // ActivitySplitSummaries represents split summaries for an activity.
@@ -1298,30 +1177,13 @@ func (a *ActivitySplitSummaries) RawJSON() json.RawMessage {
 	return a.raw
 }
 
+// SetRaw sets the raw JSON data.
+func (a *ActivitySplitSummaries) SetRaw(data json.RawMessage) {
+	a.raw = data
+}
+
 // GetSplitSummaries retrieves split summaries for a specific activity.
 func (s *ActivityService) GetSplitSummaries(ctx context.Context, activityID int64) (*ActivitySplitSummaries, error) {
 	path := fmt.Sprintf("/activity-service/activity/%d/split_summaries", activityID)
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var summaries ActivitySplitSummaries
-	if err := json.Unmarshal(raw, &summaries); err != nil {
-		return nil, err
-	}
-	summaries.raw = raw
-
-	return &summaries, nil
+	return fetch[ActivitySplitSummaries](ctx, s.client, path)
 }

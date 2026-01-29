@@ -26,7 +26,13 @@ type APIError struct {
 }
 
 func (e *APIError) Error() string {
-	return fmt.Sprintf("garmin: %s %s: %s", e.Status, e.Endpoint, e.Message)
+	if e.Endpoint != "" && e.Message != "" {
+		return fmt.Sprintf("garmin: %s %s: %s", e.Status, e.Endpoint, e.Message)
+	}
+	if len(e.Body) > 0 {
+		return fmt.Sprintf("garmin: %s: %s", e.Status, string(e.Body))
+	}
+	return "garmin: " + e.Status
 }
 
 func IsNotFound(err error) bool {

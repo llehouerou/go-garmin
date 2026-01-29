@@ -5,8 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 	"time"
 )
 
@@ -71,9 +69,10 @@ type DailyWeight struct {
 }
 
 // RawJSON returns the original JSON response.
-func (d *DailyWeight) RawJSON() json.RawMessage {
-	return d.raw
-}
+func (d *DailyWeight) RawJSON() json.RawMessage { return d.raw }
+
+// SetRaw sets the raw JSON response.
+func (d *DailyWeight) SetRaw(data json.RawMessage) { d.raw = data }
 
 // DailyWeightSummary represents a summary of weight entries for a single day.
 type DailyWeightSummary struct {
@@ -96,64 +95,19 @@ type WeightRange struct {
 }
 
 // RawJSON returns the original JSON response.
-func (r *WeightRange) RawJSON() json.RawMessage {
-	return r.raw
-}
+func (r *WeightRange) RawJSON() json.RawMessage { return r.raw }
+
+// SetRaw sets the raw JSON response.
+func (r *WeightRange) SetRaw(data json.RawMessage) { r.raw = data }
 
 // GetDaily retrieves weight data for the specified date.
 func (s *WeightService) GetDaily(ctx context.Context, date time.Time) (*DailyWeight, error) {
-	path := "/weight-service/weight/dayview/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var weight DailyWeight
-	if err := json.Unmarshal(raw, &weight); err != nil {
-		return nil, err
-	}
-	weight.raw = raw
-
-	return &weight, nil
+	return fetch[DailyWeight](ctx, s.client, "/weight-service/weight/dayview/"+date.Format("2006-01-02"))
 }
 
 // GetRange retrieves weight data for a date range.
 func (s *WeightService) GetRange(ctx context.Context, startDate, endDate time.Time) (*WeightRange, error) {
-	path := fmt.Sprintf("/weight-service/weight/range/%s/%s?includeAll=true",
+	return fetch[WeightRange](ctx, s.client, fmt.Sprintf("/weight-service/weight/range/%s/%s?includeAll=true",
 		startDate.Format("2006-01-02"),
-		endDate.Format("2006-01-02"))
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var weightRange WeightRange
-	if err := json.Unmarshal(raw, &weightRange); err != nil {
-		return nil, err
-	}
-	weightRange.raw = raw
-
-	return &weightRange, nil
+		endDate.Format("2006-01-02")))
 }

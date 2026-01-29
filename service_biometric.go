@@ -33,6 +33,16 @@ func (lt *LactateThreshold) RawJSON() json.RawMessage {
 	return lt.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (lt *LactateThreshold) SetRaw(data json.RawMessage) {
+	lt.raw = data
+}
+
+// UnmarshalJSON unmarshals the array response into the Entries field.
+func (lt *LactateThreshold) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &lt.Entries)
+}
+
 // Speed returns the lactate threshold speed in m/s, or nil if not available.
 func (lt *LactateThreshold) Speed() *float64 {
 	for _, e := range lt.Entries {
@@ -72,6 +82,11 @@ func (ftp *FunctionalThresholdPower) RawJSON() json.RawMessage {
 	return ftp.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (ftp *FunctionalThresholdPower) SetRaw(data json.RawMessage) {
+	ftp.raw = data
+}
+
 // PowerToWeight represents power-to-weight ratio data.
 type PowerToWeight struct {
 	UserProfilePK            int64   `json:"userProfilePk"`
@@ -91,6 +106,11 @@ type PowerToWeight struct {
 // RawJSON returns the original JSON response.
 func (ptw *PowerToWeight) RawJSON() json.RawMessage {
 	return ptw.raw
+}
+
+// SetRaw sets the raw JSON response.
+func (ptw *PowerToWeight) SetRaw(data json.RawMessage) {
+	ptw.raw = data
 }
 
 // HeartRateZone represents heart rate zone configuration for a sport.
@@ -120,6 +140,16 @@ func (hrz *HeartRateZones) RawJSON() json.RawMessage {
 	return hrz.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (hrz *HeartRateZones) SetRaw(data json.RawMessage) {
+	hrz.raw = data
+}
+
+// UnmarshalJSON unmarshals the array response into the Zones field.
+func (hrz *HeartRateZones) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &hrz.Zones)
+}
+
 // BiometricStat represents a single biometric statistic entry.
 type BiometricStat struct {
 	From        string  `json:"from"`
@@ -140,58 +170,24 @@ func (bs *BiometricStats) RawJSON() json.RawMessage {
 	return bs.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (bs *BiometricStats) SetRaw(data json.RawMessage) {
+	bs.raw = data
+}
+
+// UnmarshalJSON unmarshals the array response into the Stats field.
+func (bs *BiometricStats) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &bs.Stats)
+}
+
 // GetLatestLactateThreshold retrieves the latest lactate threshold data.
 func (s *BiometricService) GetLatestLactateThreshold(ctx context.Context) (*LactateThreshold, error) {
-	resp, err := s.client.doAPI(ctx, http.MethodGet, "/biometric-service/biometric/latestLactateThreshold", http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var entries []LactateThresholdEntry
-	if err := json.Unmarshal(body, &entries); err != nil {
-		return nil, err
-	}
-
-	return &LactateThreshold{
-		Entries: entries,
-		raw:     body,
-	}, nil
+	return fetch[LactateThreshold](ctx, s.client, "/biometric-service/biometric/latestLactateThreshold")
 }
 
 // GetCyclingFTP retrieves the latest cycling Functional Threshold Power.
 func (s *BiometricService) GetCyclingFTP(ctx context.Context) (*FunctionalThresholdPower, error) {
-	resp, err := s.client.doAPI(ctx, http.MethodGet, "/biometric-service/biometric/latestFunctionalThresholdPower/CYCLING", http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var ftp FunctionalThresholdPower
-	if err := json.Unmarshal(body, &ftp); err != nil {
-		return nil, err
-	}
-	ftp.raw = body
-
-	return &ftp, nil
+	return fetch[FunctionalThresholdPower](ctx, s.client, "/biometric-service/biometric/latestFunctionalThresholdPower/CYCLING")
 }
 
 // GetPowerToWeight retrieves the power-to-weight ratio for running on the given date.
@@ -228,30 +224,7 @@ func (s *BiometricService) GetPowerToWeight(ctx context.Context, date time.Time)
 
 // GetHeartRateZones retrieves heart rate zone configurations for all sports.
 func (s *BiometricService) GetHeartRateZones(ctx context.Context) (*HeartRateZones, error) {
-	resp, err := s.client.doAPI(ctx, http.MethodGet, "/biometric-service/heartRateZones/", http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var zones []HeartRateZone
-	if err := json.Unmarshal(body, &zones); err != nil {
-		return nil, err
-	}
-
-	return &HeartRateZones{
-		Zones: zones,
-		raw:   body,
-	}, nil
+	return fetch[HeartRateZones](ctx, s.client, "/biometric-service/heartRateZones/")
 }
 
 // GetLactateThresholdSpeedRange retrieves lactate threshold speed stats for a date range.
@@ -276,28 +249,5 @@ func (s *BiometricService) GetFTPRange(ctx context.Context, start, end time.Time
 }
 
 func (s *BiometricService) getBiometricStats(ctx context.Context, path string) (*BiometricStats, error) {
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var stats []BiometricStat
-	if err := json.Unmarshal(body, &stats); err != nil {
-		return nil, err
-	}
-
-	return &BiometricStats{
-		Stats: stats,
-		raw:   body,
-	}, nil
+	return fetch[BiometricStats](ctx, s.client, path)
 }

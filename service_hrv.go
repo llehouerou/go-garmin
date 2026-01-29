@@ -5,8 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 	"time"
 )
 
@@ -55,9 +53,10 @@ type DailyHRV struct {
 }
 
 // RawJSON returns the original JSON response.
-func (d *DailyHRV) RawJSON() json.RawMessage {
-	return d.raw
-}
+func (d *DailyHRV) RawJSON() json.RawMessage { return d.raw }
+
+// SetRaw sets the raw JSON response.
+func (d *DailyHRV) SetRaw(data json.RawMessage) { d.raw = data }
 
 // HRVRange represents HRV summaries for a date range.
 type HRVRange struct {
@@ -68,64 +67,19 @@ type HRVRange struct {
 }
 
 // RawJSON returns the original JSON response.
-func (r *HRVRange) RawJSON() json.RawMessage {
-	return r.raw
-}
+func (r *HRVRange) RawJSON() json.RawMessage { return r.raw }
+
+// SetRaw sets the raw JSON response.
+func (r *HRVRange) SetRaw(data json.RawMessage) { r.raw = data }
 
 // GetDaily retrieves HRV data for the specified date.
 func (s *HRVService) GetDaily(ctx context.Context, date time.Time) (*DailyHRV, error) {
-	path := "/hrv-service/hrv/" + date.Format("2006-01-02")
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var hrv DailyHRV
-	if err := json.Unmarshal(raw, &hrv); err != nil {
-		return nil, err
-	}
-	hrv.raw = raw
-
-	return &hrv, nil
+	return fetch[DailyHRV](ctx, s.client, "/hrv-service/hrv/"+date.Format("2006-01-02"))
 }
 
 // GetRange retrieves HRV summaries for a date range.
 func (s *HRVService) GetRange(ctx context.Context, startDate, endDate time.Time) (*HRVRange, error) {
-	path := fmt.Sprintf("/hrv-service/hrv/daily/%s/%s",
+	return fetch[HRVRange](ctx, s.client, fmt.Sprintf("/hrv-service/hrv/daily/%s/%s",
 		startDate.Format("2006-01-02"),
-		endDate.Format("2006-01-02"))
-
-	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound
-	}
-
-	raw, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	var hrvRange HRVRange
-	if err := json.Unmarshal(raw, &hrvRange); err != nil {
-		return nil, err
-	}
-	hrvRange.raw = raw
-
-	return &hrvRange, nil
+		endDate.Format("2006-01-02")))
 }

@@ -97,6 +97,11 @@ func (c *Calendar) RawJSON() json.RawMessage {
 	return c.raw
 }
 
+// SetRaw sets the raw JSON response.
+func (c *Calendar) SetRaw(data json.RawMessage) {
+	c.raw = data
+}
+
 // CalendarOptions specifies optional parameters for calendar retrieval.
 // Parameters are hierarchical: month requires year, day requires month, start requires day.
 type CalendarOptions struct {
