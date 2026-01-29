@@ -62,8 +62,8 @@ Note: Some endpoints like `dailyHeartRate` can also use `/{displayName}?date={da
 | [x] | GET | `/activity-service/activity/{activityId}` | Get single activity |
 | [x] | GET | `/activity-service/activity/{activityId}/details?maxChartSize={n}&maxPolylineSize={n}` | Activity details (time-series) |
 | [x] | GET | `/activity-service/activity/{activityId}/splits` | Activity splits |
-| [ ] | GET | `/activity-service/activity/{activityId}/typedsplits` | Activity typed splits |
-| [ ] | GET | `/activity-service/activity/{activityId}/split_summaries` | Activity split summaries |
+| [x] | GET | `/activity-service/activity/{activityId}/typedsplits` | Activity typed splits |
+| [x] | GET | `/activity-service/activity/{activityId}/split_summaries` | Activity split summaries |
 | [x] | GET | `/activity-service/activity/{activityId}/weather` | Activity weather |
 | [x] | GET | `/activity-service/activity/{activityId}/hrTimeInZones` | HR time in zones |
 | [x] | GET | `/activity-service/activity/{activityId}/powerTimeInZones` | Power time in zones |

@@ -1143,3 +1143,185 @@ func (s *ActivityService) GetActivityTypes(ctx context.Context) ([]ActivityType,
 
 	return types, nil
 }
+
+// TypedSplit represents a single typed split within an activity.
+type TypedSplit struct {
+	StartTimeLocal              string  `json:"startTimeLocal"`
+	StartTimeGMT                string  `json:"startTimeGMT"`
+	EndTimeGMT                  string  `json:"endTimeGMT"`
+	StartLatitude               float64 `json:"startLatitude"`
+	StartLongitude              float64 `json:"startLongitude"`
+	EndLatitude                 float64 `json:"endLatitude"`
+	EndLongitude                float64 `json:"endLongitude"`
+	Distance                    float64 `json:"distance"`
+	Duration                    float64 `json:"duration"`
+	MovingDuration              float64 `json:"movingDuration"`
+	ElapsedDuration             float64 `json:"elapsedDuration"`
+	ElevationGain               float64 `json:"elevationGain"`
+	ElevationLoss               float64 `json:"elevationLoss"`
+	StartElevation              float64 `json:"startElevation"`
+	AverageSpeed                float64 `json:"averageSpeed"`
+	AverageMovingSpeed          float64 `json:"averageMovingSpeed"`
+	MaxSpeed                    float64 `json:"maxSpeed"`
+	Calories                    float64 `json:"calories"`
+	BMRCalories                 float64 `json:"bmrCalories"`
+	AverageHR                   float64 `json:"averageHR"`
+	MaxHR                       float64 `json:"maxHR"`
+	AverageRunCadence           float64 `json:"averageRunCadence"`
+	MaxRunCadence               float64 `json:"maxRunCadence"`
+	AveragePower                float64 `json:"averagePower"`
+	MaxPower                    float64 `json:"maxPower"`
+	NormalizedPower             float64 `json:"normalizedPower,omitempty"`
+	GroundContactTime           float64 `json:"groundContactTime,omitempty"`
+	StrideLength                float64 `json:"strideLength"`
+	VerticalOscillation         float64 `json:"verticalOscillation"`
+	VerticalRatio               float64 `json:"verticalRatio"`
+	TotalExerciseReps           int     `json:"totalExerciseReps"`
+	AvgVerticalSpeed            float64 `json:"avgVerticalSpeed"`
+	AvgGradeAdjustedSpeed       float64 `json:"avgGradeAdjustedSpeed"`
+	AvgElapsedDurationVertSpeed float64 `json:"avgElapsedDurationVerticalSpeed"`
+	AvgStepLength               float64 `json:"avgStepLength"`
+	Type                        string  `json:"type"`
+	MessageIndex                int     `json:"messageIndex"`
+	LapIndexes                  []int   `json:"lapIndexes,omitempty"`
+}
+
+// DurationTime returns the split duration as a time.Duration.
+func (t *TypedSplit) DurationTime() time.Duration {
+	return time.Duration(t.Duration * float64(time.Second))
+}
+
+// DistanceKm returns the split distance in kilometers.
+func (t *TypedSplit) DistanceKm() float64 {
+	return t.Distance / 1000
+}
+
+// ActivityTypedSplits represents typed splits data for an activity.
+type ActivityTypedSplits struct {
+	ActivityID   int64              `json:"activityId"`
+	ActivityUUID ActivityUUIDObject `json:"activityUUID"`
+	Splits       []TypedSplit       `json:"splits"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (a *ActivityTypedSplits) RawJSON() json.RawMessage {
+	return a.raw
+}
+
+// GetTypedSplits retrieves typed splits data for a specific activity.
+func (s *ActivityService) GetTypedSplits(ctx context.Context, activityID int64) (*ActivityTypedSplits, error) {
+	path := fmt.Sprintf("/activity-service/activity/%d/typedsplits", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var splits ActivityTypedSplits
+	if err := json.Unmarshal(raw, &splits); err != nil {
+		return nil, err
+	}
+	splits.raw = raw
+
+	return &splits, nil
+}
+
+// SplitSummaryDetail represents a summary of splits by type within an activity.
+type SplitSummaryDetail struct {
+	Distance              float64 `json:"distance"`
+	Duration              float64 `json:"duration"`
+	MovingDuration        float64 `json:"movingDuration"`
+	ElevationGain         float64 `json:"elevationGain"`
+	ElevationLoss         float64 `json:"elevationLoss"`
+	AverageSpeed          float64 `json:"averageSpeed"`
+	AverageMovingSpeed    float64 `json:"averageMovingSpeed"`
+	MaxSpeed              float64 `json:"maxSpeed"`
+	Calories              float64 `json:"calories"`
+	BMRCalories           float64 `json:"bmrCalories"`
+	AverageHR             float64 `json:"averageHR"`
+	MaxHR                 float64 `json:"maxHR"`
+	AverageRunCadence     float64 `json:"averageRunCadence"`
+	MaxRunCadence         float64 `json:"maxRunCadence"`
+	AveragePower          float64 `json:"averagePower"`
+	MaxPower              float64 `json:"maxPower"`
+	NormalizedPower       float64 `json:"normalizedPower,omitempty"`
+	GroundContactTime     float64 `json:"groundContactTime,omitempty"`
+	StrideLength          float64 `json:"strideLength"`
+	VerticalOscillation   float64 `json:"verticalOscillation"`
+	VerticalRatio         float64 `json:"verticalRatio"`
+	TotalExerciseReps     int     `json:"totalExerciseReps"`
+	AvgVerticalSpeed      float64 `json:"avgVerticalSpeed"`
+	AvgGradeAdjustedSpeed float64 `json:"avgGradeAdjustedSpeed"`
+	SplitType             string  `json:"splitType"`
+	NoOfSplits            int     `json:"noOfSplits"`
+	MaxElevationGain      float64 `json:"maxElevationGain"`
+	AverageElevationGain  float64 `json:"averageElevationGain"`
+	MaxDistance           int     `json:"maxDistance"`
+	MaxDistanceWithPrec   float64 `json:"maxDistanceWithPrecision"`
+	AvgStepFrequency      float64 `json:"avgStepFrequency"`
+	AvgStepLength         float64 `json:"avgStepLength"`
+}
+
+// DurationTime returns the split summary duration as a time.Duration.
+func (s *SplitSummaryDetail) DurationTime() time.Duration {
+	return time.Duration(s.Duration * float64(time.Second))
+}
+
+// DistanceKm returns the split summary distance in kilometers.
+func (s *SplitSummaryDetail) DistanceKm() float64 {
+	return s.Distance / 1000
+}
+
+// ActivitySplitSummaries represents split summaries for an activity.
+type ActivitySplitSummaries struct {
+	ActivityID     int64                `json:"activityId"`
+	ActivityUUID   ActivityUUIDObject   `json:"activityUUID"`
+	SplitSummaries []SplitSummaryDetail `json:"splitSummaries"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (a *ActivitySplitSummaries) RawJSON() json.RawMessage {
+	return a.raw
+}
+
+// GetSplitSummaries retrieves split summaries for a specific activity.
+func (s *ActivityService) GetSplitSummaries(ctx context.Context, activityID int64) (*ActivitySplitSummaries, error) {
+	path := fmt.Sprintf("/activity-service/activity/%d/split_summaries", activityID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var summaries ActivitySplitSummaries
+	if err := json.Unmarshal(raw, &summaries); err != nil {
+		return nil, err
+	}
+	summaries.raw = raw
+
+	return &summaries, nil
+}

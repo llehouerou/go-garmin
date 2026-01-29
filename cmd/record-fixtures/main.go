@@ -488,6 +488,20 @@ func recordActivityDetails(ctx context.Context, client *http.Client, domain, tok
 	if err != nil {
 		fmt.Printf("  Warning: activity exercise sets: %v\n", err)
 	}
+
+	fmt.Printf("  Getting activity typed splits for %d...\n", id)
+	typedSplitsURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d/typedsplits", domain, id)
+	_, err = doAPIRequest(ctx, client, typedSplitsURL, token)
+	if err != nil {
+		fmt.Printf("  Warning: activity typed splits: %v\n", err)
+	}
+
+	fmt.Printf("  Getting activity split summaries for %d...\n", id)
+	splitSummariesURL := fmt.Sprintf("https://connectapi.%s/activity-service/activity/%d/split_summaries", domain, id)
+	_, err = doAPIRequest(ctx, client, splitSummariesURL, token)
+	if err != nil {
+		fmt.Printf("  Warning: activity split summaries: %v\n", err)
+	}
 }
 
 func recordMetrics(ctx context.Context, session []byte, date time.Time) error {

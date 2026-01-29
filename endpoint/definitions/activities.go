@@ -277,4 +277,64 @@ var ActivityEndpoints = []endpoint.Endpoint{
 			return client.Activities.GetExerciseSets(ctx, int64(args.Int("activity_id")))
 		},
 	},
+	{
+		Name:       "GetActivityTypedSplits",
+		Service:    "Activities",
+		Cassette:   "activities",
+		Path:       "/activity-service/activity/{activityId}/typedsplits",
+		HTTPMethod: "GET",
+		Params: []endpoint.Param{
+			{Name: "activity_id", Type: endpoint.ParamTypeInt, Required: true, Description: "The activity ID"},
+		},
+		CLICommand:    "activities",
+		CLISubcommand: "typed-splits",
+		MCPTool:       "get_activity_typed_splits",
+		Short:         "Get activity typed splits",
+		Long:          "Get typed splits data for an activity with detailed per-split metrics by type (walk, run, interval, etc.)",
+		DependsOn:     "ListActivities",
+		ArgProvider: func(result any) map[string]any {
+			items, ok := result.([]garmin.ActivityListItem)
+			if !ok || len(items) == 0 {
+				return nil
+			}
+			return map[string]any{"activity_id": items[0].ActivityID}
+		},
+		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
+			client, ok := c.(*garmin.Client)
+			if !ok {
+				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
+			}
+			return client.Activities.GetTypedSplits(ctx, int64(args.Int("activity_id")))
+		},
+	},
+	{
+		Name:       "GetActivitySplitSummaries",
+		Service:    "Activities",
+		Cassette:   "activities",
+		Path:       "/activity-service/activity/{activityId}/split_summaries",
+		HTTPMethod: "GET",
+		Params: []endpoint.Param{
+			{Name: "activity_id", Type: endpoint.ParamTypeInt, Required: true, Description: "The activity ID"},
+		},
+		CLICommand:    "activities",
+		CLISubcommand: "split-summaries",
+		MCPTool:       "get_activity_split_summaries",
+		Short:         "Get activity split summaries",
+		Long:          "Get split summaries for an activity aggregated by split type (warmup, active, recovery, cooldown, etc.)",
+		DependsOn:     "ListActivities",
+		ArgProvider: func(result any) map[string]any {
+			items, ok := result.([]garmin.ActivityListItem)
+			if !ok || len(items) == 0 {
+				return nil
+			}
+			return map[string]any{"activity_id": items[0].ActivityID}
+		},
+		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
+			client, ok := c.(*garmin.Client)
+			if !ok {
+				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
+			}
+			return client.Activities.GetSplitSummaries(ctx, int64(args.Int("activity_id")))
+		},
+	},
 }
