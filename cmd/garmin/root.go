@@ -8,11 +8,15 @@ import (
 	"github.com/llehouerou/go-garmin/endpoint"
 )
 
+// version is set at build time via ldflags.
+var version = "dev"
+
 var (
 	rootCmd = &cobra.Command{
-		Use:   "garmin",
-		Short: "Garmin Connect CLI",
-		Long:  "A command-line interface for interacting with Garmin Connect API.",
+		Use:     "garmin",
+		Short:   "Garmin Connect CLI",
+		Long:    "A command-line interface for interacting with Garmin Connect API.",
+		Version: version,
 	}
 
 	cliGenerator *endpoint.CLIGenerator

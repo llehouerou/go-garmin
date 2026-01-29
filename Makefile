@@ -1,5 +1,8 @@
 .PHONY: fmt lint test coverage check build cli record-fixtures validate-endpoints install-hooks
 
+VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
+LDFLAGS := -X main.version=$(VERSION)
+
 # Format all Go files (tools provided by nix devShell)
 fmt:
 	goimports-reviser -format -recursive .
@@ -34,7 +37,7 @@ build:
 
 # Build CLI binary
 cli:
-	go build -o garmin ./cmd/garmin
+	go build -ldflags "$(LDFLAGS)" -o garmin ./cmd/garmin
 
 # Build record-fixtures tool
 record-fixtures:

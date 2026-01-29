@@ -4,8 +4,30 @@ A Go client library and CLI for the Garmin Connect API.
 
 ## Installation
 
+### Prerequisites
+
+- Go 1.25 or later ([install Go](https://go.dev/doc/install))
+- `$GOPATH/bin` (usually `~/go/bin`) in your PATH
+
+### Install CLI
+
 ```bash
 go install github.com/llehouerou/go-garmin/cmd/garmin@latest
+```
+
+Verify installation:
+
+```bash
+garmin --version
+```
+
+### Build from Source
+
+```bash
+git clone https://github.com/llehouerou/go-garmin.git
+cd go-garmin
+go build -o garmin ./cmd/garmin
+./garmin --help
 ```
 
 ## CLI Usage
@@ -96,9 +118,19 @@ All commands output JSON for easy parsing.
 
 The CLI includes an MCP (Model Context Protocol) server that lets LLM assistants like Claude access your Garmin data.
 
-### Setup with Claude Code
+### Prerequisites
 
-Add to your Claude Code MCP settings (`~/.claude.json` or project `.claude/settings.json`):
+1. Install the CLI (see [Installation](#installation))
+2. Login once to create a session:
+   ```bash
+   garmin login -email=your@email.com -password=yourpassword
+   ```
+
+The MCP server reuses your CLI session, so you only need to login once.
+
+### Claude Code
+
+Add to `~/.claude.json` (global) or `.claude/settings.json` (project):
 
 ```json
 {
@@ -111,12 +143,51 @@ Add to your Claude Code MCP settings (`~/.claude.json` or project `.claude/setti
 }
 ```
 
-### Prerequisites
+### Claude Desktop
 
-1. Install the CLI: `go install github.com/llehouerou/go-garmin/cmd/garmin@latest`
-2. Login once: `garmin login -email=your@email.com -password=yourpassword`
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
 
-The MCP server reuses your CLI session, so you only need to login once.
+```json
+{
+  "mcpServers": {
+    "garmin": {
+      "command": "garmin",
+      "args": ["mcp"]
+    }
+  }
+}
+```
+
+### Cursor
+
+Add to Cursor settings (Settings > MCP Servers):
+
+```json
+{
+  "garmin": {
+    "command": "garmin",
+    "args": ["mcp"]
+  }
+}
+```
+
+### Troubleshooting
+
+If the MCP server isn't working:
+
+1. Verify the CLI is in your PATH: `which garmin`
+2. Check you're logged in: `garmin sleep` should return data
+3. Use the full path to the binary if needed:
+   ```json
+   {
+     "mcpServers": {
+       "garmin": {
+         "command": "/full/path/to/garmin",
+         "args": ["mcp"]
+       }
+     }
+   }
+   ```
 
 ### Available Tools
 
