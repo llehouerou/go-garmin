@@ -116,6 +116,7 @@ func getCassetteRecorders() map[string]cassetteRecorder {
 		"workouts":              recordWorkouts,
 		"calendar":              recordCalendar,
 		"fitnessage":            recordFitnessAge,
+		"fitnessstats":          recordFitnessStats,
 	}
 }
 
@@ -664,6 +665,56 @@ func recordFitnessAge(ctx context.Context, session []byte, date time.Time) error
 	_, err = doAPIRequest(ctx, httpClient, fitnessAgeURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: fitness age stats: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordFitnessStats(ctx context.Context, session []byte, date time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("fitnessstats")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+	endDate := date.Format("2006-01-02")
+	startDate := date.AddDate(0, 0, -24).Format("2006-01-02")
+
+	// Daily activity stats with multiple metrics
+	fmt.Printf("  Getting daily activity stats from %s to %s...\n", startDate, endDate)
+	dailyURL := fmt.Sprintf("https://connectapi.%s/fitnessstats-service/activity?aggregation=daily&userFirstDay=monday&startDate=%s&endDate=%s&groupByActivityType=false&standardizedUnits=false&groupByParentActivityType=false&metric=duration&metric=distance&metric=calories",
+		authState.Domain, startDate, endDate)
+	_, err = doAPIRequest(ctx, httpClient, dailyURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: daily fitness stats: %v\n", err)
+	}
+
+	// Weekly activity stats grouped by activity type
+	fmt.Printf("  Getting weekly activity stats grouped by type...\n")
+	weeklyURL := fmt.Sprintf("https://connectapi.%s/fitnessstats-service/activity?aggregation=weekly&userFirstDay=monday&startDate=%s&endDate=%s&groupByActivityType=true&standardizedUnits=true&groupByParentActivityType=false&metric=calories",
+		authState.Domain, startDate, endDate)
+	_, err = doAPIRequest(ctx, httpClient, weeklyURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: weekly fitness stats: %v\n", err)
+	}
+
+	// Activity-level stats (no aggregation) - returns individual activity data
+	fmt.Printf("  Getting activity-level stats (no aggregation)...\n")
+	allURL := fmt.Sprintf("https://connectapi.%s/fitnessstats-service/activity/all?startDate=%s&endDate=%s&activityType=running&metric=startLocal&metric=activityType&metric=activitySubType&metric=name&metric=aerobicTrainingEffect&metric=anaerobicTrainingEffect",
+		authState.Domain, startDate, endDate)
+	_, err = doAPIRequest(ctx, httpClient, allURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: activity-level fitness stats: %v\n", err)
 	}
 
 	return nil

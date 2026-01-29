@@ -301,7 +301,7 @@ Note: Gear activities are fetched via `/activitylist-service/activities/{gearUUI
 
 | Status | Method | Endpoint | Description |
 |--------|--------|----------|-------------|
-| [ ] | GET | `/fitnessstats-service/activity/all?startDate={start}&endDate={end}&...` | All activity stats |
+| [x] | GET | `/fitnessstats-service/activity?aggregation={agg}&startDate={start}&endDate={end}&metric={metric}...` | Activity fitness stats |
 
 ---
 

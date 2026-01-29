@@ -388,8 +388,11 @@ func (s *MetricsService) GetEnduranceScore(ctx context.Context, date time.Time) 
 type Aggregation string
 
 const (
-	AggregationDaily  Aggregation = "daily"
-	AggregationWeekly Aggregation = "weekly"
+	AggregationNone    Aggregation = "none"
+	AggregationDaily   Aggregation = "daily"
+	AggregationWeekly  Aggregation = "weekly"
+	AggregationMonthly Aggregation = "monthly"
+	AggregationYearly  Aggregation = "yearly"
 )
 
 // GetEnduranceScoreStats retrieves endurance score statistics for a date range.

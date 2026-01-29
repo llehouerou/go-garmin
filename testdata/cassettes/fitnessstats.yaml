@@ -1,0 +1,194 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            aggregation:
+                - daily
+            endDate:
+                - "2026-01-29"
+            groupByActivityType:
+                - "false"
+            groupByParentActivityType:
+                - "false"
+            metric:
+                - duration
+                - distance
+                - calories
+            standardizedUnits:
+                - "false"
+            startDate:
+                - "2026-01-05"
+            userFirstDay:
+                - monday
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/fitnessstats-service/activity?aggregation=daily&userFirstDay=monday&startDate=2026-01-05&endDate=2026-01-29&groupByActivityType=false&standardizedUnits=false&groupByParentActivityType=false&metric=duration&metric=distance&metric=calories
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"date":"2026-01-12","countOfActivities":1,"stats":{"all":{"duration":{"count":1,"min":7316017.08984375,"max":7316017.08984375,"avg":7316017.08984375,"sum":7316017.08984375},"distance":{"count":1,"min":461004.98046875,"max":461004.98046875,"avg":461004.98046875,"sum":461004.98046875},"calories":{"count":1,"min":2501.4419399999997,"max":2501.4419399999997,"avg":2501.4419399999997,"sum":2501.4419399999997}}}},{"date":"2026-01-19","countOfActivities":1,"stats":{"all":{"duration":{"count":1,"min":2671466.064453125,"max":2671466.064453125,"avg":2671466.064453125,"sum":2671466.064453125},"distance":{"count":1,"min":609185.009765625,"max":609185.009765625,"avg":609185.009765625,"sum":609185.009765625},"calories":{"count":1,"min":2061.4898399999997,"max":2061.4898399999997,"avg":2061.4898399999997,"sum":2061.4898399999997}}}},{"date":"2026-01-21","countOfActivities":1,"stats":{"all":{"duration":{"count":1,"min":2408718.017578125,"max":2408718.017578125,"avg":2408718.017578125,"sum":2408718.017578125},"distance":{"count":1,"min":581899.0234375,"max":581899.0234375,"avg":581899.0234375,"sum":581899.0234375},"calories":{"count":1,"min":1860.3688799999998,"max":1860.3688799999998,"avg":1860.3688799999998,"sum":1860.3688799999998}}}},{"date":"2026-01-24","countOfActivities":1,"stats":{"all":{"duration":{"count":1,"min":2401766.11328125,"max":2401766.11328125,"avg":2401766.11328125,"sum":2401766.11328125},"distance":{"count":1,"min":571514.013671875,"max":571514.013671875,"avg":571514.013671875,"sum":571514.013671875},"calories":{"count":1,"min":1814.27866,"max":1814.27866,"avg":1814.27866,"sum":1814.27866}}}},{"date":"2026-01-25","countOfActivities":1,"stats":{"all":{"duration":{"count":1,"min":2356998.046875,"max":2356998.046875,"avg":2356998.046875,"sum":2356998.046875},"distance":{"count":1,"min":569208.0078125,"max":569208.0078125,"avg":569208.0078125,"sum":569208.0078125},"calories":{"count":1,"min":1831.0387399999997,"max":1831.0387399999997,"avg":1831.0387399999997,"sum":1831.0387399999997}}}},{"date":"2026-01-27","countOfActivities":1,"stats":{"all":{"duration":{"count":1,"min":2771576.904296875,"max":2771576.904296875,"avg":2771576.904296875,"sum":2771576.904296875},"distance":{"count":1,"min":661518.017578125,"max":661518.017578125,"avg":661518.017578125,"sum":661518.017578125},"calories":{"count":1,"min":1948.3592999999998,"max":1948.3592999999998,"avg":1948.3592999999998,"sum":1948.3592999999998}}}}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c5851680f3e7398-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Thu, 29 Jan 2026 11:16:32 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=zpxDwbMC283eyUELhLS7paWNz35pEolZGm6WxdEhkP0P%2FibXWHjkpIaZj6D0cR%2FSm643sLLS0JTEAVv0RkLyTLerHQv5EdsS2x9fyyF18mdTwa2X9zkcdCHmb7OHDvetMKri1lJTmw9wf4PKCpfzSR2nzQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 372.81898ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            aggregation:
+                - weekly
+            endDate:
+                - "2026-01-29"
+            groupByActivityType:
+                - "true"
+            groupByParentActivityType:
+                - "false"
+            metric:
+                - calories
+            standardizedUnits:
+                - "true"
+            startDate:
+                - "2026-01-05"
+            userFirstDay:
+                - monday
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/fitnessstats-service/activity?aggregation=weekly&userFirstDay=monday&startDate=2026-01-05&endDate=2026-01-29&groupByActivityType=true&standardizedUnits=true&groupByParentActivityType=false&metric=calories
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"date":"2026-01-12","countOfActivities":1,"stats":{"hiking":{"calories":{"count":1,"min":2501.4419399999997,"max":2501.4419399999997,"avg":2501.4419399999997,"sum":2501.4419399999997}}}},{"date":"2026-01-19","countOfActivities":4,"stats":{"running":{"calories":{"count":4,"min":1814.27866,"max":2061.4898399999997,"avg":1891.7940299999998,"sum":7567.176119999999}}}},{"date":"2026-01-26","countOfActivities":1,"stats":{"running":{"calories":{"count":1,"min":1948.3592999999998,"max":1948.3592999999998,"avg":1948.3592999999998,"sum":1948.3592999999998}}}}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c58516a69b47398-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Thu, 29 Jan 2026 11:16:33 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=PEaUWUJW86YiWS4wlS0b8X78xVvlI8eQ2GSICvKpRcvCL9%2Bg0Xr5ZHiPprTiFlf%2B7EgQgxngMJXcMOYacGT2i%2FtVtADAVZiqxZDPgkw2HmZ%2BQ%2F9qoaq1GHnVUD6U9GCfmXUVhxeTB%2FAIJcJjROyqFqMrUQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 359.8033ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        form:
+            activityType:
+                - running
+            endDate:
+                - "2026-01-29"
+            metric:
+                - startLocal
+                - activityType
+                - activitySubType
+                - name
+                - aerobicTrainingEffect
+                - anaerobicTrainingEffect
+            startDate:
+                - "2026-01-05"
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/fitnessstats-service/activity/all?startDate=2026-01-05&endDate=2026-01-29&activityType=running&metric=startLocal&metric=activityType&metric=activitySubType&metric=name&metric=aerobicTrainingEffect&metric=anaerobicTrainingEffect
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"activityId":21597069417,"name":"Saint-Pierre Course à pied","aerobicTrainingEffect":3.5999999046325684,"anaerobicTrainingEffect":0.0,"startLocal":"2026-01-19T17:17:42","activityType":"running"},{"activityId":21619586459,"name":"Saint-Pierre Course à pied","aerobicTrainingEffect":3.5,"anaerobicTrainingEffect":0.5,"startLocal":"2026-01-21T18:10:41","activityType":"running"},{"activityId":21650901486,"name":"Saint-Pierre - Base","aerobicTrainingEffect":3.200000047683716,"anaerobicTrainingEffect":0.0,"startLocal":"2026-01-24T18:03:45","activityType":"running"},{"activityId":21661023200,"name":"Saint-Pierre - Base","aerobicTrainingEffect":3.4000000953674316,"anaerobicTrainingEffect":0.0,"startLocal":"2026-01-25T17:59:36","activityType":"running"},{"activityId":21680374805,"name":"Saint-Pierre - Threshold Intervals 6x2min","aerobicTrainingEffect":3.299999952316284,"anaerobicTrainingEffect":1.2000000476837158,"startLocal":"2026-01-27T17:28:07","activityType":"running"}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c58516cac887398-JNB
+            Content-Type:
+                - application/json;charset=UTF-8
+            Date:
+                - Thu, 29 Jan 2026 11:16:33 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=KNx5vZXfJyXHtG6HbCu93feCUCb1Zs4GfwMB7xVjogAqo2jypBY9xYTjHpFuXDenQsOlRqkRDlqg6pQRn06YpJ3EHjf8VBRUcjObe460Vt8L831GTc1YaxyQ4nrxV4%2B05hltbSskdAh6dU2mKylWvwAgMA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 352.364815ms
