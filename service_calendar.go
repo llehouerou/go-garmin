@@ -3,6 +3,7 @@ package garmin
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -103,15 +104,15 @@ func (c *Calendar) SetRaw(data json.RawMessage) {
 }
 
 // CalendarOptions specifies optional parameters for calendar retrieval.
-// Parameters are hierarchical: month requires year, day requires month, start requires day.
+// Parameters are hierarchical: month requires year, day requires both month and start.
 type CalendarOptions struct {
 	Month *int // 0-11 (January=0, December=11)
-	Day   *int // Day of month
+	Day   *int // Day of month (requires Start)
 	Start *int // Week start day (1=Monday)
 }
 
 // Get retrieves calendar data for the given year with optional filtering.
-// Options are hierarchical: month requires year, day requires month, start requires day.
+// Options are hierarchical: month requires year, day requires both month and start.
 func (s *CalendarService) Get(ctx context.Context, year int, opts *CalendarOptions) (*Calendar, error) {
 	path := fmt.Sprintf("/calendar-service/year/%d", year)
 
@@ -119,11 +120,10 @@ func (s *CalendarService) Get(ctx context.Context, year int, opts *CalendarOptio
 		path += fmt.Sprintf("/month/%d", *opts.Month)
 
 		if opts.Day != nil {
-			path += fmt.Sprintf("/day/%d", *opts.Day)
-
-			if opts.Start != nil {
-				path += fmt.Sprintf("/start/%d", *opts.Start)
+			if opts.Start == nil {
+				return nil, errors.New("start is required when day is provided")
 			}
+			path += fmt.Sprintf("/day/%d/start/%d", *opts.Day, *opts.Start)
 		}
 	}
 
