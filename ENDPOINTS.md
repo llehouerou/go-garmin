@@ -167,6 +167,14 @@ Note: `daily/{displayName}` can also be accessed as `daily/?calendarDate={date}`
 
 ---
 
+## Fitness Age Service (`/fitnessage-service/`)
+
+| Status | Method | Endpoint | Description |
+|--------|--------|----------|-------------|
+| [x] | GET | `/fitnessage-service/stats/daily/{start}/{end}` | Daily fitness age statistics |
+
+---
+
 ## Device Service (`/device-service/`)
 
 | Status | Method | Endpoint | Description |

@@ -1,0 +1,50 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/fitnessage-service/stats/daily/2026-01-23/2026-01-29
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '[{"calendarDate":"2026-01-24","values":{"achievableFitnessAge":36.267153123465285,"vigorousDaysAvg":1.0,"fitnessAge":35.190810941555135,"rhr":52,"bmi":20.831024930747922}},{"calendarDate":"2026-01-25","values":{"achievableFitnessAge":36.267153123465285,"vigorousDaysAvg":1.0,"fitnessAge":35.190810941555135,"rhr":52,"bmi":20.831024930747922}},{"calendarDate":"2026-01-27","values":{"achievableFitnessAge":36.267153123465285,"vigorousDaysAvg":1.1666666666666667,"fitnessAge":34.99261838227663,"rhr":52,"bmi":20.554016620498615}},{"calendarDate":"2026-01-29","values":{"achievableFitnessAge":36.267153123465285,"vigorousDaysAvg":1.3333333333333333,"fitnessAge":34.99261838227663,"rhr":52,"bmi":20.554016620498615}}]'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9c576ed479537404-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Thu, 29 Jan 2026 08:41:52 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=w1ilQ1uv%2BW9fI4KctsqY5BDcLt6J5BbQ4kccF0HxXfzTLpBmNBe%2FpsY%2B6DBH7Z5c4UyPyojm5xGPcbm%2FgoIZxikfaeAmY7nZfKx3aUz3jtBAcCBiJkc2UA6qWcUK%2B3YVZ0vVrVN4PNIzsVpxN3Nb70MGDQ%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 348.917237ms

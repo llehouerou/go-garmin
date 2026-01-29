@@ -115,6 +115,7 @@ func getCassetteRecorders() map[string]cassetteRecorder {
 		"biometric":             recordBiometric,
 		"workouts":              recordWorkouts,
 		"calendar":              recordCalendar,
+		"fitnessage":            recordFitnessAge,
 	}
 }
 
@@ -631,6 +632,38 @@ func recordMetrics(ctx context.Context, session []byte, date time.Time) error {
 	_, err = doAPIRequest(ctx, httpClient, acclimationURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: heat/altitude acclimation: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordFitnessAge(ctx context.Context, session []byte, date time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("fitnessage")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+	dateStr := date.Format("2006-01-02")
+
+	// Fitness age stats (last 7 days)
+	startDate := date.AddDate(0, 0, -6)
+	fmt.Printf("  Getting fitness age stats from %s to %s...\n", startDate.Format("2006-01-02"), dateStr)
+	fitnessAgeURL := fmt.Sprintf("https://connectapi.%s/fitnessage-service/stats/daily/%s/%s",
+		authState.Domain, startDate.Format("2006-01-02"), dateStr)
+	_, err = doAPIRequest(ctx, httpClient, fitnessAgeURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: fitness age stats: %v\n", err)
 	}
 
 	return nil

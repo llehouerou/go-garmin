@@ -56,3 +56,6 @@ type BiometricService struct{ client *Client }
 
 // CalendarService provides access to calendar-related API endpoints.
 type CalendarService struct{ client *Client }
+
+// FitnessAgeService provides access to fitness age-related API endpoints.
+type FitnessAgeService struct{ client *Client }

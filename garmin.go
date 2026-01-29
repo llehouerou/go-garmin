@@ -42,6 +42,7 @@ type Client struct {
 	HRV             *HRVService
 	Biometric       *BiometricService
 	Calendar        *CalendarService
+	FitnessAge      *FitnessAgeService
 
 	opts      Options
 	transport *httpTransport
@@ -86,6 +87,7 @@ func New(opts Options) *Client {
 	c.HRV = &HRVService{client: c}
 	c.Biometric = &BiometricService{client: c}
 	c.Calendar = &CalendarService{client: c}
+	c.FitnessAge = &FitnessAgeService{client: c}
 
 	return c
 }
