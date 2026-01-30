@@ -14,16 +14,27 @@ var workoutBodyConfig = &endpoint.BodyConfig{
 	Type: reflect.TypeFor[garmin.Workout](),
 	Description: `JSON object representing a workout. Required fields: workoutName, sportType, workoutSegments.
 
+SPORT TYPES (sportTypeId / sportTypeKey):
+  1=running, 2=cycling, 3=other, 4=swimming, 5=strength_training,
+  6=cardio_training, 7=yoga, 8=pilates, 9=hiit, 10=multi_sport, 11=mobility
+
+STEP TYPES (stepTypeId / stepTypeKey):
+  1=warmup, 2=cooldown, 3=interval, 4=recovery, 5=rest, 6=repeat, 7=other, 8=main
+
+END CONDITIONS (conditionTypeId / conditionTypeKey):
+  1=lap.button, 2=time (seconds), 3=distance (meters), 4=calories, 5=power,
+  6=heart.rate, 7=iterations (for repeats), 8=fixed.rest, 9=fixed.repetition,
+  10=reps (for strength), 17=velocity.loss, 24=power.loss
+
+TARGET TYPES (workoutTargetTypeId / workoutTargetTypeKey):
+  1=no.target, 2=power.zone, 3=cadence, 4=heart.rate.zone, 5=speed.zone,
+  6=pace.zone, 7=grade, 14=swim.stroke, 15=resistance, 19=instruction
+
 Structure:
 - workoutName (string, required): Name of the workout
 - description (string): Workout description
-- sportType (object, required): Sport type with sportTypeId and sportTypeKey
-  - sportTypeId: 1=running, 2=cycling, 5=swimming, etc.
-  - sportTypeKey: "running", "cycling", "lap_swimming", etc.
-- workoutSegments (array, required): Array of workout segments, each containing:
-  - segmentOrder (int): Order of the segment (1-based)
-  - sportType (object): Same as above
-  - workoutSteps (array): Array of workout steps
+- sportType (object, required): {"sportTypeId": N, "sportTypeKey": "key"}
+- workoutSegments (array, required): Array of workout segments
 
 WorkoutStep types:
 - "ExecutableStepDTO": A single exercise step
@@ -31,58 +42,88 @@ WorkoutStep types:
 
 ExecutableStepDTO fields:
 - stepOrder (int): Order within segment (1-based)
-- stepType: {"stepTypeId": N, "stepTypeKey": "warmup|interval|recovery|rest|cooldown|other"}
-- description (string): Optional note/description for this step
-- endCondition: {"conditionTypeId": N, "conditionTypeKey": "time|distance|calories|heart.rate|iterations|lap.button"}
-- endConditionValue: Value for the condition (seconds for time, meters for distance)
-- preferredEndConditionUnit: Optional unit for distance conditions
-- targetType: {"workoutTargetTypeId": N, "workoutTargetTypeKey": "no.target|heart.rate.zone|cadence.zone|speed.zone|pace.zone|power.zone"}
-- zoneNumber: Zone number (1-5) when using zone targets
-- targetValueOne/targetValueTwo: Custom target range values (when not using zones)
+- stepType: {"stepTypeId": N, "stepTypeKey": "key"}
+- description (string): Optional note/description
+- endCondition: {"conditionTypeId": N, "conditionTypeKey": "key"}
+- endConditionValue: Value for condition (seconds/meters/reps)
+- targetType: {"workoutTargetTypeId": N, "workoutTargetTypeKey": "key"}
+- zoneNumber: Zone number (1-5) for zone targets
+- targetValueOne/targetValueTwo: Custom target range
 
-Secondary target (for dual targeting, e.g., HR zone + cadence):
-- secondaryTargetType: Same structure as targetType
-- secondaryZoneNumber: Zone number for secondary target
-- secondaryTargetValueOne/secondaryTargetValueTwo: Custom secondary target range
+STRENGTH TRAINING specific fields (sportTypeId=5):
+- category: Exercise category (e.g., "BENCH_PRESS", "CURL", "DEADLIFT")
+- exerciseName: Exercise key (e.g., "BARBELL_BENCH_PRESS", "DUMBBELL_CURL")
+- weightValue: Weight amount (optional)
+- weightUnit: Weight unit info (optional)
+Use list_exercise_categories, list_exercises, get_exercise tools to find valid values.
+
+SWIMMING specific fields (sportTypeId=4):
+- strokeType: {"strokeTypeId": N, "strokeTypeKey": "key"}
+  (1=any_stroke, 2=backstroke, 3=breaststroke, 4=drill, 5=fly, 6=free, 7=individual_medley)
+- equipmentType: {"equipmentTypeId": N, "equipmentTypeKey": "key"}
+  (1=fins, 2=kickboard, 3=paddles, 4=pull_buoy, 5=snorkel)
 
 RepeatGroupDTO fields:
-- numberOfIterations: Number of times to repeat the nested steps
-- workoutSteps: Nested array of ExecutableStepDTO steps to repeat
-- smartRepeat (bool): Enable smart repeat feature
-- skipLastRestStep (bool): Skip the last recovery step in the repeat group`,
-	Example: `{
+- numberOfIterations: Number of times to repeat
+- workoutSteps: Nested array of steps to repeat
+- smartRepeat (bool): Enable smart repeat
+- skipLastRestStep (bool): Skip last recovery in group`,
+	Example: `RUNNING EXAMPLE:
+{
   "workoutName": "Easy 30min Run",
-  "description": "Easy aerobic run in Zone 2",
   "sportType": {"sportTypeId": 1, "sportTypeKey": "running"},
   "workoutSegments": [{
     "segmentOrder": 1,
     "sportType": {"sportTypeId": 1, "sportTypeKey": "running"},
     "workoutSteps": [
-      {
-        "type": "ExecutableStepDTO",
-        "stepOrder": 1,
-        "stepType": {"stepTypeId": 1, "stepTypeKey": "warmup"},
-        "endCondition": {"conditionTypeId": 2, "conditionTypeKey": "time"},
-        "endConditionValue": 300,
-        "targetType": {"workoutTargetTypeId": 1, "workoutTargetTypeKey": "no.target"}
-      },
-      {
-        "type": "ExecutableStepDTO",
-        "stepOrder": 2,
-        "stepType": {"stepTypeId": 3, "stepTypeKey": "interval"},
-        "endCondition": {"conditionTypeId": 2, "conditionTypeKey": "time"},
-        "endConditionValue": 1200,
-        "targetType": {"workoutTargetTypeId": 4, "workoutTargetTypeKey": "heart.rate.zone"},
-        "zoneNumber": 2
-      },
-      {
-        "type": "ExecutableStepDTO",
-        "stepOrder": 3,
-        "stepType": {"stepTypeId": 2, "stepTypeKey": "cooldown"},
-        "endCondition": {"conditionTypeId": 2, "conditionTypeKey": "time"},
-        "endConditionValue": 300,
-        "targetType": {"workoutTargetTypeId": 1, "workoutTargetTypeKey": "no.target"}
-      }
+      {"type": "ExecutableStepDTO", "stepOrder": 1,
+       "stepType": {"stepTypeId": 1, "stepTypeKey": "warmup"},
+       "endCondition": {"conditionTypeId": 2, "conditionTypeKey": "time"},
+       "endConditionValue": 300,
+       "targetType": {"workoutTargetTypeId": 1, "workoutTargetTypeKey": "no.target"}},
+      {"type": "ExecutableStepDTO", "stepOrder": 2,
+       "stepType": {"stepTypeId": 3, "stepTypeKey": "interval"},
+       "endCondition": {"conditionTypeId": 2, "conditionTypeKey": "time"},
+       "endConditionValue": 1500,
+       "targetType": {"workoutTargetTypeId": 4, "workoutTargetTypeKey": "heart.rate.zone"},
+       "zoneNumber": 2}
+    ]
+  }]
+}
+
+STRENGTH TRAINING EXAMPLE:
+{
+  "workoutName": "Upper Body Workout",
+  "sportType": {"sportTypeId": 5, "sportTypeKey": "strength_training"},
+  "workoutSegments": [{
+    "segmentOrder": 1,
+    "sportType": {"sportTypeId": 5, "sportTypeKey": "strength_training"},
+    "workoutSteps": [
+      {"type": "ExecutableStepDTO", "stepOrder": 1,
+       "stepType": {"stepTypeId": 1, "stepTypeKey": "warmup"},
+       "endCondition": {"conditionTypeId": 10, "conditionTypeKey": "reps"},
+       "endConditionValue": 10,
+       "targetType": {"workoutTargetTypeId": 1, "workoutTargetTypeKey": "no.target"},
+       "category": "ROW", "exerciseName": "BANDED_FACE_PULLS"},
+      {"type": "RepeatGroupDTO", "stepOrder": 2,
+       "stepType": {"stepTypeId": 6, "stepTypeKey": "repeat"},
+       "numberOfIterations": 3,
+       "endCondition": {"conditionTypeId": 7, "conditionTypeKey": "iterations"},
+       "workoutSteps": [
+         {"type": "ExecutableStepDTO", "stepOrder": 3,
+          "stepType": {"stepTypeId": 3, "stepTypeKey": "interval"},
+          "childStepId": 1,
+          "endCondition": {"conditionTypeId": 10, "conditionTypeKey": "reps"},
+          "endConditionValue": 8,
+          "targetType": {"workoutTargetTypeId": 1, "workoutTargetTypeKey": "no.target"},
+          "category": "BENCH_PRESS", "exerciseName": "BARBELL_BENCH_PRESS"},
+         {"type": "ExecutableStepDTO", "stepOrder": 4,
+          "stepType": {"stepTypeId": 4, "stepTypeKey": "recovery"},
+          "childStepId": 1,
+          "endCondition": {"conditionTypeId": 2, "conditionTypeKey": "time"},
+          "endConditionValue": 90,
+          "targetType": {"workoutTargetTypeId": 1, "workoutTargetTypeKey": "no.target"}}
+       ]}
     ]
   }]
 }`,

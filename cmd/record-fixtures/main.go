@@ -1006,6 +1006,14 @@ func recordWorkouts(ctx context.Context, session []byte, _ time.Time) error {
 		}
 	}
 
+	// Also get strength training workout 1458299409
+	fmt.Println("  Getting strength workout 1458299409...")
+	strengthURL := fmt.Sprintf("https://connectapi.%s/workout-service/workout/1458299409", authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, strengthURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: strength workout: %v\n", err)
+	}
+
 	return nil
 }
 

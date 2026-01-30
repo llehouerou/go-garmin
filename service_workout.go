@@ -10,6 +10,261 @@ import (
 	"time"
 )
 
+// Sport type constants.
+const (
+	SportTypeRunning          = 1
+	SportTypeCycling          = 2
+	SportTypeOther            = 3
+	SportTypeSwimming         = 4
+	SportTypeStrengthTraining = 5
+	SportTypeCardioTraining   = 6
+	SportTypeYoga             = 7
+	SportTypePilates          = 8
+	SportTypeHIIT             = 9
+	SportTypeMultiSport       = 10
+	SportTypeMobility         = 11
+
+	SportTypeKeyRunning          = "running"
+	SportTypeKeyCycling          = "cycling"
+	SportTypeKeyOther            = "other"
+	SportTypeKeySwimming         = "swimming"
+	SportTypeKeyStrengthTraining = "strength_training"
+	SportTypeKeyCardioTraining   = "cardio_training"
+	SportTypeKeyYoga             = "yoga"
+	SportTypeKeyPilates          = "pilates"
+	SportTypeKeyHIIT             = "hiit"
+	SportTypeKeyMultiSport       = "multi_sport"
+	SportTypeKeyMobility         = "mobility"
+)
+
+// Step type constants.
+const (
+	StepTypeWarmup   = 1
+	StepTypeCooldown = 2
+	StepTypeInterval = 3
+	StepTypeRecovery = 4
+	StepTypeRest     = 5
+	StepTypeRepeat   = 6
+	StepTypeOther    = 7
+	StepTypeMain     = 8
+
+	StepTypeKeyWarmup   = "warmup"
+	StepTypeKeyCooldown = "cooldown"
+	StepTypeKeyInterval = "interval"
+	StepTypeKeyRecovery = "recovery"
+	StepTypeKeyRest     = "rest"
+	StepTypeKeyRepeat   = "repeat"
+	StepTypeKeyOther    = "other"
+	StepTypeKeyMain     = "main"
+)
+
+// End condition type constants.
+const (
+	ConditionTypeLapButton          = 1
+	ConditionTypeTime               = 2
+	ConditionTypeDistance           = 3
+	ConditionTypeCalories           = 4
+	ConditionTypePower              = 5
+	ConditionTypeHeartRate          = 6
+	ConditionTypeIterations         = 7 // For repeat groups
+	ConditionTypeFixedRest          = 8
+	ConditionTypeFixedRepetition    = 9
+	ConditionTypeReps               = 10 // For strength training
+	ConditionTypeTrainingPeaksTSS   = 11
+	ConditionTypeRepetitionTime     = 12
+	ConditionTypeTimeAtValidCDA     = 13
+	ConditionTypePowerLastLap       = 14
+	ConditionTypeMaxPowerLastLap    = 15
+	ConditionTypeRepetitionSwimCSS  = 16
+	ConditionTypeVelocityLoss       = 17
+	ConditionTypeCustomVelocity     = 18
+	ConditionTypeVBTVelocityZone    = 19
+	ConditionTypeVelocityMin        = 20
+	ConditionTypePeakVelocityMin    = 21
+	ConditionTypePeakVelocityLoss   = 22
+	ConditionTypeCustomPeakVelocity = 23
+	ConditionTypePowerLoss          = 24
+
+	ConditionTypeKeyLapButton          = "lap.button"
+	ConditionTypeKeyTime               = "time"
+	ConditionTypeKeyDistance           = "distance"
+	ConditionTypeKeyCalories           = "calories"
+	ConditionTypeKeyPower              = "power"
+	ConditionTypeKeyHeartRate          = "heart.rate"
+	ConditionTypeKeyIterations         = "iterations"
+	ConditionTypeKeyFixedRest          = "fixed.rest"
+	ConditionTypeKeyFixedRepetition    = "fixed.repetition"
+	ConditionTypeKeyReps               = "reps"
+	ConditionTypeKeyTrainingPeaksTSS   = "training.peaks.tss"
+	ConditionTypeKeyRepetitionTime     = "repetition.time"
+	ConditionTypeKeyTimeAtValidCDA     = "time.at.valid.cda"
+	ConditionTypeKeyPowerLastLap       = "power.last.lap"
+	ConditionTypeKeyMaxPowerLastLap    = "max.power.last.lap"
+	ConditionTypeKeyRepetitionSwimCSS  = "repetition.swim.css.offset"
+	ConditionTypeKeyVelocityLoss       = "velocity.loss"
+	ConditionTypeKeyCustomVelocity     = "custom.velocity"
+	ConditionTypeKeyVBTVelocityZone    = "vbt.velocity.zone"
+	ConditionTypeKeyVelocityMin        = "velocity.min"
+	ConditionTypeKeyPeakVelocityMin    = "peak.velocity.min"
+	ConditionTypeKeyPeakVelocityLoss   = "peak.velocity.loss"
+	ConditionTypeKeyCustomPeakVelocity = "custom.peak.velocity"
+	ConditionTypeKeyPowerLoss          = "power.loss"
+)
+
+// Target type constants.
+const (
+	TargetTypeNoTarget           = 1
+	TargetTypePowerZone          = 2
+	TargetTypeCadence            = 3
+	TargetTypeHeartRateZone      = 4
+	TargetTypeSpeedZone          = 5
+	TargetTypePaceZone           = 6
+	TargetTypeGrade              = 7
+	TargetTypeHeartRateLap       = 8
+	TargetTypePowerLap           = 9
+	TargetTypePower3s            = 10
+	TargetTypePower10s           = 11
+	TargetTypePower30s           = 12
+	TargetTypeSpeedLap           = 13
+	TargetTypeSwimStroke         = 14
+	TargetTypeResistance         = 15
+	TargetTypePowerCurve         = 16
+	TargetTypeSwimCSSOffset      = 17
+	TargetTypeSwimInstruction    = 18
+	TargetTypeInstruction        = 19
+	TargetTypeVelocityLoss       = 20
+	TargetTypeCustomVelocity     = 21
+	TargetTypeVBTVelocityZone    = 22
+	TargetTypePowerLoss          = 23
+	TargetTypeVelocityMin        = 24
+	TargetTypePeakVelocityMin    = 25
+	TargetTypePeakVelocityLoss   = 26
+	TargetTypeCustomPeakVelocity = 27
+
+	TargetTypeKeyNoTarget           = "no.target"
+	TargetTypeKeyPowerZone          = "power.zone"
+	TargetTypeKeyCadence            = "cadence"
+	TargetTypeKeyHeartRateZone      = "heart.rate.zone"
+	TargetTypeKeySpeedZone          = "speed.zone"
+	TargetTypeKeyPaceZone           = "pace.zone"
+	TargetTypeKeyGrade              = "grade"
+	TargetTypeKeyHeartRateLap       = "heart.rate.lap"
+	TargetTypeKeyPowerLap           = "power.lap"
+	TargetTypeKeyPower3s            = "power.3s"
+	TargetTypeKeyPower10s           = "power.10s"
+	TargetTypeKeyPower30s           = "power.30s"
+	TargetTypeKeySpeedLap           = "speed.lap"
+	TargetTypeKeySwimStroke         = "swim.stroke"
+	TargetTypeKeyResistance         = "resistance"
+	TargetTypeKeyPowerCurve         = "power.curve"
+	TargetTypeKeySwimCSSOffset      = "swim.css.offset"
+	TargetTypeKeySwimInstruction    = "swim.instruction"
+	TargetTypeKeyInstruction        = "instruction"
+	TargetTypeKeyVelocityLoss       = "velocity.loss"
+	TargetTypeKeyCustomVelocity     = "custom.velocity"
+	TargetTypeKeyVBTVelocityZone    = "vbt.velocity.zone"
+	TargetTypeKeyPowerLoss          = "power.loss"
+	TargetTypeKeyVelocityMin        = "velocity.min"
+	TargetTypeKeyPeakVelocityMin    = "peak.velocity.min"
+	TargetTypeKeyPeakVelocityLoss   = "peak.velocity.loss"
+	TargetTypeKeyCustomPeakVelocity = "custom.peak.velocity"
+)
+
+// Intensity type constants.
+const (
+	IntensityTypeActive   = 1
+	IntensityTypeRest     = 2
+	IntensityTypeWarmup   = 3
+	IntensityTypeCooldown = 4
+
+	IntensityTypeKeyActive   = "active"
+	IntensityTypeKeyRest     = "rest"
+	IntensityTypeKeyWarmup   = "warmup"
+	IntensityTypeKeyCooldown = "cooldown"
+)
+
+// Swimming stroke type constants.
+const (
+	StrokeTypeAny              = 1
+	StrokeTypeBackstroke       = 2
+	StrokeTypeBreaststroke     = 3
+	StrokeTypeDrill            = 4
+	StrokeTypeFly              = 5
+	StrokeTypeFree             = 6
+	StrokeTypeIM               = 7
+	StrokeTypeMixed            = 8
+	StrokeTypeIMByRound        = 9
+	StrokeTypeReverseIMByRound = 10
+
+	StrokeTypeKeyAny              = "any_stroke"
+	StrokeTypeKeyBackstroke       = "backstroke"
+	StrokeTypeKeyBreaststroke     = "breaststroke"
+	StrokeTypeKeyDrill            = "drill"
+	StrokeTypeKeyFly              = "fly"
+	StrokeTypeKeyFree             = "free"
+	StrokeTypeKeyIM               = "individual_medley"
+	StrokeTypeKeyMixed            = "mixed"
+	StrokeTypeKeyIMByRound        = "individual_medley_by_round"
+	StrokeTypeKeyReverseIMByRound = "reverse_individual_medley_by_round"
+)
+
+// Swimming equipment type constants.
+const (
+	SwimEquipmentFins      = 1
+	SwimEquipmentKickboard = 2
+	SwimEquipmentPaddles   = 3
+	SwimEquipmentPullBuoy  = 4
+	SwimEquipmentSnorkel   = 5
+
+	SwimEquipmentKeyFins      = "fins"
+	SwimEquipmentKeyKickboard = "kickboard"
+	SwimEquipmentKeyPaddles   = "paddles"
+	SwimEquipmentKeyPullBuoy  = "pull_buoy"
+	SwimEquipmentKeySnorkel   = "snorkel"
+)
+
+// Swimming instruction type constants.
+const (
+	SwimInstructionRecovery = 1
+	SwimInstructionVeryEasy = 2
+	SwimInstructionEasy     = 3
+	SwimInstructionModerate = 4
+	SwimInstructionHard     = 5
+	SwimInstructionVeryHard = 6
+	SwimInstructionAllOut   = 7
+	SwimInstructionFast     = 8
+	SwimInstructionAscend   = 9
+	SwimInstructionDescend  = 10
+
+	SwimInstructionKeyRecovery = "recovery"
+	SwimInstructionKeyVeryEasy = "very_easy"
+	SwimInstructionKeyEasy     = "easy"
+	SwimInstructionKeyModerate = "moderate"
+	SwimInstructionKeyHard     = "hard"
+	SwimInstructionKeyVeryHard = "very_hard"
+	SwimInstructionKeyAllOut   = "all_out"
+	SwimInstructionKeyFast     = "fast"
+	SwimInstructionKeyAscend   = "ascend"
+	SwimInstructionKeyDescend  = "descend"
+)
+
+// Swimming drill type constants.
+const (
+	SwimDrillKick  = 1
+	SwimDrillPull  = 2
+	SwimDrillDrill = 3
+
+	SwimDrillKeyKick  = "kick"
+	SwimDrillKeyPull  = "pull"
+	SwimDrillKeyDrill = "drill"
+)
+
+// Workout step DTO type constants.
+const (
+	StepDTOExecutable = "ExecutableStepDTO"
+	StepDTORepeat     = "RepeatGroupDTO"
+)
+
 // SportType represents a sport type for workouts.
 type SportType struct {
 	SportTypeID  int    `json:"sportTypeId"`
