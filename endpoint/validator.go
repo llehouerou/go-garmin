@@ -47,10 +47,10 @@ func (v *Validator) validateEndpoint(ep *Endpoint) []string {
 		errors = append(errors, ep.Name+": missing Handler")
 	}
 
-	// Must have a cassette
+	// Must have a cassette (or explicitly "none" for static endpoints)
 	if ep.Cassette == "" {
 		errors = append(errors, ep.Name+": missing Cassette")
-	} else {
+	} else if ep.Cassette != "none" {
 		cassettePath := filepath.Join(v.config.CassetteDir, ep.Cassette+".yaml")
 		if _, err := os.Stat(cassettePath); os.IsNotExist(err) {
 			errors = append(errors, fmt.Sprintf("%s: cassette file not found: %s", ep.Name, cassettePath))
