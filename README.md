@@ -116,6 +116,13 @@ garmin workouts delete <workout-id>
 garmin workouts schedule <workout-id> <date>
 garmin workouts unschedule <schedule-id>
 
+# Exercise Library (for strength training workouts)
+garmin exercises categories          # List all exercise categories
+garmin exercises muscles             # List all muscle groups
+garmin exercises equipment           # List all equipment types
+garmin exercises list [--category=BENCH_PRESS] [--muscle=CHEST] [--equipment=DUMBBELL]
+garmin exercises get <exercise-key>  # Get exercise details
+
 # Calendar (month is 0-indexed: January=0)
 garmin calendar get --year=2026 [--month=0] [--day=28] [--start=1]
 ```
@@ -207,7 +214,7 @@ Once configured, you can ask Claude questions like:
 - "What's my current VO2 max?"
 - "How's my stress level today?"
 
-The MCP server exposes 47 tools across these categories:
+The MCP server exposes 52 tools across these categories:
 
 | Category | Tools |
 |----------|-------|
@@ -222,9 +229,78 @@ The MCP server exposes 47 tools across these categories:
 | Fitness Stats | `get_fitness_stats`, `get_fitness_stats_activities` |
 | Biometric | `get_lactate_threshold`, `get_cycling_ftp`, `get_heart_rate_zones`, `get_power_to_weight` |
 | Workout | `list_workouts`, `get_workout`, `create_workout`, `update_workout`, `delete_workout`, `schedule_workout`, `unschedule_workout` |
+| Exercises | `list_exercise_categories`, `list_muscle_groups`, `list_equipment_types`, `list_exercises`, `get_exercise` |
 | Calendar | `get_calendar` |
 | Profile | `get_social_profile`, `get_user_settings`, `get_profile_settings` |
 | Utility | `get_current_date` |
+
+### LLM-Powered Workout Creation
+
+The MCP integration enables conversational workout creation. Ask Claude to create workouts in natural language:
+
+**Running Workouts:**
+> "Create a 45-minute interval workout with 5-minute warmup, 6x3min at threshold with 2min recovery, and cooldown"
+
+> "Build me a long run workout in heart rate zone 2 for 90 minutes"
+
+**Strength Training Workouts:**
+> "Create a push day workout: bench press 4x8, overhead press 3x10, tricep dips 3x12, with 90 second rest between sets"
+
+> "Build a full body strength workout targeting chest, back, and legs with compound movements"
+
+> "Create a dumbbell-only upper body workout I can do at home"
+
+**Smart Workout Planning:**
+> "Look at my recent activities and create a recovery workout appropriate for tomorrow"
+
+> "Based on my training load, suggest and create a workout for my next session"
+
+The LLM uses the exercise library (1,794 exercises) to find valid exercise categories and names, then constructs properly formatted workouts that sync directly to your Garmin device.
+
+#### Example Conversation
+
+```
+You: Create a chest and triceps workout with 3 exercises each, 4 sets of 10 reps
+
+Claude: I'll create that workout for you. Let me first find the best exercises...
+
+[Uses list_exercises with muscle=CHEST, then muscle=TRICEPS]
+
+I've found good options. Creating your workout now...
+
+[Uses create_workout with the structured JSON]
+
+Done! I've created "Chest & Triceps" workout with:
+
+Chest:
+- Barbell Bench Press: 4x10
+- Incline Dumbbell Press: 4x10
+- Cable Flyes: 4x10
+
+Triceps:
+- Tricep Dips: 4x10
+- Skull Crushers: 4x10
+- Tricep Pushdowns: 4x10
+
+Rest: 90 seconds between sets
+
+The workout is now in your Garmin Connect account. Would you like me to schedule it?
+```
+
+#### Workout Type Reference
+
+The MCP tools support all Garmin workout types:
+
+| Sport Type | ID | Features |
+|------------|----|----|
+| Running | 1 | Pace zones, HR zones, distance/time targets |
+| Cycling | 2 | Power zones, cadence targets, distance/time |
+| Swimming | 4 | Stroke types, equipment, pool length |
+| Strength Training | 5 | Exercise library, reps, sets, rest periods |
+| Cardio | 6 | HR zones, time targets |
+| Yoga | 7 | Time-based flows |
+| Pilates | 8 | Time-based sequences |
+| HIIT | 9 | Intervals, work/rest ratios |
 
 ## Library Usage
 
