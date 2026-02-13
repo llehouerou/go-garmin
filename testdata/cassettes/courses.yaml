@@ -1,0 +1,50 @@
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        host: connectapi.garmin.com
+        headers:
+            Authorization:
+                - '[REDACTED]'
+            User-Agent:
+                - GCM-iOS-5.19.1.2
+        url: https://connectapi.garmin.com/web-gateway/course/owner
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        content_length: -1
+        uncompressed: true
+        body: '{"coursesForUser":[{"courseId":87654321,"userProfileId":12345678,"displayName":"anonymous","userGroupId":null,"geoRoutePk":null,"activityType":{"typeId":3,"typeKey":"hiking","parentTypeId":17,"isHidden":false,"restricted":false,"trimmable":false},"courseName":"Anonymous Course","courseDescription":null,"createdDate":1770967543000,"updatedDate":1770967543000,"privacyRule":{"typeId":2,"typeKey":"private"},"distanceInMeters":7217.69,"elevationGainInMeters":277.86,"elevationLossInMeters":280.95,"startLatitude":48.8566,"startLongitude":2.3522,"speedInMetersPerSecond":0.0,"sourceTypeId":3,"sourcePk":null,"elapsedSeconds":null,"coordinateSystem":"WGS84","originalCoordinateSystem":"WGS84","consumer":null,"elevationSource":3,"hasShareableEvent":false,"hasPaceBand":false,"hasPowerGuide":false,"favorite":false,"hasTurnDetectionDisabled":false,"curatedCourseId":null,"startNote":null,"finishNote":null,"cutoffDuration":null,"createdDateFormatted":"2026-02-13 07:25:43.0 GMT","updatedDateFormatted":"2026-02-13 07:25:43.0 GMT","activityTypeId":{"typeId":3,"typeKey":"hiking","parentTypeId":17,"isHidden":false,"restricted":false,"trimmable":false},"public":false},{"courseId":87654321,"userProfileId":12345678,"displayName":"anonymous","userGroupId":null,"geoRoutePk":null,"activityType":{"typeId":3,"typeKey":"hiking","parentTypeId":17,"isHidden":false,"restricted":false,"trimmable":false},"courseName":"Anonymous Course","courseDescription":null,"createdDate":1752476456000,"updatedDate":1752476456000,"privacyRule":{"typeId":2,"typeKey":"private"},"distanceInMeters":5110.81,"elevationGainInMeters":211.36,"elevationLossInMeters":210.84,"startLatitude":48.8566,"startLongitude":2.3522,"speedInMetersPerSecond":0.0,"sourceTypeId":3,"sourcePk":null,"elapsedSeconds":null,"coordinateSystem":"WGS84","originalCoordinateSystem":"WGS84","consumer":null,"elevationSource":3,"hasShareableEvent":false,"hasPaceBand":false,"hasPowerGuide":false,"favorite":false,"hasTurnDetectionDisabled":false,"curatedCourseId":null,"startNote":null,"finishNote":null,"cutoffDuration":null,"createdDateFormatted":"2025-07-14 07:00:56.0 GMT","updatedDateFormatted":"2025-07-14 07:00:56.0 GMT","activityTypeId":{"typeId":3,"typeKey":"hiking","parentTypeId":17,"isHidden":false,"restricted":false,"trimmable":false},"public":false},{"courseId":87654321,"userProfileId":12345678,"displayName":"anonymous","userGroupId":null,"geoRoutePk":null,"activityType":{"typeId":3,"typeKey":"hiking","parentTypeId":17,"isHidden":false,"restricted":false,"trimmable":false},"courseName":"Anonymous Course","courseDescription":null,"createdDate":1752386189000,"updatedDate":1752386189000,"privacyRule":{"typeId":2,"typeKey":"private"},"distanceInMeters":9889.18,"elevationGainInMeters":363.26,"elevationLossInMeters":363.96,"startLatitude":48.8566,"startLongitude":2.3522,"speedInMetersPerSecond":0.0,"sourceTypeId":3,"sourcePk":null,"elapsedSeconds":null,"coordinateSystem":"WGS84","originalCoordinateSystem":"WGS84","consumer":null,"elevationSource":3,"hasShareableEvent":false,"hasPaceBand":false,"hasPowerGuide":false,"favorite":false,"hasTurnDetectionDisabled":false,"curatedCourseId":null,"startNote":null,"finishNote":null,"cutoffDuration":null,"createdDateFormatted":"2025-07-13 05:56:29.0 GMT","updatedDateFormatted":"2025-07-13 05:56:29.0 GMT","activityTypeId":{"typeId":3,"typeKey":"hiking","parentTypeId":17,"isHidden":false,"restricted":false,"trimmable":false},"public":false},{"courseId":87654321,"userProfileId":12345678,"displayName":"anonymous","userGroupId":null,"geoRoutePk":null,"activityType":{"typeId":3,"typeKey":"hiking","parentTypeId":17,"isHidden":false,"restricted":false,"trimmable":false},"courseName":"Anonymous Course","courseDescription":null,"createdDate":1752214685000,"updatedDate":1752214685000,"privacyRule":{"typeId":2,"typeKey":"private"},"distanceInMeters":9655.28,"elevationGainInMeters":166.57,"elevationLossInMeters":165.17,"startLatitude":48.8566,"startLongitude":2.3522,"speedInMetersPerSecond":0.0,"sourceTypeId":3,"sourcePk":null,"elapsedSeconds":null,"coordinateSystem":"WGS84","originalCoordinateSystem":"WGS84","consumer":null,"elevationSource":3,"hasShareableEvent":false,"hasPaceBand":false,"hasPowerGuide":false,"favorite":false,"hasTurnDetectionDisabled":false,"curatedCourseId":null,"startNote":null,"finishNote":null,"cutoffDuration":null,"createdDateFormatted":"2025-07-11 06:18:05.0 GMT","updatedDateFormatted":"2025-07-11 06:18:05.0 GMT","activityTypeId":{"typeId":3,"typeKey":"hiking","parentTypeId":17,"isHidden":false,"restricted":false,"trimmable":false},"public":false}]}'
+        headers:
+            Alt-Svc:
+                - h3=":443"; ma=86400
+            Cache-Control:
+                - no-cache, no-store, private
+            Cf-Cache-Status:
+                - DYNAMIC
+            Cf-Ray:
+                - 9cd30e1f5fc973ed-JNB
+            Content-Type:
+                - application/json
+            Date:
+                - Fri, 13 Feb 2026 08:46:25 GMT
+            Nel:
+                - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
+            Pragma:
+                - no-cache
+            Report-To:
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=l2nKunW9IIUE%2F1kYWijNy9ZsCNdVBaN0tEtI2wC4GRwv3m5qWRTpXNrA0FlsZBurYd29%2F8QO2IhJzv7vtHOgNKcKY%2BTK2nH2W5bpSJEHTNyX491HoTE7Pc5lqqsSVphsdR0ysKKG2bnN0P8x2lg4g6UU4g%3D%3D"}],"group":"cf-nel","max_age":604800}'
+            Server:
+                - cloudflare
+            Set-Cookie:
+                - '[REDACTED]'
+        status: 200 OK
+        code: 200
+        duration: 372.963234ms

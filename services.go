@@ -62,3 +62,6 @@ type FitnessAgeService struct{ client *Client }
 
 // FitnessStatsService provides access to fitness statistics API endpoints.
 type FitnessStatsService struct{ client *Client }
+
+// CourseService provides access to course-related API endpoints.
+type CourseService struct{ client *Client }

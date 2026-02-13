@@ -44,6 +44,7 @@ type Client struct {
 	Calendar        *CalendarService
 	FitnessAge      *FitnessAgeService
 	FitnessStats    *FitnessStatsService
+	Courses         *CourseService
 
 	opts      Options
 	transport *httpTransport
@@ -90,6 +91,7 @@ func New(opts Options) *Client {
 	c.Calendar = &CalendarService{client: c}
 	c.FitnessAge = &FitnessAgeService{client: c}
 	c.FitnessStats = &FitnessStatsService{client: c}
+	c.Courses = &CourseService{client: c}
 
 	return c
 }

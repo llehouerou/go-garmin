@@ -115,6 +115,7 @@ func getCassetteRecorders() map[string]cassetteRecorder {
 		"biometric":             recordBiometric,
 		"workouts":              recordWorkouts,
 		"calendar":              recordCalendar,
+		"courses":               recordCourses,
 		"fitnessage":            recordFitnessAge,
 		"fitnessstats":          recordFitnessStats,
 	}
@@ -1046,6 +1047,36 @@ func recordCalendar(ctx context.Context, session []byte, date time.Time) error {
 	_, err = doAPIRequest(ctx, httpClient, calendarURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: calendar: %v\n", err)
+	}
+
+	return nil
+}
+
+func recordCourses(ctx context.Context, session []byte, _ time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("courses")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+
+	// List owner courses
+	fmt.Println("  Getting owner courses...")
+	coursesURL := fmt.Sprintf("https://connectapi.%s/web-gateway/course/owner",
+		authState.Domain)
+	_, err = doAPIRequest(ctx, httpClient, coursesURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: courses: %v\n", err)
 	}
 
 	return nil

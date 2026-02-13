@@ -7,8 +7,9 @@ import (
 )
 
 const (
-	testAnonymousName = "anonymous"
-	testMetricSystem  = "metric"
+	testAnonymousName  = "anonymous"
+	testMetricSystem   = "metric"
+	testPrivateTypeKey = "private"
 )
 
 func TestDeviceJSONUnmarshal(t *testing.T) {

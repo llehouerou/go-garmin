@@ -184,8 +184,8 @@ func TestActivityJSONUnmarshal(t *testing.T) {
 	if activity.Steps != 5912 {
 		t.Errorf("Steps = %d, want 5912", activity.Steps)
 	}
-	if activity.Privacy.TypeKey != "private" {
-		t.Errorf("Privacy.TypeKey = %s, want private", activity.Privacy.TypeKey)
+	if activity.Privacy.TypeKey != testPrivateTypeKey {
+		t.Errorf("Privacy.TypeKey = %s, want %s", activity.Privacy.TypeKey, testPrivateTypeKey)
 	}
 	if len(activity.SplitSummaries) != 1 {
 		t.Errorf("SplitSummaries length = %d, want 1", len(activity.SplitSummaries))

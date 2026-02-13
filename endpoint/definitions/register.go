@@ -50,4 +50,7 @@ func RegisterAll(r *endpoint.Registry) {
 	for i := range ExerciseEndpoints {
 		r.Register(ExerciseEndpoints[i])
 	}
+	for i := range CourseEndpoints {
+		r.Register(CourseEndpoints[i])
+	}
 }

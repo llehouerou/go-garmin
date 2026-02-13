@@ -40,6 +40,12 @@ var (
 	unitIDPattern       = regexp.MustCompile(`"unitId"\s*:\s*\d+`)
 	serialNumberPattern = regexp.MustCompile(`"serialNumber"\s*:\s*"[^"]*"`)
 
+	// Course-related patterns
+	courseIDPattern       = regexp.MustCompile(`"courseId"\s*:\s*\d+`)
+	courseNamePattern     = regexp.MustCompile(`"courseName"\s*:\s*"[^"]*"`)
+	startLatitudePattern  = regexp.MustCompile(`"startLatitude"\s*:\s*-?[\d.]+`)
+	startLongitudePattern = regexp.MustCompile(`"startLongitude"\s*:\s*-?[\d.]+`)
+
 	// URL path patterns (for anonymizing IDs in request URLs)
 	deviceSettingsURLPattern  = regexp.MustCompile(`/device-info/settings/\d+`)
 	racePredictionsURLPattern = regexp.MustCompile(`/racepredictions/(latest|daily|monthly)/[a-zA-Z0-9-]+`)
@@ -214,6 +220,12 @@ func anonymizeBody(body string) string {
 	body = deviceIDPattern.ReplaceAllString(body, `"deviceId":12345678`)
 	body = unitIDPattern.ReplaceAllString(body, `"unitId":12345678`)
 	body = serialNumberPattern.ReplaceAllString(body, `"serialNumber":"ABC123456"`)
+
+	// Course info
+	body = courseIDPattern.ReplaceAllString(body, `"courseId":87654321`)
+	body = courseNamePattern.ReplaceAllString(body, `"courseName":"Anonymous Course"`)
+	body = startLatitudePattern.ReplaceAllString(body, `"startLatitude":48.8566`)
+	body = startLongitudePattern.ReplaceAllString(body, `"startLongitude":2.3522`)
 
 	// Profile image URLs
 	body = profileImageURLPattern.ReplaceAllString(body, `"$1":"https://example.com/profile.png"`)
