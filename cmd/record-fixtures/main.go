@@ -1074,12 +1074,44 @@ func recordCourses(ctx context.Context, session []byte, _ time.Time) error {
 	fmt.Println("  Getting owner courses...")
 	coursesURL := fmt.Sprintf("https://connectapi.%s/web-gateway/course/owner",
 		authState.Domain)
-	_, err = doAPIRequest(ctx, httpClient, coursesURL, authState.OAuth2AccessToken)
+	coursesResp, err := doAPIRequest(ctx, httpClient, coursesURL, authState.OAuth2AccessToken)
 	if err != nil {
 		fmt.Printf("  Warning: courses: %v\n", err)
+		return nil
+	}
+
+	// Get first course detail
+	courseID := extractFirstCourseID(coursesResp)
+	if courseID != 0 {
+		fmt.Printf("  Getting course detail for %d...\n", courseID)
+		courseURL := fmt.Sprintf("https://connectapi.%s/course-service/course/%d",
+			authState.Domain, courseID)
+		_, err = doAPIRequest(ctx, httpClient, courseURL, authState.OAuth2AccessToken)
+		if err != nil {
+			fmt.Printf("  Warning: course detail: %v\n", err)
+		}
 	}
 
 	return nil
+}
+
+func extractFirstCourseID(resp []map[string]any) int64 {
+	if len(resp) == 0 {
+		return 0
+	}
+	coursesForUser, ok := resp[0]["coursesForUser"].([]any)
+	if !ok || len(coursesForUser) == 0 {
+		return 0
+	}
+	firstCourse, ok := coursesForUser[0].(map[string]any)
+	if !ok {
+		return 0
+	}
+	courseID, ok := firstCourse["courseId"].(float64)
+	if !ok {
+		return 0
+	}
+	return int64(courseID)
 }
 
 func doAPIRequest(ctx context.Context, client *http.Client, url, token string) ([]map[string]any, error) {

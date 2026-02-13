@@ -186,3 +186,266 @@ func TestCoursesForUserResponseRawJSON(t *testing.T) {
 		t.Error("RawJSON should return original JSON")
 	}
 }
+
+func TestCourseDetailJSONUnmarshal(t *testing.T) {
+	rawJSON := `{
+		"courseId": 87654321,
+		"courseName": "Test Course",
+		"description": "A test course description",
+		"openStreetMap": false,
+		"matchedToSegments": false,
+		"userProfilePk": 12345678,
+		"userGroupPk": null,
+		"rulePK": 2,
+		"firstName": "Anonymous",
+		"lastName": "User",
+		"displayName": "anonymous",
+		"geoRoutePk": null,
+		"sourceTypeId": 3,
+		"sourcePk": null,
+		"distanceMeter": 7217.69,
+		"elevationGainMeter": 277.86,
+		"elevationLossMeter": 280.95,
+		"startPoint": {
+			"latitude": 48.8566,
+			"longitude": 2.3522,
+			"elevation": 100.0,
+			"distance": null,
+			"timestamp": null
+		},
+		"coursePoints": [
+			{
+				"coursePointId": 11111111,
+				"courseId": 87654321,
+				"name": "Start",
+				"latitude": 48.8566,
+				"longitude": 2.3522,
+				"elevation": 100.0,
+				"distance": 0.0,
+				"pointType": "START",
+				"sortOrder": 1,
+				"derivedElevation": 100.0
+			}
+		],
+		"boundingBox": {
+			"center": null,
+			"lowerLeft": {"latitude": 48.0, "longitude": 2.0},
+			"upperRight": {"latitude": 49.0, "longitude": 3.0},
+			"lowerLeftLatIsSet": true,
+			"lowerLeftLongIsSet": true,
+			"upperRightLatIsSet": true,
+			"upperRightLongIsSet": true
+		},
+		"hasShareableEvent": false,
+		"hasTurnDetectionDisabled": false,
+		"activityTypePk": 3,
+		"virtualPartnerId": 87654321,
+		"includeLaps": false,
+		"elapsedSeconds": null,
+		"speedMeterPerSecond": null,
+		"createDate": "2026-02-13T07:25:43.0",
+		"updateDate": "2026-02-13T07:25:43.0",
+		"courseLines": [
+			{
+				"courseId": 87654321,
+				"sortOrder": 1,
+				"numberOfPoints": 52,
+				"distanceInMeters": 1187.61,
+				"bearing": 0.0,
+				"points": null,
+				"coordinateSystem": null,
+				"originalCoordinateSystem": null
+			}
+		],
+		"coordinateSystem": "WGS84",
+		"targetCoordinateSystem": "WGS84",
+		"originalCoordinateSystem": "WGS84",
+		"consumer": null,
+		"elevationSource": 3,
+		"hasPaceBand": false,
+		"hasPowerGuide": false,
+		"favorite": false,
+		"startNote": null,
+		"finishNote": null,
+		"cutoffDuration": null,
+		"geoPoints": [
+			{"latitude": 48.8566, "longitude": 2.3522, "elevation": 100.0, "distance": 0.0, "timestamp": 1770967543000},
+			{"latitude": 48.8567, "longitude": 2.3523, "elevation": 101.0, "distance": 25.5, "timestamp": 1770967573596}
+		]
+	}`
+
+	var detail CourseDetail
+	if err := json.Unmarshal([]byte(rawJSON), &detail); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+
+	// Basic fields
+	if detail.CourseID != 87654321 {
+		t.Errorf("CourseID = %d, want 87654321", detail.CourseID)
+	}
+	if detail.CourseName != "Test Course" {
+		t.Errorf("CourseName = %s, want Test Course", detail.CourseName)
+	}
+	if detail.Description == nil || *detail.Description != "A test course description" {
+		t.Errorf("Description = %v, want 'A test course description'", detail.Description)
+	}
+	if detail.OpenStreetMap {
+		t.Error("OpenStreetMap = true, want false")
+	}
+	if detail.MatchedToSegments {
+		t.Error("MatchedToSegments = true, want false")
+	}
+	if detail.UserProfilePK != 12345678 {
+		t.Errorf("UserProfilePK = %d, want 12345678", detail.UserProfilePK)
+	}
+	if detail.RulePK != 2 {
+		t.Errorf("RulePK = %d, want 2", detail.RulePK)
+	}
+	if detail.FirstName != "Anonymous" {
+		t.Errorf("FirstName = %s, want Anonymous", detail.FirstName)
+	}
+	if detail.LastName != "User" {
+		t.Errorf("LastName = %s, want User", detail.LastName)
+	}
+	if detail.DisplayName != testAnonymousName {
+		t.Errorf("DisplayName = %s, want %s", detail.DisplayName, testAnonymousName)
+	}
+
+	// Distance/elevation (different field names from list response)
+	if detail.DistanceMeter != 7217.69 {
+		t.Errorf("DistanceMeter = %f, want 7217.69", detail.DistanceMeter)
+	}
+	if detail.ElevationGainMeter != 277.86 {
+		t.Errorf("ElevationGainMeter = %f, want 277.86", detail.ElevationGainMeter)
+	}
+	if detail.ElevationLossMeter != 280.95 {
+		t.Errorf("ElevationLossMeter = %f, want 280.95", detail.ElevationLossMeter)
+	}
+
+	// StartPoint
+	if detail.StartPoint.Latitude != 48.8566 {
+		t.Errorf("StartPoint.Latitude = %f, want 48.8566", detail.StartPoint.Latitude)
+	}
+	if detail.StartPoint.Longitude != 2.3522 {
+		t.Errorf("StartPoint.Longitude = %f, want 2.3522", detail.StartPoint.Longitude)
+	}
+	if detail.StartPoint.Elevation != 100.0 {
+		t.Errorf("StartPoint.Elevation = %f, want 100.0", detail.StartPoint.Elevation)
+	}
+
+	// CoursePoints
+	if len(detail.CoursePoints) != 1 {
+		t.Fatalf("len(CoursePoints) = %d, want 1", len(detail.CoursePoints))
+	}
+	if detail.CoursePoints[0].CoursePointID != 11111111 {
+		t.Errorf("CoursePoints[0].CoursePointID = %d, want 11111111", detail.CoursePoints[0].CoursePointID)
+	}
+	if detail.CoursePoints[0].Name != "Start" {
+		t.Errorf("CoursePoints[0].Name = %s, want Start", detail.CoursePoints[0].Name)
+	}
+	if detail.CoursePoints[0].PointType != "START" {
+		t.Errorf("CoursePoints[0].PointType = %s, want START", detail.CoursePoints[0].PointType)
+	}
+
+	// BoundingBox
+	if detail.BoundingBox.LowerLeft.Latitude != 48.0 {
+		t.Errorf("BoundingBox.LowerLeft.Latitude = %f, want 48.0", detail.BoundingBox.LowerLeft.Latitude)
+	}
+	if detail.BoundingBox.UpperRight.Longitude != 3.0 {
+		t.Errorf("BoundingBox.UpperRight.Longitude = %f, want 3.0", detail.BoundingBox.UpperRight.Longitude)
+	}
+
+	// Activity/partner
+	if detail.ActivityTypePK != 3 {
+		t.Errorf("ActivityTypePK = %d, want 3", detail.ActivityTypePK)
+	}
+	if detail.VirtualPartnerID != 87654321 {
+		t.Errorf("VirtualPartnerID = %d, want 87654321", detail.VirtualPartnerID)
+	}
+
+	// Dates (string format, not timestamp)
+	if detail.CreateDate != "2026-02-13T07:25:43.0" {
+		t.Errorf("CreateDate = %s, want 2026-02-13T07:25:43.0", detail.CreateDate)
+	}
+	if detail.UpdateDate != "2026-02-13T07:25:43.0" {
+		t.Errorf("UpdateDate = %s, want 2026-02-13T07:25:43.0", detail.UpdateDate)
+	}
+
+	// CourseLines
+	if len(detail.CourseLines) != 1 {
+		t.Fatalf("len(CourseLines) = %d, want 1", len(detail.CourseLines))
+	}
+	if detail.CourseLines[0].SortOrder != 1 {
+		t.Errorf("CourseLines[0].SortOrder = %d, want 1", detail.CourseLines[0].SortOrder)
+	}
+	if detail.CourseLines[0].NumberOfPoints != 52 {
+		t.Errorf("CourseLines[0].NumberOfPoints = %d, want 52", detail.CourseLines[0].NumberOfPoints)
+	}
+	if detail.CourseLines[0].DistanceInMeters != 1187.61 {
+		t.Errorf("CourseLines[0].DistanceInMeters = %f, want 1187.61", detail.CourseLines[0].DistanceInMeters)
+	}
+
+	// GeoPoints
+	if len(detail.GeoPoints) != 2 {
+		t.Fatalf("len(GeoPoints) = %d, want 2", len(detail.GeoPoints))
+	}
+	if detail.GeoPoints[0].Distance != 0.0 {
+		t.Errorf("GeoPoints[0].Distance = %f, want 0.0", detail.GeoPoints[0].Distance)
+	}
+	if detail.GeoPoints[1].Distance != 25.5 {
+		t.Errorf("GeoPoints[1].Distance = %f, want 25.5", detail.GeoPoints[1].Distance)
+	}
+	if detail.GeoPoints[0].Timestamp != 1770967543000 {
+		t.Errorf("GeoPoints[0].Timestamp = %d, want 1770967543000", detail.GeoPoints[0].Timestamp)
+	}
+
+	// Boolean flags
+	if detail.IncludeLaps {
+		t.Error("IncludeLaps = true, want false")
+	}
+	if detail.Favorite {
+		t.Error("Favorite = true, want false")
+	}
+	if detail.CoordinateSystem != "WGS84" {
+		t.Errorf("CoordinateSystem = %s, want WGS84", detail.CoordinateSystem)
+	}
+}
+
+func TestCourseDetailNullCoursePoints(t *testing.T) {
+	rawJSON := `{
+		"courseId": 123,
+		"courseName": "Test",
+		"coursePoints": null,
+		"geoPoints": null,
+		"courseLines": null
+	}`
+
+	var detail CourseDetail
+	if err := json.Unmarshal([]byte(rawJSON), &detail); err != nil {
+		t.Fatalf("Failed to unmarshal: %v", err)
+	}
+
+	if detail.CoursePoints != nil {
+		t.Errorf("CoursePoints = %v, want nil", detail.CoursePoints)
+	}
+	if detail.GeoPoints != nil {
+		t.Errorf("GeoPoints = %v, want nil", detail.GeoPoints)
+	}
+	if detail.CourseLines != nil {
+		t.Errorf("CourseLines = %v, want nil", detail.CourseLines)
+	}
+}
+
+func TestCourseDetailRawJSON(t *testing.T) {
+	rawJSON := `{"courseId":123,"courseName":"Test"}`
+
+	var detail CourseDetail
+	if err := json.Unmarshal([]byte(rawJSON), &detail); err != nil {
+		t.Fatal(err)
+	}
+	detail.raw = json.RawMessage(rawJSON)
+
+	if string(detail.RawJSON()) != rawJSON {
+		t.Error("RawJSON should return original JSON")
+	}
+}

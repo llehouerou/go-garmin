@@ -43,12 +43,24 @@ var (
 	// Course-related patterns
 	courseIDPattern       = regexp.MustCompile(`"courseId"\s*:\s*\d+`)
 	courseNamePattern     = regexp.MustCompile(`"courseName"\s*:\s*"[^"]*"`)
+	coursePointIDPattern  = regexp.MustCompile(`"coursePointId"\s*:\s*\d+`)
+	coursePKPattern       = regexp.MustCompile(`"coursePk"\s*:\s*\d+`)
+	virtualPartnerPattern = regexp.MustCompile(`"virtualPartnerId"\s*:\s*\d+`)
 	startLatitudePattern  = regexp.MustCompile(`"startLatitude"\s*:\s*-?[\d.]+`)
 	startLongitudePattern = regexp.MustCompile(`"startLongitude"\s*:\s*-?[\d.]+`)
+
+	// Geolocation patterns (covers geoPoints, coursePoints, boundingBox, startPoint)
+	latitudePattern         = regexp.MustCompile(`"latitude"\s*:\s*-?[\d.]+`)
+	longitudePattern        = regexp.MustCompile(`"longitude"\s*:\s*-?[\d.]+`)
+	latPattern              = regexp.MustCompile(`"lat"\s*:\s*-?[\d.]+`)
+	lonPattern              = regexp.MustCompile(`"lon"\s*:\s*-?[\d.]+`)
+	elevationPattern        = regexp.MustCompile(`"elevation"\s*:\s*-?[\d.]+`)
+	derivedElevationPattern = regexp.MustCompile(`"derivedElevation"\s*:\s*-?[\d.]+`)
 
 	// URL path patterns (for anonymizing IDs in request URLs)
 	deviceSettingsURLPattern  = regexp.MustCompile(`/device-info/settings/\d+`)
 	racePredictionsURLPattern = regexp.MustCompile(`/racepredictions/(latest|daily|monthly)/[a-zA-Z0-9-]+`)
+	courseURLPattern          = regexp.MustCompile(`/course-service/course/\d+`)
 
 	// Profile image URLs
 	profileImageURLPattern = regexp.MustCompile(`"(ownerProfileImageUrl[^"]*|profileImageUrl[^"]*)"\s*:\s*"https://s3\.amazonaws\.com/garmin-connect-prod/profile_images/[^"]*"`)
@@ -161,6 +173,9 @@ func sanitizeHook(i *cassette.Interaction) error {
 	// Anonymize displayName/UUID in race predictions URLs
 	i.Request.URL = racePredictionsURLPattern.ReplaceAllString(i.Request.URL, "/racepredictions/$1/anonymous")
 
+	// Anonymize course IDs in URL paths
+	i.Request.URL = courseURLPattern.ReplaceAllString(i.Request.URL, "/course-service/course/87654321")
+
 	// Sanitize request body (for login requests)
 	if strings.Contains(i.Request.Body, "password") {
 		i.Request.Body = "[REDACTED]"
@@ -224,8 +239,19 @@ func anonymizeBody(body string) string {
 	// Course info
 	body = courseIDPattern.ReplaceAllString(body, `"courseId":87654321`)
 	body = courseNamePattern.ReplaceAllString(body, `"courseName":"Anonymous Course"`)
+	body = coursePointIDPattern.ReplaceAllString(body, `"coursePointId":11111111`)
+	body = coursePKPattern.ReplaceAllString(body, `"coursePk":87654321`)
+	body = virtualPartnerPattern.ReplaceAllString(body, `"virtualPartnerId":87654321`)
 	body = startLatitudePattern.ReplaceAllString(body, `"startLatitude":48.8566`)
 	body = startLongitudePattern.ReplaceAllString(body, `"startLongitude":2.3522`)
+
+	// Geolocation
+	body = latitudePattern.ReplaceAllString(body, `"latitude":48.8566`)
+	body = longitudePattern.ReplaceAllString(body, `"longitude":2.3522`)
+	body = latPattern.ReplaceAllString(body, `"lat":48.8566`)
+	body = lonPattern.ReplaceAllString(body, `"lon":2.3522`)
+	body = elevationPattern.ReplaceAllString(body, `"elevation":100.0`)
+	body = derivedElevationPattern.ReplaceAllString(body, `"derivedElevation":100.0`)
 
 	// Profile image URLs
 	body = profileImageURLPattern.ReplaceAllString(body, `"$1":"https://example.com/profile.png"`)

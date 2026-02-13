@@ -3,6 +3,7 @@ package garmin
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 )
 
 // CourseActivityType represents the activity type of a course.
@@ -94,4 +95,129 @@ func (r *CoursesForUserResponse) SetRaw(data json.RawMessage) {
 func (s *CourseService) ListOwner(ctx context.Context) (*CoursesForUserResponse, error) {
 	path := "/web-gateway/course/owner"
 	return fetch[CoursesForUserResponse](ctx, s.client, path)
+}
+
+// GeoPoint represents a GPS track point with coordinates, elevation, distance, and timestamp.
+type GeoPoint struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+	Elevation float64 `json:"elevation"`
+	Distance  float64 `json:"distance"`
+	Timestamp int64   `json:"timestamp"`
+}
+
+// CoursePoint represents a named waypoint on a course.
+type CoursePoint struct {
+	CoursePointID    int64   `json:"coursePointId"`
+	CourseID         int64   `json:"courseId"`
+	Name             string  `json:"name"`
+	Latitude         float64 `json:"latitude"`
+	Longitude        float64 `json:"longitude"`
+	Elevation        float64 `json:"elevation"`
+	Distance         float64 `json:"distance"`
+	PointType        string  `json:"pointType"`
+	SortOrder        int     `json:"sortOrder"`
+	DerivedElevation float64 `json:"derivedElevation"`
+}
+
+// Coordinate represents a latitude/longitude pair.
+type Coordinate struct {
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+}
+
+// BoundingBox represents the geographic bounds of a course.
+type BoundingBox struct {
+	Center              *Coordinate `json:"center"`
+	LowerLeft           Coordinate  `json:"lowerLeft"`
+	UpperRight          Coordinate  `json:"upperRight"`
+	LowerLeftLatIsSet   bool        `json:"lowerLeftLatIsSet"`
+	LowerLeftLongIsSet  bool        `json:"lowerLeftLongIsSet"`
+	UpperRightLatIsSet  bool        `json:"upperRightLatIsSet"`
+	UpperRightLongIsSet bool        `json:"upperRightLongIsSet"`
+}
+
+// CourseLine represents a segment of a course.
+type CourseLine struct {
+	CourseID                 int64   `json:"courseId"`
+	SortOrder                int     `json:"sortOrder"`
+	NumberOfPoints           int     `json:"numberOfPoints"`
+	DistanceInMeters         float64 `json:"distanceInMeters"`
+	Bearing                  float64 `json:"bearing"`
+	Points                   any     `json:"points"`
+	CoordinateSystem         *string `json:"coordinateSystem"`
+	OriginalCoordinateSystem *string `json:"originalCoordinateSystem"`
+}
+
+// StartPoint represents the starting point of a course.
+type StartPoint struct {
+	Latitude  float64  `json:"latitude"`
+	Longitude float64  `json:"longitude"`
+	Elevation float64  `json:"elevation"`
+	Distance  *float64 `json:"distance"`
+	Timestamp *int64   `json:"timestamp"`
+}
+
+// CourseDetail represents the detailed response for a specific course.
+type CourseDetail struct {
+	CourseID                 int64         `json:"courseId"`
+	CourseName               string        `json:"courseName"`
+	Description              *string       `json:"description"`
+	OpenStreetMap            bool          `json:"openStreetMap"`
+	MatchedToSegments        bool          `json:"matchedToSegments"`
+	UserProfilePK            int64         `json:"userProfilePk"`
+	UserGroupPK              *int64        `json:"userGroupPk"`
+	RulePK                   int           `json:"rulePK"`
+	FirstName                string        `json:"firstName"`
+	LastName                 string        `json:"lastName"`
+	DisplayName              string        `json:"displayName"`
+	GeoRoutePK               *int64        `json:"geoRoutePk"`
+	SourceTypeID             int           `json:"sourceTypeId"`
+	SourcePK                 *int64        `json:"sourcePk"`
+	DistanceMeter            float64       `json:"distanceMeter"`
+	ElevationGainMeter       float64       `json:"elevationGainMeter"`
+	ElevationLossMeter       float64       `json:"elevationLossMeter"`
+	StartPoint               StartPoint    `json:"startPoint"`
+	CoursePoints             []CoursePoint `json:"coursePoints"`
+	BoundingBox              BoundingBox   `json:"boundingBox"`
+	HasShareableEvent        bool          `json:"hasShareableEvent"`
+	HasTurnDetectionDisabled bool          `json:"hasTurnDetectionDisabled"`
+	ActivityTypePK           int           `json:"activityTypePk"`
+	VirtualPartnerID         int64         `json:"virtualPartnerId"`
+	IncludeLaps              bool          `json:"includeLaps"`
+	ElapsedSeconds           *int          `json:"elapsedSeconds"`
+	SpeedMeterPerSecond      *float64      `json:"speedMeterPerSecond"`
+	CreateDate               string        `json:"createDate"`
+	UpdateDate               string        `json:"updateDate"`
+	CourseLines              []CourseLine  `json:"courseLines"`
+	CoordinateSystem         string        `json:"coordinateSystem"`
+	TargetCoordinateSystem   string        `json:"targetCoordinateSystem"`
+	OriginalCoordinateSystem string        `json:"originalCoordinateSystem"`
+	Consumer                 *string       `json:"consumer"`
+	ElevationSource          int           `json:"elevationSource"`
+	HasPaceBand              bool          `json:"hasPaceBand"`
+	HasPowerGuide            bool          `json:"hasPowerGuide"`
+	Favorite                 bool          `json:"favorite"`
+	StartNote                *string       `json:"startNote"`
+	FinishNote               *string       `json:"finishNote"`
+	CutoffDuration           *int          `json:"cutoffDuration"`
+	GeoPoints                []GeoPoint    `json:"geoPoints"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the raw JSON response.
+func (d *CourseDetail) RawJSON() json.RawMessage {
+	return d.raw
+}
+
+// SetRaw sets the raw JSON data.
+func (d *CourseDetail) SetRaw(data json.RawMessage) {
+	d.raw = data
+}
+
+// Get retrieves detailed information about a specific course.
+func (s *CourseService) Get(ctx context.Context, courseID int64) (*CourseDetail, error) {
+	path := fmt.Sprintf("/course-service/course/%d", courseID)
+	return fetch[CourseDetail](ctx, s.client, path)
 }
