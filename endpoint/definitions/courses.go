@@ -197,4 +197,38 @@ var CourseEndpoints = []endpoint.Endpoint{
 			return client.Courses.Import(ctx, filepath.Base(filePath), f, args.Int("activity-type"), args.Int("privacy"))
 		},
 	},
+	{
+		Name:       "DeleteCourse",
+		Service:    "Courses",
+		Cassette:   "none",
+		Path:       "/course-service/course/{course_id}",
+		HTTPMethod: "DELETE",
+
+		Params: []endpoint.Param{
+			{
+				Name:        "course_id",
+				Type:        endpoint.ParamTypeInt,
+				Required:    true,
+				Description: "Course ID to delete",
+			},
+		},
+
+		CLICommand:    "courses",
+		CLISubcommand: "delete",
+		MCPTool:       "delete_course",
+		Short:         "Delete a course",
+		Long:          "Permanently delete a course/route from your Garmin Connect account",
+
+		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
+			client, ok := c.(*garmin.Client)
+			if !ok {
+				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
+			}
+			err := client.Courses.Delete(ctx, int64(args.Int("course_id")))
+			if err != nil {
+				return nil, err
+			}
+			return map[string]string{"status": "success"}, nil
+		},
+	},
 }

@@ -460,3 +460,9 @@ func (s *CourseService) DownloadFIT(ctx context.Context, courseID int64) ([]byte
 
 	return io.ReadAll(resp.Body)
 }
+
+// Delete deletes a course from Garmin Connect.
+func (s *CourseService) Delete(ctx context.Context, courseID int64) error {
+	path := fmt.Sprintf("/course-service/course/%d", courseID)
+	return sendEmpty(ctx, s.client, http.MethodDelete, path)
+}
