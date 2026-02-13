@@ -81,9 +81,9 @@ func (v *Validator) validateEndpoint(ep *Endpoint) []string {
 		errors = append(errors, fmt.Sprintf("%s: invalid HTTPMethod: %s", ep.Name, ep.HTTPMethod))
 	}
 
-	// POST/PUT should have Body config
-	if (ep.HTTPMethod == "POST" || ep.HTTPMethod == "PUT") && ep.Body == nil {
-		errors = append(errors, fmt.Sprintf("%s: %s endpoint should have Body config", ep.Name, ep.HTTPMethod))
+	// POST/PUT should have Body config unless they use Params (e.g., file upload or simple POST)
+	if (ep.HTTPMethod == "POST" || ep.HTTPMethod == "PUT") && ep.Body == nil && len(ep.Params) == 0 {
+		errors = append(errors, fmt.Sprintf("%s: %s endpoint should have Body config or Params", ep.Name, ep.HTTPMethod))
 	}
 
 	// Params must have descriptions

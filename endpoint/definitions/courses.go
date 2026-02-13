@@ -3,6 +3,8 @@ package definitions
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
 
 	garmin "github.com/llehouerou/go-garmin"
 	"github.com/llehouerou/go-garmin/endpoint"
@@ -146,6 +148,53 @@ var CourseEndpoints = []endpoint.Endpoint{
 				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
 			}
 			return client.Courses.DownloadFIT(ctx, int64(args.Int("course_id")))
+		},
+	},
+	{
+		Name:       "ImportCourseGPX",
+		Service:    "Courses",
+		Cassette:   "none",
+		Path:       "/course-service/course/import",
+		HTTPMethod: "POST",
+
+		Params: []endpoint.Param{
+			{
+				Name:        "file",
+				Type:        endpoint.ParamTypeString,
+				Required:    true,
+				Description: "Path to GPX file to import",
+			},
+			{
+				Name:        "activity-type",
+				Type:        endpoint.ParamTypeInt,
+				Required:    false,
+				Description: "Activity type ID (e.g. 1=running, 3=hiking, 5=cycling)",
+			},
+			{
+				Name:        "privacy",
+				Type:        endpoint.ParamTypeInt,
+				Required:    false,
+				Description: "Privacy rule: 1=Public, 2=Private (default), 4=Group",
+			},
+		},
+
+		CLICommand:    "courses",
+		CLISubcommand: "import",
+		Short:         "Import a GPX course",
+		Long:          "Import a course/route from a GPX file to Garmin Connect",
+
+		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
+			client, ok := c.(*garmin.Client)
+			if !ok {
+				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
+			}
+			filePath := args.String("file")
+			f, err := os.Open(filePath)
+			if err != nil {
+				return nil, fmt.Errorf("open file: %w", err)
+			}
+			defer f.Close()
+			return client.Courses.Import(ctx, filepath.Base(filePath), f, args.Int("activity-type"), args.Int("privacy"))
 		},
 	},
 }

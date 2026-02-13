@@ -2,9 +2,11 @@
 package garmin
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
+	"mime/multipart"
 	"net/http"
 )
 
@@ -152,6 +154,45 @@ func (c *Client) doAPIWithBody(ctx context.Context, method, path string, body io
 
 	req.Header.Set("Authorization", "Bearer "+c.auth.OAuth2AccessToken)
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("User-Agent", "GCM-iOS-5.19.1.2")
+	req.Header.Set("nk", "NT")
+
+	return c.transport.do(req)
+}
+
+// doAPIMultipart performs an authenticated multipart/form-data upload.
+func (c *Client) doAPIMultipart(ctx context.Context, path, fieldName, fileName string, content io.Reader) (*http.Response, error) {
+	if !c.auth.isAuthenticated() {
+		return nil, ErrNotAuthenticated
+	}
+
+	if c.auth.isExpired() {
+		if err := c.refreshOAuth2(ctx); err != nil {
+			return nil, err
+		}
+	}
+
+	var buf bytes.Buffer
+	w := multipart.NewWriter(&buf)
+	part, err := w.CreateFormFile(fieldName, fileName)
+	if err != nil {
+		return nil, fmt.Errorf("create form file: %w", err)
+	}
+	if _, err := io.Copy(part, content); err != nil {
+		return nil, fmt.Errorf("copy content: %w", err)
+	}
+	if err := w.Close(); err != nil {
+		return nil, fmt.Errorf("close multipart writer: %w", err)
+	}
+
+	url := fmt.Sprintf("https://connectapi.%s%s", c.auth.Domain, path)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, &buf)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+c.auth.OAuth2AccessToken)
+	req.Header.Set("Content-Type", w.FormDataContentType())
 	req.Header.Set("User-Agent", "GCM-iOS-5.19.1.2")
 	req.Header.Set("nk", "NT")
 

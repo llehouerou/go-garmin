@@ -82,6 +82,36 @@ func send[T any, PT interface {
 	return result, nil
 }
 
+// upload performs a multipart file upload and unmarshals the response into T.
+// Returns APIError if the response status is not in the 2xx range.
+func upload[T any, PT interface {
+	*T
+	RawSetter
+}](ctx context.Context, c *Client, path, fieldName, fileName string, content io.Reader) (*T, error) {
+	resp, err := c.doAPIMultipart(ctx, path, fieldName, fileName, content)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	raw, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return nil, &APIError{StatusCode: resp.StatusCode, Status: resp.Status, Body: raw}
+	}
+
+	result := new(T)
+	if err := json.Unmarshal(raw, result); err != nil {
+		return nil, fmt.Errorf("unmarshal response: %w", err)
+	}
+	PT(result).SetRaw(raw)
+
+	return result, nil
+}
+
 // sendEmpty performs a request expecting no response body (e.g., DELETE).
 // Returns APIError if the response status is not in the 2xx range.
 func sendEmpty(ctx context.Context, c *Client, method, path string) error {
