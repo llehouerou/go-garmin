@@ -61,6 +61,8 @@ var (
 	deviceSettingsURLPattern  = regexp.MustCompile(`/device-info/settings/\d+`)
 	racePredictionsURLPattern = regexp.MustCompile(`/racepredictions/(latest|daily|monthly)/[a-zA-Z0-9-]+`)
 	courseURLPattern          = regexp.MustCompile(`/course-service/course/\d+`)
+	courseGPXURLPattern       = regexp.MustCompile(`/course-service/course/gpx/\d+`)
+	courseFITURLPattern       = regexp.MustCompile(`/course-service/course/fit/\d+`)
 
 	// Profile image URLs
 	profileImageURLPattern = regexp.MustCompile(`"(ownerProfileImageUrl[^"]*|profileImageUrl[^"]*)"\s*:\s*"https://s3\.amazonaws\.com/garmin-connect-prod/profile_images/[^"]*"`)
@@ -173,7 +175,9 @@ func sanitizeHook(i *cassette.Interaction) error {
 	// Anonymize displayName/UUID in race predictions URLs
 	i.Request.URL = racePredictionsURLPattern.ReplaceAllString(i.Request.URL, "/racepredictions/$1/anonymous")
 
-	// Anonymize course IDs in URL paths
+	// Anonymize course IDs in URL paths (specific patterns before general)
+	i.Request.URL = courseGPXURLPattern.ReplaceAllString(i.Request.URL, "/course-service/course/gpx/87654321")
+	i.Request.URL = courseFITURLPattern.ReplaceAllString(i.Request.URL, "/course-service/course/fit/87654321")
 	i.Request.URL = courseURLPattern.ReplaceAllString(i.Request.URL, "/course-service/course/87654321")
 
 	// Sanitize request body (for login requests)

@@ -143,6 +143,10 @@ func (g *CLIGenerator) addFlags(cmd *cobra.Command, ep *Endpoint) {
 		cmd.Flags().StringP("file", "f", "", "Read JSON body from file")
 		cmd.Flags().String("json", "", "JSON body as string")
 	}
+
+	if ep.RawOutput {
+		cmd.Flags().StringP("output", "o", "", "Output file path")
+	}
 }
 
 func (g *CLIGenerator) createRunFunc(ep *Endpoint) func(*cobra.Command, []string) error {
@@ -162,6 +166,18 @@ func (g *CLIGenerator) createRunFunc(ep *Endpoint) func(*cobra.Command, []string
 
 		result, err := ep.Handler(cmd.Context(), g.client, handlerArgs)
 		if err != nil {
+			return err
+		}
+
+		if ep.RawOutput {
+			data, ok := result.([]byte)
+			if !ok {
+				return fmt.Errorf("raw output handler must return []byte, got %T", result)
+			}
+			if outputPath, _ := cmd.Flags().GetString("output"); outputPath != "" {
+				return os.WriteFile(outputPath, data, 0o600)
+			}
+			_, err := g.output.Write(data)
 			return err
 		}
 

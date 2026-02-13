@@ -45,6 +45,7 @@ type Endpoint struct {
 	HTTPMethod string
 	Params     []Param
 	Body       *BodyConfig
+	RawOutput  bool // Handler returns []byte; CLI writes raw bytes instead of JSON
 
 	// Dependencies
 	DependsOn   string

@@ -70,4 +70,82 @@ var CourseEndpoints = []endpoint.Endpoint{
 			return client.Courses.Get(ctx, int64(args.Int("course_id")))
 		},
 	},
+	{
+		Name:       "DownloadCourseGPX",
+		Service:    "Courses",
+		Cassette:   "courses_download",
+		Path:       "/course-service/course/gpx/{course_id}",
+		HTTPMethod: "GET",
+		RawOutput:  true,
+
+		Params: []endpoint.Param{
+			{
+				Name:        "course_id",
+				Type:        endpoint.ParamTypeInt,
+				Required:    true,
+				Description: "Course ID to download",
+			},
+		},
+
+		CLICommand:    "courses",
+		CLISubcommand: "download-gpx",
+		Short:         "Download course as GPX",
+		Long:          "Download a course/route as a GPX file. Output goes to stdout by default, use -o to write to a file.",
+
+		DependsOn: "ListOwnerCourses",
+		ArgProvider: func(result any) map[string]any {
+			resp, ok := result.(*garmin.CoursesForUserResponse)
+			if !ok || len(resp.CoursesForUser) == 0 {
+				return nil
+			}
+			return map[string]any{"course_id": resp.CoursesForUser[0].CourseID}
+		},
+
+		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
+			client, ok := c.(*garmin.Client)
+			if !ok {
+				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
+			}
+			return client.Courses.DownloadGPX(ctx, int64(args.Int("course_id")))
+		},
+	},
+	{
+		Name:       "DownloadCourseFIT",
+		Service:    "Courses",
+		Cassette:   "courses_download",
+		Path:       "/course-service/course/fit/{course_id}/0",
+		HTTPMethod: "GET",
+		RawOutput:  true,
+
+		Params: []endpoint.Param{
+			{
+				Name:        "course_id",
+				Type:        endpoint.ParamTypeInt,
+				Required:    true,
+				Description: "Course ID to download",
+			},
+		},
+
+		CLICommand:    "courses",
+		CLISubcommand: "download-fit",
+		Short:         "Download course as FIT",
+		Long:          "Download a course/route as a FIT file. Output goes to stdout by default, use -o to write to a file.",
+
+		DependsOn: "ListOwnerCourses",
+		ArgProvider: func(result any) map[string]any {
+			resp, ok := result.(*garmin.CoursesForUserResponse)
+			if !ok || len(resp.CoursesForUser) == 0 {
+				return nil
+			}
+			return map[string]any{"course_id": resp.CoursesForUser[0].CourseID}
+		},
+
+		Handler: func(ctx context.Context, c any, args *endpoint.HandlerArgs) (any, error) {
+			client, ok := c.(*garmin.Client)
+			if !ok {
+				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
+			}
+			return client.Courses.DownloadFIT(ctx, int64(args.Int("course_id")))
+		},
+	},
 }

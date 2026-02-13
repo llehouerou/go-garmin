@@ -36,6 +36,28 @@ func TestMCPGenerator_RegisterTools(t *testing.T) {
 	}
 }
 
+func TestMCPGenerator_SkipsRawOutputEndpoints(t *testing.T) {
+	r := NewRegistry()
+	r.Register(Endpoint{
+		Name:      "DownloadGPX",
+		MCPTool:   "download_gpx",
+		Long:      "Download GPX file",
+		RawOutput: true,
+		Handler: func(_ context.Context, _ any, _ *HandlerArgs) (any, error) {
+			return []byte("binary data"), nil
+		},
+	})
+
+	s := server.NewMCPServer("test", "1.0.0", server.WithToolCapabilities(true))
+	gen := NewMCPGenerator(r, nil)
+	gen.RegisterTools(s)
+
+	tools := s.ListTools()
+	if len(tools) != 0 {
+		t.Fatalf("expected 0 tools (RawOutput should be skipped), got %d", len(tools))
+	}
+}
+
 func TestMCPGenerator_SkipsEndpointsWithoutMCPTool(t *testing.T) {
 	r := NewRegistry()
 	r.Register(Endpoint{

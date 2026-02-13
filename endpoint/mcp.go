@@ -27,7 +27,7 @@ func NewMCPGenerator(registry *Registry, client any) *MCPGenerator {
 // RegisterTools adds all endpoint tools to the MCP server.
 func (g *MCPGenerator) RegisterTools(s *server.MCPServer) {
 	for _, ep := range g.registry.endpoints {
-		if ep.MCPTool == "" {
+		if ep.MCPTool == "" || ep.RawOutput {
 			continue
 		}
 		g.registerTool(s, ep)

@@ -4,6 +4,7 @@ package endpoint
 import (
 	"bytes"
 	"context"
+	"os"
 	"testing"
 
 	"github.com/spf13/cobra"
@@ -193,6 +194,90 @@ func TestCLIGenerator_DateRangeFlags(t *testing.T) {
 	endFlag := cmd.Flags().Lookup("end")
 	if endFlag == nil {
 		t.Error("expected 'end' flag to exist")
+	}
+}
+
+func TestCLIGenerator_RawOutput_WritesBytes(t *testing.T) {
+	r := NewRegistry()
+	r.Register(Endpoint{
+		Name:       "DownloadGPX",
+		CLICommand: "download",
+		Short:      "Download GPX",
+		RawOutput:  true,
+		Handler: func(_ context.Context, _ any, _ *HandlerArgs) (any, error) {
+			return []byte("<gpx>test data</gpx>"), nil
+		},
+	})
+
+	var output bytes.Buffer
+	gen := NewCLIGenerator(r)
+	gen.SetClient(nil)
+	gen.SetOutput(&output)
+	commands := gen.GenerateCommands()
+
+	root := &cobra.Command{Use: "test"}
+	for _, cmd := range commands {
+		root.AddCommand(cmd)
+	}
+
+	root.SetArgs([]string{"download"})
+	err := root.Execute()
+	if err != nil {
+		t.Fatalf("Execute() error = %v", err)
+	}
+
+	// Should write raw bytes, not JSON
+	if output.String() != "<gpx>test data</gpx>" {
+		t.Errorf("output = %q, want %q", output.String(), "<gpx>test data</gpx>")
+	}
+}
+
+func TestCLIGenerator_RawOutput_OutputFlag(t *testing.T) {
+	r := NewRegistry()
+	r.Register(Endpoint{
+		Name:       "DownloadGPX",
+		CLICommand: "download",
+		Short:      "Download GPX",
+		RawOutput:  true,
+		Handler: func(_ context.Context, _ any, _ *HandlerArgs) (any, error) {
+			return []byte("file content"), nil
+		},
+	})
+
+	gen := NewCLIGenerator(r)
+	gen.SetClient(nil)
+	commands := gen.GenerateCommands()
+
+	// Verify --output/-o flag exists
+	if len(commands) != 1 {
+		t.Fatalf("expected 1 command, got %d", len(commands))
+	}
+	cmd := commands[0]
+	outputFlag := cmd.Flags().Lookup("output")
+	if outputFlag == nil {
+		t.Fatal("expected 'output' flag to exist")
+	}
+	if outputFlag.Shorthand != "o" {
+		t.Errorf("output flag shorthand = %q, want %q", outputFlag.Shorthand, "o")
+	}
+
+	// Test writing to file
+	tmpFile := t.TempDir() + "/test.gpx"
+
+	root := &cobra.Command{Use: "test"}
+	root.AddCommand(cmd)
+	root.SetArgs([]string{"download", "--output", tmpFile})
+	err := root.Execute()
+	if err != nil {
+		t.Fatalf("Execute() error = %v", err)
+	}
+
+	data, err := os.ReadFile(tmpFile)
+	if err != nil {
+		t.Fatalf("failed to read output file: %v", err)
+	}
+	if string(data) != "file content" {
+		t.Errorf("file content = %q, want %q", string(data), "file content")
 	}
 }
 

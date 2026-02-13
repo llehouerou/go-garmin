@@ -22,6 +22,7 @@
 //   - devices
 //   - biometric
 //   - workouts
+//   - courses_download
 package main
 
 import (
@@ -116,6 +117,7 @@ func getCassetteRecorders() map[string]cassetteRecorder {
 		"workouts":              recordWorkouts,
 		"calendar":              recordCalendar,
 		"courses":               recordCourses,
+		"courses_download":      recordCoursesDownload,
 		"fitnessage":            recordFitnessAge,
 		"fitnessstats":          recordFitnessStats,
 	}
@@ -1095,6 +1097,61 @@ func recordCourses(ctx context.Context, session []byte, _ time.Time) error {
 	return nil
 }
 
+func recordCoursesDownload(ctx context.Context, session []byte, _ time.Time) error {
+	rec, err := testutil.NewRecordingRecorder("courses_download")
+	if err != nil {
+		return err
+	}
+	defer func() { _ = stopRecorder(rec) }()
+
+	// Parse session to get OAuth2 token
+	var authState struct {
+		OAuth2AccessToken string `json:"oauth2_access_token"`
+		Domain            string `json:"domain"`
+	}
+	if err := json.Unmarshal(session, &authState); err != nil {
+		return fmt.Errorf("failed to parse session: %w", err)
+	}
+
+	httpClient := testutil.HTTPClientWithRecorder(rec)
+
+	// First get owner courses to find a course ID
+	fmt.Println("  Getting owner courses for download...")
+	coursesURL := fmt.Sprintf("https://connectapi.%s/web-gateway/course/owner",
+		authState.Domain)
+	coursesResp, err := doAPIRequest(ctx, httpClient, coursesURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: courses: %v\n", err)
+		return nil
+	}
+
+	courseID := extractFirstCourseID(coursesResp)
+	if courseID == 0 {
+		fmt.Println("  No courses found, skipping download")
+		return nil
+	}
+
+	// Download GPX
+	fmt.Printf("  Downloading GPX for course %d...\n", courseID)
+	gpxURL := fmt.Sprintf("https://connectapi.%s/course-service/course/gpx/%d",
+		authState.Domain, courseID)
+	err = doAPIRawRequest(ctx, httpClient, gpxURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: course GPX: %v\n", err)
+	}
+
+	// Download FIT
+	fmt.Printf("  Downloading FIT for course %d...\n", courseID)
+	fitURL := fmt.Sprintf("https://connectapi.%s/course-service/course/fit/%d/0?elevation=true",
+		authState.Domain, courseID)
+	err = doAPIRawRequest(ctx, httpClient, fitURL, authState.OAuth2AccessToken)
+	if err != nil {
+		fmt.Printf("  Warning: course FIT: %v\n", err)
+	}
+
+	return nil
+}
+
 func extractFirstCourseID(resp []map[string]any) int64 {
 	if len(resp) == 0 {
 		return 0
@@ -1112,6 +1169,31 @@ func extractFirstCourseID(resp []map[string]any) int64 {
 		return 0
 	}
 	return int64(courseID)
+}
+
+func doAPIRawRequest(ctx context.Context, client *http.Client, url, token string) error {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, http.NoBody)
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("User-Agent", "GCM-iOS-5.19.1.2")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("status %d: %s", resp.StatusCode, string(body))
+	}
+
+	// Read body to trigger VCR recording
+	_, err = io.ReadAll(resp.Body)
+	return err
 }
 
 func doAPIRequest(ctx context.Context, client *http.Client, url, token string) ([]map[string]any, error) {

@@ -109,7 +109,7 @@ interactions:
             </div>
 
 
-            	<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd30e04dbdb750b',t:'MTc3MDk3MjM4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+            	<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd333d6bfc84ed8',t:'MTc3MDk3MzkzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
             </html>
         headers:
             Access-Control-Allow-Credentials:
@@ -123,32 +123,32 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9cd30e04dbdb750b-JNB
+                - 9cd333d6bfc84ed8-JNB
             Content-Language:
                 - en
             Content-Type:
                 - text/html;charset=UTF-8
             Date:
-                - Fri, 13 Feb 2026 08:46:21 GMT
+                - Fri, 13 Feb 2026 09:12:10 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=F1nsKUvml1icWLfy0pyqsD7qdXy5LFnSXV1fTjqx58exaXtnXQdshxY1xW%2FngtmocUlsHa4foqrYHjy4gze5Q21aQWqG4RS93Lc%2FnA8LE8iTRqN0yOgpHnkENr%2Bx9wPH"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=brVYVkDOFaqaBUto5Z5XTQtA0YyYBLQmD%2FNdTs6ei3M%2BEwuaR2COc%2Fbdei6xeE39dnKWZ5NP88SLL3kFKfUppJyK2v%2BUZDA6gvCamo%2F27b%2Bgj5XsGir5pqSrDVnpfPMq"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
             X-Application-Context:
-                - casServer:cloud,prod,prod-US_Olathe:4
+                - casServer:cloud,prod,prod-US_Olathe:6
             X-B3-Traceid:
-                - 8242a47af9e24ec07c1cc6bb7d8b7508
+                - 57603c03f73e4dd8542484d4814d5f8c
             X-Robots-Tag:
                 - noindex
             X-Vcap-Request-Id:
-                - 8242a47a-f9e2-4ec0-7c1c-c6bb7d8b7508
+                - 57603c03-f73e-4dd8-5424-84d4814d5f8c
         status: 200 OK
         code: 200
-        duration: 587.069455ms
+        duration: 505.923716ms
     - id: 1
       request:
         proto: HTTP/1.1
@@ -186,7 +186,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: "<!DOCTYPE html>\n<html lang=\"en\" class=\"no-js\">\n    <head>\n        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n        <meta name=\"viewport\" content=\"width=device-width\" />\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge;\" />\n        <title>GARMIN Authentication Application</title>\n        <link href=\"/sso/css/GAuth.css?20210406\" rel=\"stylesheet\" type=\"text/css\" media=\"all\" />\n\n\t    <link rel=\"stylesheet\" href=\"\"/>\n\n        <script type=\"text/javascript\" src=\"/sso/js/jquery/3.7.1/jquery.min.js?20210319\"></script>\n        <script type=\"text/javascript\">jQuery.noConflict();</script>\n\t\t<script type=\"text/javascript\" src=\"/sso/js/jquery-validate/1.16.0/jquery.validate.min.js?20210319\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/jsUtils.js?20210406\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/json2.js\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/consoleUtils.js?20210319\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/postmessage.js?20210319\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/popupWindow.js\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/base.js?20231020\"></script>\n\t\t<script type=\"text/javascript\" src=\"/sso/js/gigyaUtils.js?20210319\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/login.js?20211102\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/reCaptchaUtil.js?20230706\"></script>\n\n        <script>\n            var recaptchaSiteKey = null;\n            var reCaptchaURL = \"\\\\\\/sso\\\\\\/reCaptcha?embedWidget=true\\u0026gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\\u0026id=gauth-widget\\u0026redirectAfterAccountCreationUrl=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\\u0026redirectAfterAccountLoginUrl=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\\u0026service=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\\u0026source=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\";\n            var isRecaptchaEnabled = null;\n            var recaptchaToken = null;            \n        </script>\n        <script type=\"text/javascript\">\n            var parent_url      = \"https:\\/\\/sso.garmin.com\\/sso\\/embed\";\n            var status \t\t\t= \"\";\n\t\t\tvar result          = \"\";\n\t\t\tvar clientId\t\t= '';\n\t\t\tvar embedWidget \t= true;\n\t\t\tvar isUsernameDefined = (false == true) || (false == true);\n\n            // Gigya callback to SocialSignInController for brand new social network users redirects to this page\n            // to popup Create or Link Social Account page, but has a possibly mangled source parameter\n            // where \"?\" is set as \"<QM>\", so translate it back to \"?\" here.\n            parent_url = parent_url.replace('<QM>', '?');\n            var parent_scheme   = parent_url.substring(0, parent_url.indexOf(\"://\"));\n            var parent_hostname = parent_url.substring(parent_scheme.length + 3, parent_url.length);\n            if (parent_hostname.indexOf(\"/\") != -1) {\n                parent_hostname = parent_hostname.substring(0, parent_hostname.indexOf(\"/\"));\n            }\n            var parentHost      \t   = parent_scheme + \"://\" + parent_hostname;\n\t\t\tvar createAccountConfigURL = '\\/sso\\/createNewAccount?embedWidget%3Dtrue%26gauthHost%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26id%3Dgauth-widget%26redirectAfterAccountCreationUrl%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26redirectAfterAccountLoginUrl%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26service%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26source%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed';\n            var socialConfigURL        = 'https://sso.garmin.com/sso/socialSignIn?embedWidget%3Dtrue%26gauthHost%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26id%3Dgauth-widget%26redirectAfterAccountCreationUrl%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26redirectAfterAccountLoginUrl%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26service%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26source%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed';\n            var gigyaURL               = \"https://cdns.gigya.com/js/gigya.js?apiKey=2_R3ZGY8Bqlwwk3_63knoD9wA_m-Y19mAgW61bF_s5k9gymYnMEAtMrJiF5MjF-U7B\";\n\n            if (createAccountConfigURL.indexOf('%253A%252F%252F') != -1) {\n            \tcreateAccountConfigURL = decodeURIComponent(createAccountConfigURL);\n            }\n            consoleInfo('signin.html embedWidget: true, createAccountConfigURL: \\/sso\\/createNewAccount?embedWidget%3Dtrue%26gauthHost%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26id%3Dgauth-widget%26redirectAfterAccountCreationUrl%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26redirectAfterAccountLoginUrl%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26service%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26source%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed, socialEnabled: true, gigyaSupported: true, socialConfigURL(): https://sso.garmin.com/sso/socialSignIn?embedWidget%3Dtrue%26gauthHost%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26id%3Dgauth-widget%26redirectAfterAccountCreationUrl%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26redirectAfterAccountLoginUrl%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26service%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26source%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed');\n\n            if (socialConfigURL.indexOf('%3A%2F%2F') != -1) {\n            \tsocialConfigURL = decodeURIComponent(socialConfigURL);\n            }\n\n            if( status != null && status != ''){\n            \tsend({'status':status});\n            }\n\n            jQuery(document).ready( function(){\n\n\n                consoleInfo(\"signin.html: setting field validation rules...\");\n\n                jQuery(\"#username\").rules(\"add\",{\n                    required: true,\n                    messages: {\n                        required:  \"Email is required.\"\n                }});\n\n                jQuery(\"#password\").rules(\"add\", {\n                    required: true,\n                    messages: {\n                        required:  \"Password is required.\"\n                    }\n                });\n\n                consoleInfo(\"signin.html: done setting field validation rules...\");\n\n            });\n\n            XD.receiveMessage(function(m){\n                consoleInfo(\"signin.html: \" + m.data + \" received on \" + window.location.host);\n                 if (m && m.data) {\n                     var md = m.data;\n                     if (typeof(md) === 'string') {\n                         md = JSON.parse(m.data);\n                     }\n                     if (md.setUsername) {\n                         consoleInfo(\"signin.html: Setting username \\\"\" + md.username + \"\\\"...\");\n                         jQuery(\"#signInWithDiffLink\").click(); // Ensure the normal login form is shown.\n                         jQuery(\"#username\").val(md.username);\n                         jQuery(\"#password\").focus();\n                     }\n                 }\n             }, parentHost);\n        </script>\n    </head>\n    <body>\n\n        <!-- begin GAuth component -->\n        <div id=\"GAuth-component\">\n            <!-- begin login component-->\n            <div id=\"login-component\" class=\"blueForm-basic\">\n               <input type=\"hidden\" id=\"queryString\" value=\"embedWidget=true&amp;gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed&amp;id=gauth-widget&amp;redirectAfterAccountCreationUrl=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed&amp;redirectAfterAccountLoginUrl=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed&amp;service=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed&amp;source=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\" />\n\t     \t   <input type=\"hidden\" id=\"contextPath\" value=\"/sso\" />\n                <!-- begin login form -->\n                <div id=\"login-state-default\">\n                    <h2>Sign In</h2>\n\n                    <form method=\"post\" id=\"login-form\">\n\n                        <div class=\"form-alert\">\n\t\t\t\t\t\t\t\n                            \n                            \n                            \n                            \n                            \n                            \n\n                            <div id=\"username-error\" style=\"display:none;\"></div>\n                            <div id=\"password-error\" style=\"display:none;\"></div>\n                        </div>\n                        <div class=\"textfield\">\n\t\t\t\t\t\t\t<label for=\"username\">Email</label>\n                           \t\t<!-- If the lockToEmailAddress parameter is specified then we want to mark the field as readonly,\n                           \t\tpreload the email address, and disable the other input so that null isn't sent to the server. We'll\n                           \t\talso style the field to have a darker grey background and disable the mouse pointer\n                           \t\t -->\n\t\t\t\t\t\t\t    \n\t\t\t\t\t\t\t\t<!-- If the lockToEmailAddress parameter is NOT specified then keep the existing functionality and disable the readonly input field\n\t\t\t\t\t\t\t     -->\n\t\t\t\t\t\t\t    <input class=\"login_email\" name=\"username\" id=\"username\" value=\"\" type=\"email\" spellcheck=\"false\" autocorrect=\"off\" autocapitalize=\"off\"/>\n\n                        </div>\n\n                        <div class=\"textfield\">\n                            <label for=\"password\">Password</label>\n                            <a id=\"loginforgotpassword\" class=\"login-forgot-password\" style=\"cursor:pointer\">(Forgot?)</a>\n                            <input type=\"password\" name=\"password\" id=\"password\" spellcheck=\"false\" autocorrect=\"off\" autocapitalize=\"off\" />\n                             <strong id=\"capslock-warning\" class=\"information\" title=\"Caps lock is on.\" style=\"display: none;\">Caps lock is on.</strong>\n\t\t\t\t\t    </div>\n                        <input type=\"hidden\" name=\"embed\" value=\"true\"/>\n                        <input type=\"hidden\" name=\"_csrf\" value=\"4D9713C8C73D65DADF719D0492540CDACB90C47369CAA8940FB18609720D7A2122013875CB47B28C6374C924C8F899537314\" />\n                        <button type=\"submit\" id=\"login-btn-signin\" class=\"btn1\" accesskey=\"l\">Sign In</button>\n                        \n\n\n                        <!-- The existence of the \"rememberme\" parameter at all will remember the user! -->\n                        \n\n                    </form>\n                </div>\n                <!-- end login form -->\n\n                <!-- begin Create Account message -->\n\t            <div id=\"login-create-account\">\n\t                \n\t            </div>\n\t            <!-- end Create Account message -->\n\n\t            <!-- begin Social Sign In component -->\n\t            <div id=\"SSI-component\">\n                    \n\n\t\t\t\t\t\n\t            </div>\n\t            <!-- end Social Sign In component -->\n                <div class=\"clearfix\"></div> <!-- Ensure that GAuth-component div's height is computed correctly. -->\n            </div>\n            <!-- end login component-->\n\n\t\t</div>\n\t\t<!-- end GAuth component -->\n\n        <script type=\"text/javascript\">\n            jQuery(document).ready(function(){\n            \tresizePageOnLoad(jQuery(\"#GAuth-component\").height());\n\n\t\t        if(isUsernameDefined == true){\n\t\t            // If the user's login just failed, redisplay the email/username specified, and focus them in the password field.\n\t\t            jQuery(\"#password\").focus();\n\t\t        } else if(false == true && result != \"PASSWORD_RESET_RESULT\"){\n                    // Otherwise focus them in the username field of the login dialog.\n                    jQuery(\"#username\").focus();\n                }\n\n                // Scroll to top of iframe to fix problem where Firefox 3.0-3.6 browsers initially show top of iframe cutoff.\n                location.href=\"#\";\n\n                if(!embedWidget){\n                \tjQuery('.createAccountLink').click(function(){\n\t                    send({'openLiteBox':'createAccountLink', 'popupUrl': createAccountConfigURL, 'popupTitle':'Create An Account', 'clientId':clientId});\n\t                });\n                }\n            });\n        </script>\n    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML=\"window.__CF$cv$params={r:'9cd30e073a03750b',t:'MTc3MDk3MjM4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);\";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>\n</html>\n"
+        body: "<!DOCTYPE html>\n<html lang=\"en\" class=\"no-js\">\n    <head>\n        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n        <meta name=\"viewport\" content=\"width=device-width\" />\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge;\" />\n        <title>GARMIN Authentication Application</title>\n        <link href=\"/sso/css/GAuth.css?20210406\" rel=\"stylesheet\" type=\"text/css\" media=\"all\" />\n\n\t    <link rel=\"stylesheet\" href=\"\"/>\n\n        <script type=\"text/javascript\" src=\"/sso/js/jquery/3.7.1/jquery.min.js?20210319\"></script>\n        <script type=\"text/javascript\">jQuery.noConflict();</script>\n\t\t<script type=\"text/javascript\" src=\"/sso/js/jquery-validate/1.16.0/jquery.validate.min.js?20210319\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/jsUtils.js?20210406\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/json2.js\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/consoleUtils.js?20210319\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/postmessage.js?20210319\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/popupWindow.js\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/base.js?20231020\"></script>\n\t\t<script type=\"text/javascript\" src=\"/sso/js/gigyaUtils.js?20210319\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/login.js?20211102\"></script>\n        <script type=\"text/javascript\" src=\"/sso/js/reCaptchaUtil.js?20230706\"></script>\n\n        <script>\n            var recaptchaSiteKey = null;\n            var reCaptchaURL = \"\\\\\\/sso\\\\\\/reCaptcha?embedWidget=true\\u0026gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\\u0026id=gauth-widget\\u0026redirectAfterAccountCreationUrl=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\\u0026redirectAfterAccountLoginUrl=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\\u0026service=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\\u0026source=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\";\n            var isRecaptchaEnabled = null;\n            var recaptchaToken = null;            \n        </script>\n        <script type=\"text/javascript\">\n            var parent_url      = \"https:\\/\\/sso.garmin.com\\/sso\\/embed\";\n            var status \t\t\t= \"\";\n\t\t\tvar result          = \"\";\n\t\t\tvar clientId\t\t= '';\n\t\t\tvar embedWidget \t= true;\n\t\t\tvar isUsernameDefined = (false == true) || (false == true);\n\n            // Gigya callback to SocialSignInController for brand new social network users redirects to this page\n            // to popup Create or Link Social Account page, but has a possibly mangled source parameter\n            // where \"?\" is set as \"<QM>\", so translate it back to \"?\" here.\n            parent_url = parent_url.replace('<QM>', '?');\n            var parent_scheme   = parent_url.substring(0, parent_url.indexOf(\"://\"));\n            var parent_hostname = parent_url.substring(parent_scheme.length + 3, parent_url.length);\n            if (parent_hostname.indexOf(\"/\") != -1) {\n                parent_hostname = parent_hostname.substring(0, parent_hostname.indexOf(\"/\"));\n            }\n            var parentHost      \t   = parent_scheme + \"://\" + parent_hostname;\n\t\t\tvar createAccountConfigURL = '\\/sso\\/createNewAccount?embedWidget%3Dtrue%26gauthHost%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26id%3Dgauth-widget%26redirectAfterAccountCreationUrl%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26redirectAfterAccountLoginUrl%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26service%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26source%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed';\n            var socialConfigURL        = 'https://sso.garmin.com/sso/socialSignIn?embedWidget%3Dtrue%26gauthHost%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26id%3Dgauth-widget%26redirectAfterAccountCreationUrl%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26redirectAfterAccountLoginUrl%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26service%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26source%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed';\n            var gigyaURL               = \"https://cdns.gigya.com/js/gigya.js?apiKey=2_R3ZGY8Bqlwwk3_63knoD9wA_m-Y19mAgW61bF_s5k9gymYnMEAtMrJiF5MjF-U7B\";\n\n            if (createAccountConfigURL.indexOf('%253A%252F%252F') != -1) {\n            \tcreateAccountConfigURL = decodeURIComponent(createAccountConfigURL);\n            }\n            consoleInfo('signin.html embedWidget: true, createAccountConfigURL: \\/sso\\/createNewAccount?embedWidget%3Dtrue%26gauthHost%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26id%3Dgauth-widget%26redirectAfterAccountCreationUrl%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26redirectAfterAccountLoginUrl%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26service%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed%26source%3Dhttps%253A%252F%252Fsso.garmin.com%252Fsso%252Fembed, socialEnabled: true, gigyaSupported: true, socialConfigURL(): https://sso.garmin.com/sso/socialSignIn?embedWidget%3Dtrue%26gauthHost%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26id%3Dgauth-widget%26redirectAfterAccountCreationUrl%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26redirectAfterAccountLoginUrl%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26service%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed%26source%3Dhttps%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed');\n\n            if (socialConfigURL.indexOf('%3A%2F%2F') != -1) {\n            \tsocialConfigURL = decodeURIComponent(socialConfigURL);\n            }\n\n            if( status != null && status != ''){\n            \tsend({'status':status});\n            }\n\n            jQuery(document).ready( function(){\n\n\n                consoleInfo(\"signin.html: setting field validation rules...\");\n\n                jQuery(\"#username\").rules(\"add\",{\n                    required: true,\n                    messages: {\n                        required:  \"Email is required.\"\n                }});\n\n                jQuery(\"#password\").rules(\"add\", {\n                    required: true,\n                    messages: {\n                        required:  \"Password is required.\"\n                    }\n                });\n\n                consoleInfo(\"signin.html: done setting field validation rules...\");\n\n            });\n\n            XD.receiveMessage(function(m){\n                consoleInfo(\"signin.html: \" + m.data + \" received on \" + window.location.host);\n                 if (m && m.data) {\n                     var md = m.data;\n                     if (typeof(md) === 'string') {\n                         md = JSON.parse(m.data);\n                     }\n                     if (md.setUsername) {\n                         consoleInfo(\"signin.html: Setting username \\\"\" + md.username + \"\\\"...\");\n                         jQuery(\"#signInWithDiffLink\").click(); // Ensure the normal login form is shown.\n                         jQuery(\"#username\").val(md.username);\n                         jQuery(\"#password\").focus();\n                     }\n                 }\n             }, parentHost);\n        </script>\n    </head>\n    <body>\n\n        <!-- begin GAuth component -->\n        <div id=\"GAuth-component\">\n            <!-- begin login component-->\n            <div id=\"login-component\" class=\"blueForm-basic\">\n               <input type=\"hidden\" id=\"queryString\" value=\"embedWidget=true&amp;gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed&amp;id=gauth-widget&amp;redirectAfterAccountCreationUrl=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed&amp;redirectAfterAccountLoginUrl=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed&amp;service=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed&amp;source=https%3A%2F%2Fsso.garmin.com%2Fsso%2Fembed\" />\n\t     \t   <input type=\"hidden\" id=\"contextPath\" value=\"/sso\" />\n                <!-- begin login form -->\n                <div id=\"login-state-default\">\n                    <h2>Sign In</h2>\n\n                    <form method=\"post\" id=\"login-form\">\n\n                        <div class=\"form-alert\">\n\t\t\t\t\t\t\t\n                            \n                            \n                            \n                            \n                            \n                            \n\n                            <div id=\"username-error\" style=\"display:none;\"></div>\n                            <div id=\"password-error\" style=\"display:none;\"></div>\n                        </div>\n                        <div class=\"textfield\">\n\t\t\t\t\t\t\t<label for=\"username\">Email</label>\n                           \t\t<!-- If the lockToEmailAddress parameter is specified then we want to mark the field as readonly,\n                           \t\tpreload the email address, and disable the other input so that null isn't sent to the server. We'll\n                           \t\talso style the field to have a darker grey background and disable the mouse pointer\n                           \t\t -->\n\t\t\t\t\t\t\t    \n\t\t\t\t\t\t\t\t<!-- If the lockToEmailAddress parameter is NOT specified then keep the existing functionality and disable the readonly input field\n\t\t\t\t\t\t\t     -->\n\t\t\t\t\t\t\t    <input class=\"login_email\" name=\"username\" id=\"username\" value=\"\" type=\"email\" spellcheck=\"false\" autocorrect=\"off\" autocapitalize=\"off\"/>\n\n                        </div>\n\n                        <div class=\"textfield\">\n                            <label for=\"password\">Password</label>\n                            <a id=\"loginforgotpassword\" class=\"login-forgot-password\" style=\"cursor:pointer\">(Forgot?)</a>\n                            <input type=\"password\" name=\"password\" id=\"password\" spellcheck=\"false\" autocorrect=\"off\" autocapitalize=\"off\" />\n                             <strong id=\"capslock-warning\" class=\"information\" title=\"Caps lock is on.\" style=\"display: none;\">Caps lock is on.</strong>\n\t\t\t\t\t    </div>\n                        <input type=\"hidden\" name=\"embed\" value=\"true\"/>\n                        <input type=\"hidden\" name=\"_csrf\" value=\"1851C4041963220264CEEAEB83C78E575D584339A5F10D8D7D378A1CA75010742A9D5C928846991109236D49B93BCF29ED56\" />\n                        <button type=\"submit\" id=\"login-btn-signin\" class=\"btn1\" accesskey=\"l\">Sign In</button>\n                        \n\n\n                        <!-- The existence of the \"rememberme\" parameter at all will remember the user! -->\n                        \n\n                    </form>\n                </div>\n                <!-- end login form -->\n\n                <!-- begin Create Account message -->\n\t            <div id=\"login-create-account\">\n\t                \n\t            </div>\n\t            <!-- end Create Account message -->\n\n\t            <!-- begin Social Sign In component -->\n\t            <div id=\"SSI-component\">\n                    \n\n\t\t\t\t\t\n\t            </div>\n\t            <!-- end Social Sign In component -->\n                <div class=\"clearfix\"></div> <!-- Ensure that GAuth-component div's height is computed correctly. -->\n            </div>\n            <!-- end login component-->\n\n\t\t</div>\n\t\t<!-- end GAuth component -->\n\n        <script type=\"text/javascript\">\n            jQuery(document).ready(function(){\n            \tresizePageOnLoad(jQuery(\"#GAuth-component\").height());\n\n\t\t        if(isUsernameDefined == true){\n\t\t            // If the user's login just failed, redisplay the email/username specified, and focus them in the password field.\n\t\t            jQuery(\"#password\").focus();\n\t\t        } else if(false == true && result != \"PASSWORD_RESET_RESULT\"){\n                    // Otherwise focus them in the username field of the login dialog.\n                    jQuery(\"#username\").focus();\n                }\n\n                // Scroll to top of iframe to fix problem where Firefox 3.0-3.6 browsers initially show top of iframe cutoff.\n                location.href=\"#\";\n\n                if(!embedWidget){\n                \tjQuery('.createAccountLink').click(function(){\n\t                    send({'openLiteBox':'createAccountLink', 'popupUrl': createAccountConfigURL, 'popupTitle':'Create An Account', 'clientId':clientId});\n\t                });\n                }\n            });\n        </script>\n    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML=\"window.__CF$cv$params={r:'9cd333d92ae24ed8',t:'MTc3MDk3MzkzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);\";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>\n</html>\n"
         headers:
             Access-Control-Allow-Credentials:
                 - "true"
@@ -199,17 +199,17 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9cd30e073a03750b-JNB
+                - 9cd333d92ae24ed8-JNB
             Content-Language:
                 - en
             Content-Type:
                 - text/html;charset=UTF-8
             Date:
-                - Fri, 13 Feb 2026 08:46:21 GMT
+                - Fri, 13 Feb 2026 09:12:10 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=MRumUeydCqBRTvmPNPIGk%2FJTZxyS%2FYMi9Y9HeRFWwcxNVZUuUnRdIIZl9kDQSGhE6l1zxUXdS6qM4tQ7OzK60MGgMEY6bKOb96fY1ymW1MMjfrP3HNOJy7WAjVKaR8%2BW"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=IUm7HFXBqOyS8%2F%2FjshR3D5iK0wm9QJGG0HvQCmAiOLSEF6si0qg%2BHgrBM8MhKHpzcQt07kuGL%2BIVxS8MBPQU6mW93YNaH0jqEM2WQaDit2ypMg9XHjlDWLu1XGRPLOVu"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
@@ -217,16 +217,16 @@ interactions:
             Vary:
                 - Accept-Encoding
             X-Application-Context:
-                - casServer:cloud,prod,prod-US_Olathe:7
+                - casServer:cloud,prod,prod-US_Olathe:0
             X-B3-Traceid:
-                - da134ade29634f0646bccf73355b8ba8
+                - e318ac96a58644dc68ad4ef00786ef4c
             X-Robots-Tag:
                 - noindex
             X-Vcap-Request-Id:
-                - da134ade-2963-4f06-46bc-cf73355b8ba8
+                - e318ac96-a586-44dc-68ad-4ef00786ef4c
         status: 200 OK
         code: 200
-        duration: 390.487809ms
+        duration: 437.459636ms
     - id: 2
       request:
         proto: HTTP/1.1
@@ -237,7 +237,7 @@ interactions:
         body: '[REDACTED]'
         form:
             _csrf:
-                - 4D9713C8C73D65DADF719D0492540CDACB90C47369CAA8940FB18609720D7A2122013875CB47B28C6374C924C8F899537314
+                - 1851C4041963220264CEEAEB83C78E575D584339A5F10D8D7D378A1CA75010742A9D5C928846991109236D49B93BCF29ED56
             embed:
                 - "true"
             embedWidget:
@@ -444,7 +444,7 @@ interactions:
             				redirect(service);
             			});
             		</script>
-            	<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd30e09a853750b',t:'MTc3MDk3MjM4Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+            	<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9cd333dbee884ed8',t:'MTc3MDk3MzkzMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
             </html>
         headers:
             Access-Control-Allow-Credentials:
@@ -458,17 +458,17 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9cd30e09a853750b-JNB
+                - 9cd333dbee884ed8-JNB
             Content-Language:
                 - en
             Content-Type:
                 - text/html;charset=UTF-8
             Date:
-                - Fri, 13 Feb 2026 08:46:22 GMT
+                - Fri, 13 Feb 2026 09:12:12 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=YntxPhZYNuNjVyb2qm6FRL5lzvkBZHKBv1LN8sL7hZ%2BYsYGF%2FMQ74HWHYJgjlXZhqiacdRkvFMqifXTzJtuNNYioNStkJZrdVPg3W%2Bed9J8gaOBNTCDIRagABfN%2BOPXE"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=zm5sdZ%2BthH0qjurR6DkuLpAeSKu3%2FXJDZkCzrK%2Bbhc0j5sbUBG9e9etVTAPC3z8C%2Bm8ClpE4XKQtJYh0Gv72h4zUbq%2FgziiKEqRGRUFXMjcJXfDlmQZ%2F2KKHta%2Fn%2Fz8t"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
@@ -476,16 +476,16 @@ interactions:
             Vary:
                 - Accept-Encoding
             X-Application-Context:
-                - casServer:cloud,prod,prod-US_Olathe:7
+                - casServer:cloud,prod,prod-US_Olathe:0
             X-B3-Traceid:
-                - 4dbe1840463e4d83509ad00b59268cf9
+                - 31d3a749ebb6406155edcca697052266
             X-Robots-Tag:
                 - noindex
             X-Vcap-Request-Id:
-                - 4dbe1840-463e-4d83-509a-d00b59268cf9
+                - 31d3a749-ebb6-4061-55ed-cca697052266
         status: 200 OK
         code: 200
-        duration: 1.164569776s
+        duration: 1.248672496s
     - id: 3
       request:
         proto: HTTP/1.1
@@ -513,7 +513,7 @@ interactions:
             Content-Type:
                 - application/json
             Date:
-                - Fri, 13 Feb 2026 08:46:24 GMT
+                - Fri, 13 Feb 2026 09:12:13 GMT
             Etag:
                 - '"20240b1013cb35419bb5b2cff1407a4e"'
             Last-Modified:
@@ -521,14 +521,14 @@ interactions:
             Server:
                 - AmazonS3
             X-Amz-Id-2:
-                - g1n3zj/OHcktnE816TREvj+olLIDP8Q7WsjLPbVPeR1lfjZM/qV0nPNFyOVEnc9D1mNwbwWiXFIThuuykjgHZpq+dRzPXcsu
+                - WZFyfXpNoObGph29tMHp1QHdIa7IlMR7RzJ7VRLNQTtNaVdlVCZGhc144866On12YfW6zQvPeOE3xZXW6W7pr0CVtpuodIue
             X-Amz-Request-Id:
-                - XZZF8Y2SRXHG3QQF
+                - R72P4MMFK1MW002Y
             X-Amz-Server-Side-Encryption:
                 - AES256
         status: 200 OK
         code: 200
-        duration: 787.940838ms
+        duration: 715.417476ms
     - id: 4
       request:
         proto: HTTP/1.1
@@ -565,22 +565,22 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9cd30e16cc2973ed-JNB
+                - 9cd333e8ceb3b72b-JNB
             Content-Type:
                 - text/plain;charset=utf-8
             Date:
-                - Fri, 13 Feb 2026 08:46:24 GMT
+                - Fri, 13 Feb 2026 09:12:13 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=bgn6j6Df1nZvJFs%2B%2BiXiaAzNtuqAvscQA0ZkklVPzfkM7WzCW1AfSEBBTSfBPIThymB1D%2Fvg1PMmBy3xt%2FabgPKtjV8YzulF5DvJKBPpVrjQV9YcLTTwllJ54HUrpIS9ZFrKouOakYvtwqLt1krqwtG9JA%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=w7LZlN%2BPrv5EOOyrMJiw7PNeOhH3%2BeD3j5DSyna7hxlXmoUwqxMKRCYBU0%2BtNBaM5wXacoFdavgDcfDQvlce3yXEIfQSQkBJoEWj2lBKVpQIUot6aDqnKcNXF%2FatLHzAQ%2FvVK0%2F2XnvO34MdOl1%2FrMq2iw%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
             Set-Cookie:
                 - '[REDACTED]'
         status: 200 OK
         code: 200
-        duration: 1.132252326s
+        duration: 805.594706ms
     - id: 5
       request:
         proto: HTTP/1.1
@@ -605,7 +605,7 @@ interactions:
         proto_minor: 0
         content_length: -1
         uncompressed: true
-        body: '{"scope":"OMT_DISCOUNTS_READ GARMINPAY_WRITE ATP_READ GHS_SAMD INSIGHTS_READ OMT_DISCOUNTS_CREATE CIQ_APPSTORE_SERVICES_CREATE COMMUNITY_COURSE_WRITE GCOFFER_WRITE DT_CLIENT_ANALYTICS_WRITE CIQ_APPSTORE_SERVICES_DELETE OMT_SUBSCRIPTION_READ CONNECT_READ GARMIN_PROFILE_READ COMMUNITY_COURSE_READ GOLF_API_READ GHS_UPLOAD DIVE_API_READ CIQ_APPSTORE_SERVICES_READ CIQ_APPSTORE_SERVICES_UPDATE CONNECT_WRITE CONNECT_MCT_DAILY_LOG_READ DI_OAUTH_2_AUTHORIZATION_CODE_CREATE GARMINPAY_READ GOLF_API_WRITE INSIGHTS_WRITE PRODUCT_SEARCH_READ OMT_CAMPAIGN_READ GCOFFER_READ ATP_WRITE","jti":"e1f67792-a30b-4dd7-8579-001c662459ef","access_token":"[REDACTED]","token_type":"bearer","refresh_token":"[REDACTED]","expires_in":80989,"refresh_token_expires_in":2591999}'
+        body: '{"scope":"OMT_DISCOUNTS_READ GARMINPAY_WRITE ATP_READ GHS_SAMD INSIGHTS_READ OMT_DISCOUNTS_CREATE CIQ_APPSTORE_SERVICES_CREATE COMMUNITY_COURSE_WRITE GCOFFER_WRITE DT_CLIENT_ANALYTICS_WRITE CIQ_APPSTORE_SERVICES_DELETE OMT_SUBSCRIPTION_READ CONNECT_READ GARMIN_PROFILE_READ COMMUNITY_COURSE_READ GOLF_API_READ GHS_UPLOAD DIVE_API_READ CIQ_APPSTORE_SERVICES_READ CIQ_APPSTORE_SERVICES_UPDATE CONNECT_WRITE CONNECT_MCT_DAILY_LOG_READ DI_OAUTH_2_AUTHORIZATION_CODE_CREATE GARMINPAY_READ GOLF_API_WRITE INSIGHTS_WRITE PRODUCT_SEARCH_READ OMT_CAMPAIGN_READ GCOFFER_READ ATP_WRITE","jti":"1c764a1f-ddf4-4728-ab26-04e27c113a40","access_token":"[REDACTED]","token_type":"bearer","refresh_token":"[REDACTED]","expires_in":105693,"refresh_token_expires_in":2591999}'
         headers:
             Alt-Svc:
                 - h3=":443"; ma=86400
@@ -614,19 +614,19 @@ interactions:
             Cf-Cache-Status:
                 - DYNAMIC
             Cf-Ray:
-                - 9cd30e1cfc9b73ed-JNB
+                - 9cd333ed3f61b72b-JNB
             Content-Type:
                 - application/json
             Date:
-                - Fri, 13 Feb 2026 08:46:25 GMT
+                - Fri, 13 Feb 2026 09:12:13 GMT
             Nel:
                 - '{"success_fraction":0.01,"report_to":"cf-nel","max_age":604800}'
             Pragma:
                 - no-cache
             Report-To:
-                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=YBL40CFphpcmg0z%2BW8RUFsLfEgfhWf0G%2FWvA0P%2BsX%2FmXu0vqvGiREvgDPM7X7rfDMDXdeH4JGY%2Br0PZUKOeB1OyY1ZVWHSCGcSmFFNgUY3LJovNkcM%2BYr1RRxN3YcraqlFBPlX7p5Fba176KRLqQAaoDdw%3D%3D"}],"group":"cf-nel","max_age":604800}'
+                - '{"endpoints":[{"url":"https:\/\/a.nel.cloudflare.com\/report\/v4?s=r7AM3fmKC1TU%2BhhRFzf72eBUQw7gHSIE%2FqXP7k9%2BF1sS%2FjwvxNrk11WbqJKCVXGTPIzNWimaBdhB3AtoFaklvI3gbCJ8fp2ZIOAZM6Ammtc4iXLSlVce%2BvgGtm8hkOKo27wUaQGBjlxuAa8kZYmbJ0%2BAUw%3D%3D"}],"group":"cf-nel","max_age":604800}'
             Server:
                 - cloudflare
         status: 200 OK
         code: 200
-        duration: 376.76745ms
+        duration: 350.335963ms

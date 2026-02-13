@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 )
 
 // CourseActivityType represents the activity type of a course.
@@ -220,4 +222,38 @@ func (d *CourseDetail) SetRaw(data json.RawMessage) {
 func (s *CourseService) Get(ctx context.Context, courseID int64) (*CourseDetail, error) {
 	path := fmt.Sprintf("/course-service/course/%d", courseID)
 	return fetch[CourseDetail](ctx, s.client, path)
+}
+
+// DownloadGPX downloads the course as a GPX file.
+func (s *CourseService) DownloadGPX(ctx context.Context, courseID int64) ([]byte, error) {
+	path := fmt.Sprintf("/course-service/course/gpx/%d", courseID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	return io.ReadAll(resp.Body)
+}
+
+// DownloadFIT downloads the course as a FIT file.
+func (s *CourseService) DownloadFIT(ctx context.Context, courseID int64) ([]byte, error) {
+	path := fmt.Sprintf("/course-service/course/fit/%d/0?elevation=true", courseID)
+
+	resp, err := s.client.doAPI(ctx, http.MethodGet, path, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, ErrNotFound
+	}
+
+	return io.ReadAll(resp.Body)
 }

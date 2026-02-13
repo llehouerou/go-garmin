@@ -1819,6 +1819,66 @@ func TestIntegration_Workout_Get(t *testing.T) {
 	}
 }
 
+func TestIntegration_Course_DownloadGPX(t *testing.T) {
+	skipIfNoCassette(t, "courses_download")
+
+	rec, err := testutil.NewRecorder("courses_download", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// Course ID from the recorded cassette (anonymized to 87654321)
+	courseID := int64(87654321)
+
+	data, err := client.Courses.DownloadGPX(ctx, courseID)
+	if err != nil {
+		t.Fatalf("DownloadGPX failed: %v", err)
+	}
+
+	if len(data) == 0 {
+		t.Fatal("expected GPX data, got empty")
+	}
+
+	// GPX files are XML and should contain the <gpx tag
+	if !strings.Contains(string(data), "<gpx") {
+		t.Error("expected GPX data to contain <gpx tag")
+	}
+}
+
+func TestIntegration_Course_DownloadFIT(t *testing.T) {
+	skipIfNoCassette(t, "courses_download")
+
+	rec, err := testutil.NewRecorder("courses_download", recorder.ModeReplayOnly)
+	if err != nil {
+		t.Fatalf("failed to create recorder: %v", err)
+	}
+	defer func() { _ = rec.Stop() }()
+
+	client := newTestClient(t, rec)
+	ctx := context.Background()
+
+	// Course ID from the recorded cassette (anonymized to 87654321)
+	courseID := int64(87654321)
+
+	data, err := client.Courses.DownloadFIT(ctx, courseID)
+	if err != nil {
+		t.Fatalf("DownloadFIT failed: %v", err)
+	}
+
+	if len(data) == 0 {
+		t.Fatal("expected FIT data, got empty")
+	}
+
+	// FIT files have ".FIT" signature at bytes 8-11
+	if len(data) >= 12 && string(data[8:12]) != ".FIT" {
+		t.Errorf("expected FIT header signature '.FIT' at bytes 8-11, got %q", string(data[8:12]))
+	}
+}
+
 func TestIntegration_Calendar_Get(t *testing.T) {
 	skipIfNoCassette(t, "calendar")
 
