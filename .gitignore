@@ -31,3 +31,6 @@ refs/
 # HAR files (browser network recordings)
 *.har
 har.json
+
+# Cassettes with unanonymized binary/GPS data
+testdata/cassettes/courses_download.yaml
