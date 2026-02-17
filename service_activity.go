@@ -997,6 +997,30 @@ func (e *ExerciseSets) SetRaw(data json.RawMessage) {
 	e.raw = data
 }
 
+// ActivityPolyline represents the full-resolution GPS polyline for an activity.
+type ActivityPolyline struct {
+	// Polyline is an array of [timestamp, latitude, longitude] triplets.
+	Polyline [][3]float64 `json:"polyline"`
+
+	raw json.RawMessage
+}
+
+// RawJSON returns the original JSON response.
+func (a *ActivityPolyline) RawJSON() json.RawMessage {
+	return a.raw
+}
+
+// SetRaw sets the raw JSON data.
+func (a *ActivityPolyline) SetRaw(data json.RawMessage) {
+	a.raw = data
+}
+
+// GetPolyline retrieves the full-resolution GPS polyline for an activity.
+func (s *ActivityService) GetPolyline(ctx context.Context, activityID int64) (*ActivityPolyline, error) {
+	path := fmt.Sprintf("/activity-service/activity/%d/polyline/full-resolution", activityID)
+	return fetch[ActivityPolyline](ctx, s.client, path)
+}
+
 // DetailOptions controls the resolution of returned time-series data.
 type DetailOptions struct {
 	// MaxChartSize limits the number of chart data points returned.
