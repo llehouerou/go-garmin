@@ -1310,7 +1310,7 @@ func TestIntegration_Activity_GetDetails(t *testing.T) {
 	// Activity ID from the recorded cassette
 	activityID := int64(21680374805)
 
-	details, err := client.Activities.GetDetails(ctx, activityID)
+	details, err := client.Activities.GetDetails(ctx, activityID, nil)
 	if err != nil {
 		t.Fatalf("GetDetails failed: %v", err)
 	}

@@ -184,7 +184,7 @@ var ActivityEndpoints = []endpoint.Endpoint{
 			if !ok {
 				return nil, fmt.Errorf("handler received invalid client type: %T, expected *garmin.Client", c)
 			}
-			return client.Activities.GetDetails(ctx, int64(args.Int("activity_id")))
+			return client.Activities.GetDetails(ctx, int64(args.Int("activity_id")), nil)
 		},
 	},
 	{

@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"strconv"
 	"time"
 )
 
@@ -995,9 +997,31 @@ func (e *ExerciseSets) SetRaw(data json.RawMessage) {
 	e.raw = data
 }
 
+// DetailOptions controls the resolution of returned time-series data.
+type DetailOptions struct {
+	// MaxChartSize limits the number of chart data points returned.
+	MaxChartSize int
+	// MaxPolylineSize limits the number of polyline (GPS track) points returned.
+	MaxPolylineSize int
+}
+
 // GetDetails retrieves extended details with time-series metrics for an activity.
-func (s *ActivityService) GetDetails(ctx context.Context, activityID int64) (*ActivityDetails, error) {
+// Pass nil opts for default resolution, or specify MaxChartSize/MaxPolylineSize
+// to control the number of data points returned.
+func (s *ActivityService) GetDetails(ctx context.Context, activityID int64, opts *DetailOptions) (*ActivityDetails, error) {
 	path := fmt.Sprintf("/activity-service/activity/%d/details", activityID)
+	if opts != nil {
+		params := url.Values{}
+		if opts.MaxChartSize > 0 {
+			params.Set("maxChartSize", strconv.Itoa(opts.MaxChartSize))
+		}
+		if opts.MaxPolylineSize > 0 {
+			params.Set("maxPolylineSize", strconv.Itoa(opts.MaxPolylineSize))
+		}
+		if len(params) > 0 {
+			path += "?" + params.Encode()
+		}
+	}
 	return fetch[ActivityDetails](ctx, s.client, path)
 }
 
